@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 14:52:26 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/19 17:03:12 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/03/20 23:35:57 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,10 @@ t_Command_Table	*ft_lst(char **new, int *i, t_Command_Table2 *w)
 			w->j++;
 		}
 		if (new[*i] == NULL)
+        {
+            free(l );
 			return (NULL);
+        }
 		if (new[*i][w->j] == '<' && new[*i][w->j + 1] != '<')
 		{
 			l->index = 0;
@@ -158,7 +161,9 @@ int	ft_make(t_Command_Table **a, char **new, t_Command_Table2 *w)
 
 	next = ft_lst(new, &w->i, w);
 	if (next == NULL)
+    { 
 		return (w->i);
+    }
 	if (w->k != 0)
 		ft_lstadd_back(a, next);
 	else
@@ -166,6 +171,7 @@ int	ft_make(t_Command_Table **a, char **new, t_Command_Table2 *w)
 		*a = next;
 		w->k++;
 	}
+    // system("leaks minishell");
 	return (w->i);
 }
 
@@ -410,7 +416,6 @@ t_Command_Table3	*ft_make_last(t_Command_Table **a, t_Command_Table3 *table,int 
 	next = make_last(*a);
 	if (*k != 0)
 	{
-		printf("pew\n");
 		ft_lstadd_back_last(&table, next);
 	}
 	else

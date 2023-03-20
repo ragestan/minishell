@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/19 19:38:32 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/03/20 23:50:47 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,23 +270,7 @@ char	*new_new(char *new)
 	return (new_new);
 }
 
-void	freestack(t_Command_Table **stack)
-{
-	t_Command_Table	*temp;
 
-	if (!*stack)
-		return ;
-	temp = *stack;
-	while ((*stack)->next)
-	{
-		(*stack) = (*stack)->next;
-		free(temp->arg);
-		free(temp);
-		temp = *stack;
-	}
-	free(temp->arg);
-	free(temp);
-}
 
 void	ft_free(char **str)
 {
@@ -294,8 +278,12 @@ void	ft_free(char **str)
 
 	i = 0;
 	while (str[i])
+    {
+        if(str[i] != NULL)
 		free(str[i++]);
-	free(str);
+    }
+    if (str != NULL)
+       free(str);
 }
 
 t_Command_Table2  ft_init(void)
@@ -322,7 +310,23 @@ void	sigint(int	sig)
 	write(1, "exit\n", 4);
 	exit(0);
 }
+void	freestack(t_Command_Table **stack)
+{
+	t_Command_Table	*temp;
 
+	if (!*stack)
+		return ;
+	temp = *stack;
+	while ((*stack)->next)
+	{
+		(*stack) = (*stack)->next;
+		free(temp->arg);
+		free(temp);
+		temp = *stack;
+	}
+	free(temp->arg);
+	free(temp);
+}
 void	freestack_3(t_Command_Table3 **stack)
 {
 	t_Command_Table3 *tmp;
@@ -339,10 +343,16 @@ void	freestack_3(t_Command_Table3 **stack)
 		free(tmp);
 		tmp = *stack;
 	}
-	ft_free(tmp->args);
-	ft_free(tmp->heredoc);
-	free(tmp->in_or_here);
-	free(tmp);
+    if (tmp->args != NULL)
+	    ft_free(tmp->args);
+    if (tmp->heredoc != NULL)
+	    ft_free(tmp->heredoc); 
+	if (tmp->in_or_here != NULL)
+    {
+        free(tmp->in_or_here);
+    }
+    if (tmp != NULL)
+	    free(tmp);
 }
 
 int	ft_check_syntax_1(char *new)
@@ -431,7 +441,19 @@ int check_all(char *new)
 		return (-1);
 	return (0);
 }
+int count(t_Command_Table3 *table)
+{
+    int i;
 
+    i = 0;
+    while (table)
+    {
+        i++;
+        table = table->next;
+    }
+    return (i);
+}
+ 
 int	main(void)
 {
 	char *new;
@@ -447,48 +469,63 @@ int	main(void)
 	while (1)
 	{
 		k = 0;
-		new = readline("minishell$");
+		new = readline("minishell$ ");
 		if (!new)
 			exit(0);
 		add_history(new);
 		if (check_all(new) == -1)
+        {
+            free(new);
 			continue;
+        }
 		new = new_new(new);
 		split = ft_split(new, 12);
 		w = ft_init();
 		// while(split[i])
 		// printf("%s\n", split[i++]);
 		// i = 0;
+        
 		while (split[i])
-			i = ft_make(&table, split,&w);
+			i = ft_make(&table, split,&w); 
+       
 		// 		while(table)
 		// {	
 		// 	printf("%i\n", table->index);
 		// 	printf("%s\n", table->arg);
 		// 	table = table->next;
 		// }
-		while(table)
+		
+         while(table)
 			last_table = ft_make_last(&table,last_table, &k);
-		while(last_table)
-		{
-			i = 0;
-			while (last_table->args[i])
-				printf("%s\n", last_table->args[i++]);
-			i = 0;
-			while (last_table->heredoc[i])
-				printf("%s\n", last_table->heredoc[i++]);
-			printf("%s\n", last_table->in_or_here);	
-			last_table = last_table->next;
-		}
-		free(new);
-		ft_free(split);
+        // printf("%d\n",count(last_table));
+		// while(last_table)
+		// {
+		// 	i = 0;
+		// 	while (last_table->args[i])
+		// 		printf("%s\n", last_table->args[i++]);
+		// 	i = 0;
+		// 	while (last_table->heredoc[i])
+		// 		printf("%s\n", last_table->heredoc[i++]);
+		// 	printf("%s\n", last_table->in_or_here);	
+		// 	last_table = last_table->next;
+		// }
+       
+       // execve("/usr/bin/make", last_table->args, NULL);
+       if(new != NULL)
+		    free(new);
+        if (split != NULL)
+            ft_free(split);
+        
+		
 		freestack(&table);
+
 		freestack_3(&last_table);
+                 
 		i = 0;
 		
 	}
 }
-		//system("leaks minishell");
+		
 		// i = count_of_outfile(split);
 		// while (i > 0)
 		// {

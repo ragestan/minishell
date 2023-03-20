@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/19 15:51:42 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/03/20 23:12:58 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct a_Cammand_Table3
 typedef struct a_Command_Table
 {
 	int						index;
-	char					*arg;
+	char					*arg; 
 	struct a_Command_Table	*next;
 }							t_Command_Table;
 
