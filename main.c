@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/21 11:54:20 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/21 16:23:14 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -453,15 +453,48 @@ int count(t_Command_Table3 *table)
     }
     return (i);
 }
- 
-int	main(int argc,char **argv,char **env)
+
+t_Command_Table3 *ft_all(void)
 {
-	char *new;
+    	char *new;
 	char **split;
 	int i;
 	int k;
 	t_Command_Table *table;
 	t_Command_Table2 w;
+    t_Command_Table3 *last_table;
+    k = 0;
+		new = readline("minishell$ ");
+		if (!new)
+			exit(0);
+		add_history(new);
+		if (check_all(new) == -1)
+        {
+            free(new);
+            return (NULL);
+        }
+		new = new_new(new);
+		split = ft_split(new, 12);
+		w = ft_init();
+		while (split[i])
+			i = ft_make(&table, split,&w); 
+        while(table)
+			last_table = ft_make_last(&table,last_table, &k);
+        free(new);
+    ft_free(split);
+    freestack(&table);
+    return (last_table);
+
+}
+
+int	main(int argc,char **argv,char **env)
+{
+	// char *new;
+	// char **split;
+	// int i;
+	// int k;
+	// t_Command_Table *table;
+	// t_Command_Table2 w;
 	t_Command_Table3 *last_table;
     envp *env1 = NULL;
     //t_pipex pipex;
@@ -484,63 +517,14 @@ int	main(int argc,char **argv,char **env)
 	}
     export(&env1,NULL);
 	(signal(SIGINT, sigint_handler),signal(SIGQUIT, sigint));
-	i = 0;
 	while (1)
 	{
-		k = 0;
-		new = readline("minishell$ ");
-		if (!new)
-			exit(0);
-		add_history(new);
-		if (check_all(new) == -1)
-        {
-            free(new);
-			continue;
-        }
-		new = new_new(new);
-		split = ft_split(new, 12);
-		w = ft_init();
-		// while(split[i])
-		// printf("%s\n", split[i++]);
-		// i = 0;
-        
-		while (split[i])
-			i = ft_make(&table, split,&w); 
-       
-		// 		while(table)
-		// {	
-		// 	printf("%i\n", table->index);
-		// 	printf("%s\n", table->arg);
-		// 	table = table->next;
-		// }
-		
-         while(table)
-			last_table = ft_make_last(&table,last_table, &k);
-        // printf("%d\n",count(last_table));
-		// while(last_table)
-		// {
-		// 	i = 0;
-		// 	while (last_table->args[i])
-		// 		printf("%s\n", last_table->args[i++]);
-		// 	i = 0;
-		// 	while (last_table->heredoc[i])
-		// 		printf("%s\n", last_table->heredoc[i++]);
-		// 	printf("%s\n", last_table->in_or_here);	
-		// 	last_table = last_table->next;
-		// }
+		last_table = ft_all();
+        if (last_table == NULL)
+            continue;
        
        // execve("/usr/bin/make", last_table->args, NULL);
-       if(new != NULL)
-		    free(new);
-        if (split != NULL)
-            ft_free(split);
-        
-		
-		freestack(&table);
-
-		freestack_3(&last_table);
-                 
-		i = 0;
+		freestack_3(&last_table);  
 		
 	}
 }

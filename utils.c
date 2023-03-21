@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 14:52:26 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/21 11:46:03 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/21 16:25:05 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ char	*ft_strdup(const char *src, int *k)
 	char	*j;
 
 	i = *k;
+    if (src == NULL)
+        return (NULL);
 	l = 0;
 	j = ((dest = (char *)malloc(ft_strlen((char *)src, *k) * sizeof(const char)
 					+ 1)));
@@ -118,7 +120,7 @@ t_Command_Table	*ft_lst(char **new, int *i, t_Command_Table2 *w)
 			l->arg = NULL;
 		else
 			l->arg = ft_strdup(new[*i], &w->j);
-		if (new[*i][w->j] == '\0')
+		if (new[*i] && new[*i][w->j] == '\0')
 		{
 			*i = *i + 1;
 			w->j = 0;
