@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/21 16:23:14 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/21 17:11:11 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -463,7 +463,9 @@ t_Command_Table3 *ft_all(void)
 	t_Command_Table *table;
 	t_Command_Table2 w;
     t_Command_Table3 *last_table;
+   
     k = 0;
+    i = 0;
 		new = readline("minishell$ ");
 		if (!new)
 			exit(0);
@@ -497,7 +499,7 @@ int	main(int argc,char **argv,char **env)
 	// t_Command_Table2 w;
 	t_Command_Table3 *last_table;
     envp *env1 = NULL;
-    //t_pipex pipex;
+    t_pipex pipex;
      (void)argc;
     (void)argv;
     
@@ -515,14 +517,14 @@ int	main(int argc,char **argv,char **env)
 		make_node(&env1, env[r]);
 		r--;
 	}
-    export(&env1,NULL);
+    //export(&env1,NULL);
 	(signal(SIGINT, sigint_handler),signal(SIGQUIT, sigint));
 	while (1)
 	{
 		last_table = ft_all();
         if (last_table == NULL)
             continue;
-       
+       shell_with_pipes(last_table,env,&pipex);
        // execve("/usr/bin/make", last_table->args, NULL);
 		freestack_3(&last_table);  
 		

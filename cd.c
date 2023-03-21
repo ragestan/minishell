@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 11:27:59 by zbentale          #+#    #+#             */
-/*   Updated: 2023/03/21 11:59:42 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/21 16:36:15 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ void	ft_cd(envp **env, char *str)
 	}
     else
     {
-        ptr = ft_strdup(str);
+        ptr = ft_strdupZ(str);
         value = chdir(ptr);
         if (value < 0)
 	    {

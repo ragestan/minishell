@@ -8,8 +8,8 @@ SRC = main.c\
 	  	unset.c\
 	 	 echo.c\
 	  	env.c\
-	 	 pipex.c\
-		 execut_fun//utils1.c\
+		 execut_fun/utils1.c\
+		 execut_fun/excute.c\
 
 CC = gcc 
 

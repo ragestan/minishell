@@ -19,7 +19,7 @@ int	ft_strncmp1(const char *s1, const char *s2)
     i = 0;
     while(s1[i] != '=')
     i++;
-     if(i == strlen(s2))
+     if(i == ft_strlen3(s2))
 	    return (0);
     else
         return 1;

@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/21 12:03:40 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/21 17:08:32 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,18 @@ void	pathfinder(t_pipex *pipex, envp *envp);
 size_t	ft_strlen3(const char *s);
 char	*ft_strjoin(char *s1, char *s2,int count);
 void	make_node(envp **st, char *str);
+void	ft_putstr_fd(char *s, int fd);
+void	ft_putnbr_fd(int n, int fd);
+int	ft_isdigit(int c);
+int	ft_isalpha(int c);
+int	ft_isalnum(int c);
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
+size_t	ft_strlen3(const char *s);
+char	*ft_strjoin(char *s1, char *s2,int count);
+void	make_node(envp **st, char *str);
+char	*ft_strdupZ(const char *s1);
+void	ft_putchar_fd(char c, int fd);
+void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex);
 //------------------------------------zbentalh---------------------------------------
 void	ft_lstadd_back1(t_Command_Table **lst,
 					t_Command_Table *new);
@@ -90,6 +102,7 @@ int							ft_make(t_Command_Table **a, char **new,
 								t_Command_Table2 *w);
 char						*table_fixer_two(char **new);
 t_Command_Table3	*ft_make_last(t_Command_Table **a, t_Command_Table3 *table, int *k);
-char	*ft_strjoin(char *s1, char *s2,int count);
-void	make_node(envp **st, char *str);
+int count(t_Command_Table3 *table);
+
+
 #endif

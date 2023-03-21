@@ -166,7 +166,7 @@ envp	*ft_lstnew(char *content,int option)
 	new->next = NULL;
 	return (new);
 }
-envp	*ft_lstlast(envp *lst)
+envp	*ft_lstlastZ(envp *lst)
 {
 	while (lst && lst->next != NULL)
 		lst = lst->next;
@@ -181,7 +181,7 @@ void	ft_lstadd_back(envp **lst, envp *new)
 		*lst = new;
 	else
 	{
-		last = ft_lstlast(*lst);
+		last = ft_lstlastZ(*lst);
 		last->next = new;
 	}
 }
@@ -441,77 +441,77 @@ void export(envp **env1 ,char *str)
 
     }
 }
-int main(int argc,char **argv ,char **env)
-{
-    (void)argc;
-    (void)argv;
-    t_pipex pipex;
-     printf("/-----------------------------\n");
-    //add OLDPWD
-    int i = 0;
-    //int j = 1;
-    //int error = 0;
-	envp *env1 = NULL;
-	while (env[i] != '\0')
-		i++;
-	i -= 2;
-	while (i >= 0)
-	{
-		make_node(&env1, env[i]);
-		i--;
-	}
-   // export(&env1,"OLDPWD");
-    //sort_list(env1,ft_strcmp);
-    //envv(env1);
-    // export(&env1,"alom");
-    //export(&env1,"testb=zaka"); 
-    // export(&env1,"rrr");
-    //  printf("/-----------------------------\n");
-    // export(&env1,"test=mbarki");
-    //  printf("/-----------------------------\n");
+// int main(int argc,char **argv ,char **env)
+// {
+//     (void)argc;
+//     (void)argv;
+//     t_pipex pipex;
+//      printf("/-----------------------------\n");
+//     //add OLDPWD
+//     int i = 0;
+//     //int j = 1;
+//     //int error = 0;
+// 	envp *env1 = NULL;
+// 	while (env[i] != '\0')
+// 		i++;
+// 	i -= 2;
+// 	while (i >= 0)
+// 	{
+// 		make_node(&env1, env[i]);
+// 		i--;
+// 	}
+//    // export(&env1,"OLDPWD");
+//     //sort_list(env1,ft_strcmp);
+//     //envv(env1);
+//     // export(&env1,"alom");
+//     //export(&env1,"testb=zaka"); 
+//     // export(&env1,"rrr");
+//     //  printf("/-----------------------------\n");
+//     // export(&env1,"test=mbarki");
+//     //  printf("/-----------------------------\n");
     
     
-    // printf("%d\n",ft_strcmpedit("alom","alom=poink"));
-    // export(&env1,"gg=zak");
-    //  export(&env1,"alom=zaka");
-    //  export(&env1,"alom=zakba");
-    // export(&env1,"alom+=bb");
-    export(&env1,NULL);
-    //  export(&env1,"gg+=lmkj");
-    printf("/-----------------------------\n");
-    pathfinder(&pipex,env1);
-    printf("%s\n",pipex.paths[0]);
-    //  export(&env1,"gg+=www");
-    //  export(&env1,"gg+=bbb");
-    //   export(&env1,"alom+=zakbac");
-    //  export(&env1,"alom+=zakbag");
-    //  export(&env1,"alom+=zzz");
-    //  export(&env1,"alom+=zzz");
-    //  export(&env1,"alom+=zzz");
-    //ft_cd(&env1,"kr[ohk]");
-    //unset(&env1,"Apple_PubSub_Socket_Render");
-    //export(&env1,NULL,0);
-    //printf("/-----------------------------\n");
-    //export(&env1,NULL,0);
-    //ft_cd(&env1,NULL);
-    // ft_pwd();
-     //printf("/-----------------------------\n");
-    //export(&env1,NULL,0);
-     //ft_cd(&env1,"/bin");
-     //printf("/-----------------------------\n");
-    //export(&env1,NULL,0);
-     //printf("/-----------------------------\n");
-     //ft_cd(&env1,"/home");
-     //printf("/3\n");
-     //export(&env1,NULL,0);
-     //ft_cd(&env1,"-");
-    //ft_pwd();
-     //printf("/-----------------------------\n");
-    //echo("-nnnnnnnnnnnn","$HOME");
-     //export(&env1,NULL);
-    //system("leaks minishell");
-    // printnodeenv(env1);
-}
+//     // printf("%d\n",ft_strcmpedit("alom","alom=poink"));
+//     // export(&env1,"gg=zak");
+//     //  export(&env1,"alom=zaka");
+//     //  export(&env1,"alom=zakba");
+//     // export(&env1,"alom+=bb");
+//     export(&env1,NULL);
+//     //  export(&env1,"gg+=lmkj");
+//     printf("/-----------------------------\n");
+//     pathfinder(&pipex,env1);
+//     printf("%s\n",pipex.paths[0]);
+//     //  export(&env1,"gg+=www");
+//     //  export(&env1,"gg+=bbb");
+//     //   export(&env1,"alom+=zakbac");
+//     //  export(&env1,"alom+=zakbag");
+//     //  export(&env1,"alom+=zzz");
+//     //  export(&env1,"alom+=zzz");
+//     //  export(&env1,"alom+=zzz");
+//     //ft_cd(&env1,"kr[ohk]");
+//     //unset(&env1,"Apple_PubSub_Socket_Render");
+//     //export(&env1,NULL,0);
+//     //printf("/-----------------------------\n");
+//     //export(&env1,NULL,0);
+//     //ft_cd(&env1,NULL);
+//     // ft_pwd();
+//      //printf("/-----------------------------\n");
+//     //export(&env1,NULL,0);
+//      //ft_cd(&env1,"/bin");
+//      //printf("/-----------------------------\n");
+//     //export(&env1,NULL,0);
+//      //printf("/-----------------------------\n");
+//      //ft_cd(&env1,"/home");
+//      //printf("/3\n");
+//      //export(&env1,NULL,0);
+//      //ft_cd(&env1,"-");
+//     //ft_pwd();
+//      //printf("/-----------------------------\n");
+//     //echo("-nnnnnnnnnnnn","$HOME");
+//      //export(&env1,NULL);
+//     //system("leaks minishell");
+//     // printnodeenv(env1);
+// }
 //update value of export and if its valid make the option 1
 //if you want to update the value of a valide varibale dont update it;
 //test+= is not easy to do you should join what in plus with the value of the variable
