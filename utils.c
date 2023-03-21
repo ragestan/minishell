@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 14:52:26 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/20 23:35:57 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/21 11:46:03 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ t_Command_Table	*ft_lstlast(t_Command_Table *lst)
 	return (lst);
 }
 
-void	ft_lstadd_back(t_Command_Table **lst, t_Command_Table *new)
+void	ft_lstadd_back1(t_Command_Table **lst, t_Command_Table *new)
 {
 	t_Command_Table	*ptr;
 
@@ -165,7 +165,7 @@ int	ft_make(t_Command_Table **a, char **new, t_Command_Table2 *w)
 		return (w->i);
     }
 	if (w->k != 0)
-		ft_lstadd_back(a, next);
+		ft_lstadd_back1(a, next);
 	else
 	{
 		*a = next;

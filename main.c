@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/20 23:50:47 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/21 11:54:20 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -454,7 +454,7 @@ int count(t_Command_Table3 *table)
     return (i);
 }
  
-int	main(void)
+int	main(int argc,char **argv,char **env)
 {
 	char *new;
 	char **split;
@@ -463,7 +463,26 @@ int	main(void)
 	t_Command_Table *table;
 	t_Command_Table2 w;
 	t_Command_Table3 *last_table;
+    envp *env1 = NULL;
+    //t_pipex pipex;
+     (void)argc;
+    (void)argv;
+    
+     printf("/-----------------------------\n");
+    //add OLDPWD
+    int r = 0;
+    //int j = 1;
+    //int error = 0;
 	
+	while (env[r] != '\0')
+		r++;
+	r -= 2;
+	while (r >= 0)
+	{
+		make_node(&env1, env[r]);
+		r--;
+	}
+    export(&env1,NULL);
 	(signal(SIGINT, sigint_handler),signal(SIGQUIT, sigint));
 	i = 0;
 	while (1)
