@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 14:52:26 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/21 16:25:05 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/21 17:17:35 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,28 @@ size_t	ft_strlen(const char *c, int k)
 		i++;
 	while (c[i] != '\0' && c[i] != ' ' && c[i] != '\t' && c[i] != 12)
 	{
+		if (c[i] == '\"')
+		{
+			i++;
+			while (c[i] && c[i] != '\"')
+			{
+				i++;
+				j++;
+			}
+			i++;
+			continue;
+		}
+		if (c[i] == '\'')
+		{
+			i++;
+			while (c[i] && c[i] != '\'')
+			{
+				i++;
+				j++;
+			}
+			i++;
+			continue;
+		}
 		j++;
 		i++;
 	}
@@ -48,6 +70,30 @@ char	*ft_strdup(const char *src, int *k)
 		i++;
 	while (src[i] && src[i] != ' ' && src[i] != '\t' && src[i] != 12)
 	{
+		if (src[i] == '\"')
+		{
+			i++;
+			while (src[i] && src[i] != '\"')
+			{
+				dest[l] = src[i];
+				i++;
+				l++;
+			}
+			i++;
+			continue;
+		}
+		if (src[i] == '\'')
+		{
+			i++;
+			while (src[i] && src[i] != '\'')
+			{
+				dest[l] = src[i];
+				i++;
+				l++;
+			}
+			i++;
+			continue;
+		}
 		dest[l] = src[i];
 		i++;
 		l++;

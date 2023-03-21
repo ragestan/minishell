@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/21 17:11:11 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/21 17:12:59 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -429,6 +429,37 @@ int	ft_check_syntax_2(char *new)
 	}
 	return (0);
 }
+int		ft_check_syntax_4(char *new)
+{
+	int i;
+
+	i = 0;
+	while(new[i])
+	{
+		if (new[i] == '\"')
+		{
+			i++;
+			while (new[i] && new[i] != '\"')
+				i++;
+			if (new[i] == '\0')
+				return (write(2,"minishell: syntax error near unexpected token `redirection\n",60),-1);
+			i++;
+			continue;
+		}
+		if (new[i] == '\'')
+		{
+			i++;
+			while (new[i] && new[i] != '\'')
+				i++;
+			if (new[i] == '\0')
+				return (write(2,"minishell: syntax error near unexpected token `redirection\n",60),-1);
+			i++;
+			continue;
+		}
+		i++;
+	}
+	return (0);
+}
 
 int check_all(char *new)
 {
@@ -438,6 +469,8 @@ int check_all(char *new)
 	if (ft_check_syntax_2(new) == -1)
 		return (-1);
 	if (ft_check_syntax_3(new) == -1)
+		return (-1);
+	if (ft_check_syntax_4(new) == -1)
 		return (-1);
 	return (0);
 }
