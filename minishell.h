@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/21 17:08:32 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/21 20:42:48 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ char	*ft_strjoin(char *s1, char *s2,int count);
 void	make_node(envp **st, char *str);
 char	*ft_strdupZ(const char *s1);
 void	ft_putchar_fd(char c, int fd);
-void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex);
+void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *envp1);
+char	*ft_strjoin2(char *s1, char const *s2);
 //------------------------------------zbentalh---------------------------------------
 void	ft_lstadd_back1(t_Command_Table **lst,
 					t_Command_Table *new);

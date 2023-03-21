@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 11:26:19 by zbentale          #+#    #+#             */
-/*   Updated: 2023/03/21 16:39:59 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/21 20:46:36 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,4 +121,32 @@ char	*ft_strdupZ(const char *s1)
 void	ft_putchar_fd(char c, int fd)
 {
 	write (fd, &c, 1);
+}
+char	*ft_strjoin2(char *s1, char const *s2)
+{
+	char	*p;
+	int		s1_len;
+	int		s2_len;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	if (!s1 || !s2)
+		return (0);
+	s1_len = ft_strlen3(s1);
+	s2_len = ft_strlen3(s2);
+	p = malloc(s2_len + s1_len + 1);
+	if (!p)
+		return (NULL);
+	while (i < s1_len)
+	{
+		p[i] = s1[i];
+		i++;
+	}
+	while (j < s2_len)
+		p[i++] = s2[j++];
+	p[i] = '\0';
+	free(s1);
+	return (p);
 }

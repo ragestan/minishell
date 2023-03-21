@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:46:46 by zbentale          #+#    #+#             */
-/*   Updated: 2023/03/21 17:09:52 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/21 21:15:06 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,27 +38,104 @@ void printlinkdlist(t_Command_Table3 *str)
     }  
     //print the last lint in the original env
 }
-void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex) 
+
+void	pathfinder(t_pipex *pipex, envp *envp1)
+{
+    envp *tmp;
+    tmp = envp1;
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->str, "PATH=", 5) == 0)
+		{
+			pipex->save = tmp->str  + 5;
+			break ;
+		}
+		tmp = tmp->next;
+	}
+	if (tmp->str == NULL)
+	{
+		pipex->paths = NULL;
+		return ;
+	}
+	pipex->paths = ft_split(pipex->save, ':');
+}
+void	ft_error1(char *str, char *st)
+{
+	write(2, str, ft_strlen3(str));
+	if (st)
+		write(2, st, ft_strlen3(st));
+	write(2, "\n", 1);
+	exit(127);
+}
+void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *envp1) 
 {
     (void) env;
     (void) pipex;
     //num args is the number of arguments in the command you cam get it from the table struct
     //num pipes is the number of pipes in the command you can get it from the table struct
-    printlinkdlist(table);
-    // int pipes[MAX_PIPES][2];
-    // pid_t pid[MAX_PIPES+1];
-    // int i = 0, j = 0;
+    pathfinder(pipex,envp1);
+    //printlinkdlist(table);
+    int num_pipes = count(table);
     
-    // // create pipes
-    // i = 0;
-    // while (i < num_pipes) {
-    //     if (pipe(pipes[i]) < 0) {
-    //         perror("pipe error");
-    //         exit(-1);
-    //     }
-    //     i++;
-    // }
+    num_pipes--;
+     int pipes[num_pipes][2];
+     pid_t pid[count(table)];
+     int i = 0;
     
+    // create pipes
+    i = 0;
+    while (i < num_pipes) {
+        if (pipe(pipes[i]) < 0) {
+            perror("pipe error");
+            exit(-1);
+        }
+        i++;
+    }
+    i = 0;
+    if (num_pipes == 0)
+    {
+        pid[i] = fork();
+        if (pid[i] < 0) {
+            perror("fork error");
+            exit(-1);
+        }
+        else if(pid[i] == 0)
+        {
+            if (access(table->args[0], F_OK) == 0)
+            {
+                if(execve(table->args[0], table->args, env) == -1)
+                {
+                    perror("execve error");
+                    exit(-1);
+                }
+            }
+            pipex->i = 0;
+            while(pipex->paths && pipex->paths[pipex->i])
+            {
+                pipex->paths[pipex->i] = ft_strjoin2(pipex->paths[pipex->i], "/");
+                pipex->paths[pipex->i] = ft_strjoin2(pipex->paths[pipex->i], table->args[0]);
+                if(access(pipex->paths[pipex->i], F_OK) == 0)
+                {
+                    if(execve(pipex->paths[pipex->i], table->args, env) == -1)
+                    {
+                        perror("execve error");
+                        exit(-1);
+                    }
+                }
+                pipex->i++;
+            }
+            ft_error1("minishell: command not found: ", table->args[0]);
+        }
+        else
+        {
+           waitpid(pid[i], NULL, 0);
+        }
+        
+    }
+    else
+    {
+                     
+    }
     // // create child processes
     // i = 0;
     // while (i <= num_pipes) {
