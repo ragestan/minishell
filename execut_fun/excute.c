@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   excute.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:46:46 by zbentale          #+#    #+#             */
-/*   Updated: 2023/03/22 13:41:06 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/22 13:54:36 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *en
      int pipes[num_pipes][2];
      pid_t pid[count(table)];
      int i = 0;
-     int j = 0;
+    // int j = 0;
     
     // create pipes
     i = 0;

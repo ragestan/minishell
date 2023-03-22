@@ -241,18 +241,18 @@ void printnodeExport(envp *str)
         st = st->next;
     }  
 }
-// void printnodeenv(envp *str)
-// {
-//     envp *st;
-//     st = str;
-//     while(st)
-//     {
-//         if(st->option == 1)
-//         printf("%s\n",st->str);
-//         st = st->next;
-//     }  
-//     //print the last lint in the original env
-// }
+void printnodeenv(envp *str)
+{
+    envp *st;
+    st = str;
+    while(st)
+    {
+        if(st->option == 1)
+        printf("%s\n",st->str);
+        st = st->next;
+    }  
+    //print the last lint in the original env
+}
 
 void	make_node(envp **st, char *str)
 {

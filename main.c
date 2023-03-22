@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/21 20:19:36 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/22 16:54:12 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -487,7 +487,146 @@ int count(t_Command_Table3 *table)
     return (i);
 }
 
-t_Command_Table3 *ft_all(void)
+int	ft_is_ad(char *str)
+{
+	int i;
+	char c;
+	
+	i = 0;
+	while (str[i])
+	{
+		c = str[i];
+		if ((c >= 48 && c <= 57) || (c >= 65 && c <= 90) || (c >= 97 && c <= 122) ||(c >= 65 && c <= 90) || (c >= 97 && c <= 122) || (c == '_'))
+			i++;
+		else
+			return (i);
+	}
+	return (i);
+}
+
+
+int	ft_strcmpedit2( char *s1,  char *s2 ,size_t j)
+{
+	size_t	i;
+
+	i = 0;
+    //printf("s1 : %s s2: %s \n ",s1,s2);
+	while ((s1[i] != '='  || s2[i] != '=' )&& (s1[i] != '\0' || s2[i] != '\0')&&(s1[i] != '=' || s2[i] != '\0')&&(s1[i] != '\0' || s2[i] != '=') && i < j)
+	{
+		if (s1[i] != s2[i])
+		{
+			return ((unsigned char )s1[i] - (unsigned char )s2[i]);
+		}
+		i++;
+	}
+	if (s2[i] == '=')
+		return  0;
+	return -1;
+}
+
+
+int	ft_env_count(char *arg,envp *env)
+{
+	int i;
+	int j;
+	char *new;
+	envp *tmp;
+
+	i = 0;
+	j = 0;
+	while (arg[i])
+	{
+		tmp = env;
+		if (arg[i] == '$')
+		{
+			while(tmp)
+			{
+				if(ft_strcmpedit2(arg + i + 1,tmp->str,ft_is_ad(arg + i +1)) == 0)
+				{
+					new = ft_strplusequal(tmp->str,0);
+					j = j + ft_strlen3(new);
+					free(new);
+					i++;
+					while(arg[i] && arg[i] != ' ' && arg[i] != '\t' && arg[i] != '\n'&& arg[i] != '$')
+						i++;
+					i--;
+					j--;
+					break;
+				}
+				tmp= tmp->next;
+			}
+		}
+		i++;
+		j++;
+	}
+	return (j);
+}
+
+char *ft_en(char *arg,envp *env)
+{
+	int i;
+	int j;
+	int k;
+	int z;
+	envp *tmp;
+	char *new2;
+	char *new;
+
+	new = malloc(sizeof(char) * ft_env_count(arg,env) + 1);
+	i = 0;
+	j = 0;
+	k = 0;
+	z = 0;
+	while (arg[i])
+	{
+		tmp = env;
+		
+		if (arg[i] == '$')
+		{
+			while(tmp)
+			{
+				if(ft_strcmpedit2(arg + i + 1,tmp->str,ft_is_ad(arg + i +1)) == 0)
+				{
+					z = ft_is_ad(arg + i +1);
+					new2 = ft_strplusequal(tmp->str,0);
+					while (new2[k])
+					{
+						new[j++] = new2[k++];
+					}
+					free(new2);
+					i++;
+					k = 0;
+					while(arg[i] && k < z)
+					{
+						k++;
+						i++;
+					}
+					break;
+				}
+				tmp= tmp->next;
+			}
+		}
+		new[j++] = arg[i++];
+	}
+	new[j] = '\0';
+	free(arg);
+	return (new);
+}
+
+t_Command_Table	*ft_var(t_Command_Table *table,envp *env)
+{
+	t_Command_Table *tmp;
+
+	tmp = table;
+	while (tmp)
+	{
+		tmp->arg = ft_en(tmp->arg,env);
+		tmp = tmp->next;
+	}
+	return (table);
+}
+
+t_Command_Table3 *ft_all(envp *env)
 {
     	char *new;
 	char **split;
@@ -496,6 +635,7 @@ t_Command_Table3 *ft_all(void)
 	t_Command_Table *table;
 	t_Command_Table2 w;
     t_Command_Table3 *last_table;
+	(void)env;
    
     k = 0;
     i = 0;
@@ -512,9 +652,10 @@ t_Command_Table3 *ft_all(void)
 		split = ft_split(new, 12);
 		w = ft_init();
 		while (split[i])
-			i = ft_make(&table, split,&w); 
-        while(table)
-			last_table = ft_make_last(&table,last_table, &k);
+			i = ft_make(&table, split,&w);
+		table = ft_var(table,env);
+    while(table)
+		last_table = ft_make_last(&table,last_table, &k);
         free(new);
     ft_free(split);
     freestack(&table);
@@ -550,13 +691,14 @@ int	main(int argc,char **argv,char **env)
 		make_node(&env1, env[r]);
 		r--;
 	}
-    //export(&env1,NULL);
+    
 	(signal(SIGINT, sigint_handler),signal(SIGQUIT, sigint));
 	while (1)
 	{
-		last_table = ft_all();
+		last_table = ft_all(env1);
         if (last_table == NULL)
             continue;
+		//printlinkdlist(last_table);
        shell_with_pipes(last_table,env,&pipex,env1);
        // execve("/usr/bin/make", last_table->args, NULL);
 		freestack_3(&last_table);  

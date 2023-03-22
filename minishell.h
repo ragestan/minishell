@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/22 13:37:44 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/22 15:15:08 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,10 @@ char	*ft_strdupZ(const char *s1);
 void	ft_putchar_fd(char c, int fd);
 void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *envp1);
 char	*ft_strjoin2(char *s1, char const *s2);
+void printnodeenv(envp *str);
 char *ft_strplusequal(char *str,int k);
 int	ft_strcmpedit( char *s1,  char *s2);
+void 	printlinkdlist(t_Command_Table3 *table);
 //------------------------------------zbentalh---------------------------------------
 void	ft_lstadd_back1(t_Command_Table **lst,
 					t_Command_Table *new);
