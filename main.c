@@ -6,7 +6,7 @@
 /*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/22 17:58:53 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/03/22 18:42:39 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -606,11 +606,16 @@ char *ft_en(char *arg,envp *env)
 				}
 				tmp= tmp->next;
 			}
-			if (z == 0 && arg[i + 1] != '\0' && arg[i + 1] != ' ' && arg[i + 1] != '\t' && arg[i + 1] != '\n')
+			if (z == 0 && arg[i + 1] != '\0' && arg[i + 1] != ' ' && arg[i + 1] != '\t' && arg[i + 1] != '\n' && arg[i + 1] != '$')
 			{
 					while (arg[i] && arg[i] != ' ' && arg[i] != '\t' && arg[i] != '\n')
 						i++;
-			}		
+			}
+			else if(z == 0 && arg[i + 1] == '$')
+			{
+				new[j++] = arg[i++];
+				new[j++] = arg[i++];
+			}	
 		}
 		if (arg[i] && arg[i] != '$')
 			new[j++] = arg[i++];
