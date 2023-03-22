@@ -6,7 +6,7 @@
 /*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 14:52:26 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/21 17:17:35 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/03/22 23:40:06 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,7 @@ int	ft_make(t_Command_Table **a, char **new, t_Command_Table2 *w)
 
 	next = ft_lst(new, &w->i, w);
 	if (next == NULL)
-    { 
+    {
 		return (w->i);
     }
 	if (w->k != 0)

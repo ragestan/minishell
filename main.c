@@ -6,7 +6,7 @@
 /*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/22 23:27:37 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/03/22 23:41:19 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -657,6 +657,7 @@ t_Command_Table3 *ft_all(envp *env)
    
     k = 0;
     i = 0;
+	table = NULL;
 		new = readline("minishell$ ");
 		if (!new)
 			exit(0);
@@ -667,13 +668,23 @@ t_Command_Table3 *ft_all(envp *env)
             return (NULL);
         }
 		new = new_new(new);
+		
 		split = ft_split(new, 12);
 		w = ft_init();
 		while (split[i])
 			i = ft_make(&table, split,&w);
+		if (table == NULL)
+		{
+			free(new);
+			ft_free(split);
+			return (NULL);
+		}
 		table = ft_var(table,env);
+		
     while(table)
 		last_table = ft_make_last(&table,last_table, &k);
+	
+	
         free(new);
     ft_free(split);
     freestack(&table);
