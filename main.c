@@ -6,7 +6,7 @@
 /*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/22 17:29:23 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/03/22 17:58:53 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -556,8 +556,8 @@ int	ft_env_count(char *arg,envp *env)
 				tmp= tmp->next;
 			}
 		}
-		i++;
-		j++;
+			i++;
+			j++;
 	}
 	return (j);
 }
@@ -576,13 +576,14 @@ char *ft_en(char *arg,envp *env)
 	i = 0;
 	j = 0;
 	k = 0;
-	z = 0;
 	while (arg[i])
 	{
 		tmp = env;
 		
 		if (arg[i] == '$')
 		{
+			k = 0;
+			z = 0;
 			while(tmp)
 			{
 				if(ft_strcmpedit2(arg + i + 1,tmp->str,ft_is_ad(arg + i +1)) == 0)
@@ -605,6 +606,11 @@ char *ft_en(char *arg,envp *env)
 				}
 				tmp= tmp->next;
 			}
+			if (z == 0 && arg[i + 1] != '\0' && arg[i + 1] != ' ' && arg[i + 1] != '\t' && arg[i + 1] != '\n')
+			{
+					while (arg[i] && arg[i] != ' ' && arg[i] != '\t' && arg[i] != '\n')
+						i++;
+			}		
 		}
 		if (arg[i] && arg[i] != '$')
 			new[j++] = arg[i++];
