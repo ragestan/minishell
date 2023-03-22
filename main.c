@@ -6,7 +6,7 @@
 /*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/22 16:54:12 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/03/22 17:29:23 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -606,7 +606,8 @@ char *ft_en(char *arg,envp *env)
 				tmp= tmp->next;
 			}
 		}
-		new[j++] = arg[i++];
+		if (arg[i] && arg[i] != '$')
+			new[j++] = arg[i++];
 	}
 	new[j] = '\0';
 	free(arg);
