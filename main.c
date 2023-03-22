@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/22 23:16:29 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/22 23:22:13 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -632,7 +632,10 @@ t_Command_Table	*ft_var(t_Command_Table *table,envp *env)
 	tmp = table;
 	while (tmp)
 	{
-		tmp->arg = ft_en(tmp->arg,env);
+		if (tmp->arg == NULL)
+			tmp->arg = NULL;
+		else
+			tmp->arg = ft_en(tmp->arg,env);
 		tmp = tmp->next;
 	}
 	return (table);
