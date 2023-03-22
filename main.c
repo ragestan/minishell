@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/22 18:42:39 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/03/22 23:16:29 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -709,7 +709,7 @@ int	main(int argc,char **argv,char **env)
 	{
 		last_table = ft_all(env1);
         if (last_table == NULL)
-            continue;
+            continue; 
 		//printlinkdlist(last_table);
        shell_with_pipes(last_table,env,&pipex,env1);
        // execve("/usr/bin/make", last_table->args, NULL);
