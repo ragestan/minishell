@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:46:46 by zbentale          #+#    #+#             */
-/*   Updated: 2023/03/21 21:15:06 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/22 13:41:06 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *en
      int pipes[num_pipes][2];
      pid_t pid[count(table)];
      int i = 0;
+     int j = 0;
     
     // create pipes
     i = 0;
@@ -101,6 +102,11 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *en
         }
         else if(pid[i] == 0)
         {
+            //write in a file
+            if(table->outfile != -2 && table->outfile != -1)
+            {
+                dup2(table->outfile, STDOUT_FILENO);
+            }
             if (access(table->args[0], F_OK) == 0)
             {
                 if(execve(table->args[0], table->args, env) == -1)
@@ -132,18 +138,23 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *en
         }
         
     }
-    else
-    {
+    //multiple pipes
+    // else
+    // {
                      
-    }
-    // // create child processes
+    
+    // // // create child processes
     // i = 0;
-    // while (i <= num_pipes) {
+    // while (i <= num_pipes) 
+    // {
     //     pid[i] = fork();
-    //     if (pid[i] < 0) {
+    //     if (pid[i] < 0) 
+    //     {
     //         perror("fork error");
     //         exit(-1);
-    //     } else if (pid[i] == 0) {
+    //     } 
+    //     else if (pid[i] == 0) 
+    //     {
     //         // child process
     //         if (i == 0) {
     //             // first child process
@@ -159,20 +170,24 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *en
     //                 j++;
     //             }
                 
-    //         } else if (i == num_pipes) {
+    //         } 
+    //         else if (i == num_pipes) 
+    //         {
     //             // last child process
     //             // redirect stdin to the last pipe
-    //             dup2(pipes[num_pipes-1][0], STDIN_FILENO);
+    //             dup2(pipes[num_pipes][0], STDIN_FILENO);
     //             // close all pipes except the last one
     //             j = 0;
     //             while (j < num_pipes) {
-    //                 if (j != num_pipes-1) {
+    //                 if (j != num_pipes) {
     //                     close(pipes[j][0]);
     //                     close(pipes[j][1]);
     //                 }
     //                 j++;
     //             }
-    //         } else {
+    //         } 
+    //         else 
+    //         {
     //             // intermediate child processes
     //             // redirect stdin to the previous pipe
     //             dup2(pipes[i-1][0], STDIN_FILENO);
@@ -189,42 +204,35 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *en
     //             }
     //         }
     //         // execute command
-    //         // char *cmd_args[MAX_ARGS];
-    //         // j = 0;
-    //         // while (j < MAX_ARGS) {
-    //         //     cmd_args[j] = NULL;
-    //         //     j++;
-    //         // }
-    //         // j = 0;
-    //         // while (j < 2) {
-    //         //     cmd_args[j] = args[i*2+j];
-    //         //     j++;
-    //         // }
+    //            if(table->outfile != -2 && table->outfile != -1)
+    //         {
+    //             dup2(table->outfile, STDOUT_FILENO);
+    //         }
+    //         if (access(table->args[0], F_OK) == 0)
+    //         {
+    //             if(execve(table->args[0], table->args, env) == -1)
+    //             {
+    //                 perror("execve error");
+    //                 exit(-1);
+    //             }
+    //         }
     //         pipex->i = 0;
-    //         pipex->cmd = ft_split(argv[3], ' ');
-	//         if (access(pipex->cmd[0], F_OK) == 0)
-	//         {
-	// 	        if (execve(pipex->cmd[0], pipex->cmd, envp) == -1)
-	// 		    ft_perror("ERROR");
-	//         }
-	//         while (pipex->paths && pipex->paths[pipex->i])
-	//         {
-	// 	        pipex->paths[pipex->i] = ft_strjoin(pipex->paths[pipex->i], "/");
-	// 	        pipex->paths[pipex->i] = ft_strjoin(pipex->paths[pipex->i], pipex->cmd[0]);
-
-	// 	    if (access(pipex->paths[pipex->i], F_OK) == 0)
-	// 	    {
-    //             printf("pipex->paths[pipex->i] = %s\n", pipex->paths[pipex->i]);
-    //             printf("pipex->cmd[0] = %s\n", pipex->cmd[0]);
-	// 		    if (execve(pipex->paths[pipex->i], pipex->cmd, envp) == -1)
-	// 			ft_perror("ERROR");
-	// 	    }
-	// 	    pipex->i++;
-	//         }
-    //         // if (execve(cmd_args[0], cmd_args, envp) < 0) {
-    //         //     perror("execve error");
-    //         //     exit(-1);
-    //         // }
+    //         while(pipex->paths && pipex->paths[pipex->i])
+    //         {
+    //             pipex->paths[pipex->i] = ft_strjoin2(pipex->paths[pipex->i], "/");
+    //             pipex->paths[pipex->i] = ft_strjoin2(pipex->paths[pipex->i], table->args[0]);
+    //             if(access(pipex->paths[pipex->i], F_OK) == 0)
+    //             {
+    //                 if(execve(pipex->paths[pipex->i], table->args, env) == -1)
+    //                 {
+    //                     perror("execve error");
+    //                     exit(-1);
+    //                 }
+    //             }
+    //             pipex->i++;
+    //         }
+    //         ft_error1("minishell: command not found: ", table->args[0]);
+            
     //         exit(0);
     //     }
     //     i++;
@@ -243,5 +251,6 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *en
     //    while (i <= num_pipes) {
     //     waitpid(pid[i], NULL, 0);
     //     i++;
+    // }
     // }
 }
