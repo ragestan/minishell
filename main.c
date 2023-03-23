@@ -6,7 +6,7 @@
 /*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/22 23:41:19 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/03/23 17:29:34 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -646,7 +646,7 @@ t_Command_Table	*ft_var(t_Command_Table *table,envp *env)
 
 t_Command_Table3 *ft_all(envp *env)
 {
-    	char *new;
+    char *new;
 	char **split;
 	int i;
 	int k;
@@ -660,7 +660,7 @@ t_Command_Table3 *ft_all(envp *env)
 	table = NULL;
 		new = readline("minishell$ ");
 		if (!new)
-			exit(0);
+			(write(1,"exit\n",5),exit(0));
 		add_history(new);
 		if (check_all(new) == -1)
         {
