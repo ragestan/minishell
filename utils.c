@@ -6,7 +6,7 @@
 /*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 14:52:26 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/22 23:40:06 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/03/23 19:37:14 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -325,7 +325,7 @@ int	last_outfile(t_Command_Table *table)
 		{
 			if (fd != -2)
 				close(fd);
-			fd = open(table->arg, O_WRONLY | O_CREAT, 0644);
+			fd = open(table->arg, O_RDWR| O_CREAT | O_APPEND, 0644);
 			if (fd == -1)
 			{
 				write(2, "minishell: ", 11);
@@ -337,7 +337,7 @@ int	last_outfile(t_Command_Table *table)
 		{
 			if (fd != -2)
 				close(fd);
-			fd = open(table->arg, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			fd = open(table->arg, O_WRONLY | O_RDONLY | O_CREAT | O_TRUNC, 0644);
 			if (fd == -1)
 			{
 				write(2, "minishell: ", 11);
