@@ -160,6 +160,7 @@ envp	*ft_lstnew(char *content,int option)
 	new = (envp *)malloc(sizeof(envp));
 	if (new == NULL)
 		return (NULL);
+        
 	new->str = content;
     new->option = option;
     new->free = 0;
@@ -365,17 +366,16 @@ char	*ft_strdupedit(const char *s1)
 }
 void export(envp **env1 ,char *str)
 {
-   
     int error = 0;
     int x = 0;
     char *stredit;
     int b = 0;
-    static int i = 0;
-    if(i == 0)
-    {
-       sort_list(*env1,ft_strcmp);
-        i++;
-    }
+    // static int i = 0;
+    // if(i == 0)
+    // {
+    //    sort_list(*env1,ft_strcmp);
+    //     i++;
+    // }
     
     if(str == NULL)
         printnodeExport(*env1);
@@ -392,14 +392,18 @@ void export(envp **env1 ,char *str)
 
              if ((ft_strserarch(str,'=') == 1) &&  (ft_strnstredit(str) == 0) &&  x == 0)
             {
-      
+               
                     if(updateenv(*env1,str,0) == 1)
                      {
                          printf("update :%s\n",str);
                          //updt  export data
                      }
-                         else
-                            ft_lstadd_back(env1,ft_lstnew(str,1));
+                    else
+                    {
+                        printf("babas\n");
+                        ft_lstadd_back(env1,ft_lstnew(str,1));
+                    }
+                            
             }
             else if ((ft_strserarch(str,'=') == 1) && (ft_strnstredit(str) == 1) && x == 0)
             {
@@ -445,7 +449,7 @@ void export(envp **env1 ,char *str)
 // {
 //     (void)argc;
 //     (void)argv;
-//     t_pipex pipex;
+    
 //      printf("/-----------------------------\n");
 //     //add OLDPWD
 //     int i = 0;
@@ -460,57 +464,59 @@ void export(envp **env1 ,char *str)
 // 		make_node(&env1, env[i]);
 // 		i--;
 // 	}
-//    // export(&env1,"OLDPWD");
-//     //sort_list(env1,ft_strcmp);
-//     //envv(env1);
-//     // export(&env1,"alom");
-//     //export(&env1,"testb=zaka"); 
-//     // export(&env1,"rrr");
-//     //  printf("/-----------------------------\n");
-//     // export(&env1,"test=mbarki");
-//     //  printf("/-----------------------------\n");
+// //    // export(&env1,"OLDPWD");
+// //     //sort_list(env1,ft_strcmp);
+// //     //envv(env1);
+// //     // export(&env1,"alom");
+// //     //export(&env1,"testb=zaka"); 
+// //     // export(&env1,"rrr");
+// //     //  printf("/-----------------------------\n");
+// //     // export(&env1,"test=mbarki");
+// //     //  printf("/-----------------------------\n");
     
     
-//     // printf("%d\n",ft_strcmpedit("alom","alom=poink"));
-//     // export(&env1,"gg=zak");
-//     //  export(&env1,"alom=zaka");
-//     //  export(&env1,"alom=zakba");
-//     // export(&env1,"alom+=bb");
-//     export(&env1,NULL);
-//     //  export(&env1,"gg+=lmkj");
-//     printf("/-----------------------------\n");
-//     pathfinder(&pipex,env1);
-//     printf("%s\n",pipex.paths[0]);
-//     //  export(&env1,"gg+=www");
-//     //  export(&env1,"gg+=bbb");
-//     //   export(&env1,"alom+=zakbac");
-//     //  export(&env1,"alom+=zakbag");
-//     //  export(&env1,"alom+=zzz");
-//     //  export(&env1,"alom+=zzz");
-//     //  export(&env1,"alom+=zzz");
-//     //ft_cd(&env1,"kr[ohk]");
-//     //unset(&env1,"Apple_PubSub_Socket_Render");
-//     //export(&env1,NULL,0);
-//     //printf("/-----------------------------\n");
-//     //export(&env1,NULL,0);
-//     //ft_cd(&env1,NULL);
-//     // ft_pwd();
-//      //printf("/-----------------------------\n");
-//     //export(&env1,NULL,0);
-//      //ft_cd(&env1,"/bin");
-//      //printf("/-----------------------------\n");
-//     //export(&env1,NULL,0);
-//      //printf("/-----------------------------\n");
-//      //ft_cd(&env1,"/home");
-//      //printf("/3\n");
-//      //export(&env1,NULL,0);
-//      //ft_cd(&env1,"-");
-//     //ft_pwd();
-//      //printf("/-----------------------------\n");
-//     //echo("-nnnnnnnnnnnn","$HOME");
-//      //export(&env1,NULL);
-//     //system("leaks minishell");
-//     // printnodeenv(env1);
+// //     // printf("%d\n",ft_strcmpedit("alom","alom=poink"));
+// //     // export(&env1,"gg=zak");
+// //     //  export(&env1,"alom=zaka");
+// //     //  export(&env1,"alom=zakba");
+// //     // export(&env1,"alom+=bb");
+//      export(&env1,NULL);
+//  export(&env1,"gg=lmkj");
+//  export(&env1,"gg=lmkj");
+//  export(&env1,"gg=lmkj");
+//      printf("/-----------------------------\n");
+// //     pathfinder(&pipex,env1);
+// //     printf("%s\n",pipex.paths[0]);
+// //     //  export(&env1,"gg+=www");
+// //     //  export(&env1,"gg+=bbb");
+// //     //   export(&env1,"alom+=zakbac");
+// //     //  export(&env1,"alom+=zakbag");
+// //     //  export(&env1,"alom+=zzz");
+// //     //  export(&env1,"alom+=zzz");
+// //     //  export(&env1,"alom+=zzz");
+// //     //ft_cd(&env1,"kr[ohk]");
+// //     //unset(&env1,"Apple_PubSub_Socket_Render");
+// export(&env1,NULL);
+// //     //printf("/-----------------------------\n");
+// //     //export(&env1,NULL,0);
+// //     //ft_cd(&env1,NULL);
+// //     // ft_pwd();
+// //      //printf("/-----------------------------\n");
+// //     //export(&env1,NULL,0);
+// //      //ft_cd(&env1,"/bin");
+// //      //printf("/-----------------------------\n");
+// //     //export(&env1,NULL,0);
+// //      //printf("/-----------------------------\n");
+// //      //ft_cd(&env1,"/home");
+// //      //printf("/3\n");
+// //      //export(&env1,NULL,0);
+// //      //ft_cd(&env1,"-");
+// //     //ft_pwd();
+// //      //printf("/-----------------------------\n");
+// //     //echo("-nnnnnnnnnnnn","$HOME");
+// //      //export(&env1,NULL);
+// //     //system("leaks minishell");
+// //     // printnodeenv(env1);
 // }
 //update value of export and if its valid make the option 1
 //if you want to update the value of a valide varibale dont update it;

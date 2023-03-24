@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 11:33:21 by zbentale          #+#    #+#             */
-/*   Updated: 2023/03/21 11:33:22 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/24 20:54:39 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,12 @@ int echo_option_check(char *option)
 }
 void echo(char *option,char *str)
 {
-    
     if(option == NULL)
     {
         printf("%s\n",str);
         return;
     }
-    if(echo_option_check(option) == 0)
+    else if(echo_option_check(option) == 0)
     {
         printf("%s %s\n",option,str);
         return;

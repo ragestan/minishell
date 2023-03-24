@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/23 17:29:34 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/03/24 23:33:07 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -727,7 +727,7 @@ int	main(int argc,char **argv,char **env)
 		last_table = ft_all(env1);
         if (last_table == NULL)
             continue; 
-		//printlinkdlist(last_table);
+		printlinkdlist(last_table);
        shell_with_pipes(last_table,env,&pipex,env1);
        // execve("/usr/bin/make", last_table->args, NULL);
 		freestack_3(&last_table);  

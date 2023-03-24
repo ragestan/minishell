@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:46:46 by zbentale          #+#    #+#             */
-/*   Updated: 2023/03/24 01:46:10 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/24 23:52:22 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,68 @@ void printlinkdlist(t_Command_Table3 *str)
     }  
     //print the last lint in the original env
 }
+int	ft_test(char **str)
+{
+   
+	if (str[0][0] == 'e' && str[0][1] == 'c' && str[0][2] == 'h' && str[0][3] == 'o' && str[0][4] == '\0')
+	{
+		if (str[1] && str[1][0] && str[1][0] == '-')
+		{
+			return(1);
+		}
+	}
+	return (0);
+}
+
+
+int 	ft_collect_help(char **str,int i)
+{ 
+    
+	int j;
+	int k;
+
+	j = 0;
+	k = 0;
+	while(str[i])
+	{
+		j = 0;
+		while(str[i][j])
+		{
+			j++;
+			k++;
+		}
+		i++;
+		k++;
+	}
+	return (k);
+}
+
+//i = 1 if no option else i = 2
+char	*ft_collect(char **str,int i)
+{
+	int j;
+	int k;
+	char *str2;
+
+	j = 0;
+	k = 0;
+	str2 = malloc(sizeof(char) * ft_collect_help(str,i) + 1);
+	while(str[i])
+	{
+		j = 0;
+		while(str[i][j])
+		{
+			str2[k] = str[i][j];
+			j++;
+			k++;
+		}
+		str2[k] = ' ';
+		i++;
+		k++;
+	}
+	str2[k] = '\0';
+	return (str2);
+}
 
 void	pathfinder(t_pipex *pipex, envp *envp1)
 {
@@ -52,11 +114,14 @@ void	pathfinder(t_pipex *pipex, envp *envp1)
 		}
 		tmp = tmp->next;
 	}
-	if (tmp->str == NULL)
+    //maybe it will be a problem if PATH is in the last node
+	if (tmp == NULL)
 	{
+        
 		pipex->paths = NULL;
 		return ;
 	}
+    
 	pipex->paths = ft_split(pipex->save, ':');
 }
 void	ft_error1(char *str, char *st)
@@ -69,10 +134,10 @@ void	ft_error1(char *str, char *st)
 }
 void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *envp1) 
 {
-    (void) env;
-    (void) pipex;
+    
     //num args is the number of arguments in the command you cam get it from the table struct
     //num pipes is the number of pipes in the command you can get it from the table struct
+    
     pathfinder(pipex,envp1);
     //printlinkdlist(table);
     int num_pipes = count(table);
@@ -97,6 +162,62 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *en
     i = 0;
     if (num_pipes == 0)
     {
+        if(ft_strncmp(table->args[0], "cd", 3) == 0)
+        {
+            ft_cd(&envp1, table->args[1]);
+            return;
+        }
+        else if(ft_strncmp(table->args[0], "env", 4) == 0)
+        {
+            printf("env\n");
+            envv(envp1);
+            return;
+        }
+        else if(ft_strncmp(table->args[0], "unset", 6) == 0)
+        {
+            int i = 1;
+            printf("unset\n");
+            while (table->args[i])
+            {
+                unset(&envp1, table->args[i]);
+                i++;
+            }
+            return;  
+        }
+        else if(ft_strncmp(table->args[0], "export", 7) == 0)
+        {
+            int i = 1;
+            if(table->args[1] == NULL)
+            {
+                export(&envp1, NULL);
+                return;
+            }
+            while (table->args[i])
+            {
+
+                export(&envp1, table->args[i]);
+                //printf("-------------------\n");
+                //export(&envp1, NULL);
+                i++;
+            }
+            return;  
+        }
+        else if(ft_strncmp(table->args[0], "echo", 5) == 0)
+        {
+            if (ft_test(table->args) == 1)
+                echo(table->args[1],ft_collect(table->args,2));
+            else
+            {
+                //printf("%s------------>\n",ft_collect(table->args,1));
+                echo(NULL,ft_collect(table->args,1));
+            }
+            return;
+         }
+        // if(ft_strncmp(table->args[0], "echo", 4) == 0)
+        // {
+        //     echo(table->;
+        //     return;
+        // }
         pid[i] = fork();
         if (pid[i] < 0) {
             perror("fork error");
@@ -125,8 +246,10 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *en
             pipex->i = 0;
             while(pipex->paths && pipex->paths[pipex->i])
             {
+                printf("%p\n",pipex->paths[pipex->i]);
                 pipex->paths[pipex->i] = ft_strjoin2(pipex->paths[pipex->i], "/");
                 pipex->paths[pipex->i] = ft_strjoin2(pipex->paths[pipex->i], table->args[0]);
+                
                 if(access(pipex->paths[pipex->i], F_OK) == 0)
                 {
                     
@@ -137,6 +260,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *en
                     }
                 }
                 pipex->i++;
+                free(pipex->paths[pipex->i - 1]);
             }
             ft_error1("minishell: command not found: ", table->args[0]);
         }
