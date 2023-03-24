@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:46:46 by zbentale          #+#    #+#             */
-/*   Updated: 2023/03/22 23:16:42 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/24 01:46:10 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,13 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *en
     pathfinder(pipex,envp1);
     //printlinkdlist(table);
     int num_pipes = count(table);
-    
+     
     num_pipes--;
-     int pipes[num_pipes][2];
-     pid_t pid[count(table)];
+    int pipes[num_pipes][2];
+    int pid[count(table)];
      int i = 0;
      int j = 0;
-    
+    int r = 0;
     // create pipes
     i = 0;
     while (i < num_pipes) 
@@ -156,57 +156,13 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *en
     i = 0;
     while (i < k) 
     {
+        r = 1;
         pid[i] = fork();
         if (pid[i] < 0) 
         {
             perror("fork error");
             exit(-1);
         } 
-        // else if (pid[i] == 0) {
-        //     // child process
-        //     if (i == 0) {
-        //         // first child process
-        //         // redirect stdout to the first pipe
-        //         dup2(pipes[0][1], STDOUT_FILENO);
-        //         // close all pipes except the first one
-        //         j = 0;
-        //         while (j < num_pipes) {
-        //             if (j != 0) {
-        //                 close(pipes[j][0]);
-        //                 close(pipes[j][1]);
-        //             }
-        //             j++;
-        //         }
-                
-        //     } else if (i == num_pipes) {
-        //         // last child process
-        //         // redirect stdin to the last pipe
-        //         dup2(pipes[num_pipes-1][0], STDIN_FILENO);
-        //         // close all pipes except the last one
-        //         j = 0;
-        //         while (j < num_pipes) {
-        //             if (j != num_pipes-1) {
-        //                 close(pipes[j][0]);
-        //                 close(pipes[j][1]);
-        //             }
-        //             j++;
-        //         }
-        //     } else {
-        //         // intermediate child processes
-        //         // redirect stdin to the previous pipe
-        //         dup2(pipes[i-1][0], STDIN_FILENO);
-        //         // redirect stdout to the next pipe
-        //         dup2(pipes[i][1], STDOUT_FILENO);
-        //         // close all pipes except the previous and next ones
-        //         j = 0;
-        //         while (j < num_pipes) {
-        //             if (j != i-1 && j != i) {
-        //                 close(pipes[j][0]);
-        //                 close(pipes[j][1]);
-        //             }
-        //             j++;
-        //         }
-        //     }
         else if (pid[i] == 0) 
         {
             // child process
@@ -237,8 +193,6 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *en
                 // last child process
                 // redirect stdin to the last pipe
                 dup2(pipes[i - 1][0], 0);
-                close(pipes[i - 1][1]);
-                close(pipes[i - 1][0]);
                 // close all pipes except the last one
                 j = 0;
                 while (j < num_pipes) 
@@ -249,7 +203,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *en
                 }
                 //close(pipes[num_pipes][1]);
             }
-            else 
+            else if (i != 0)
             {
                 // intermediate child processes
                 // redirect stdin to the previous pipe
@@ -307,52 +261,44 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *en
         {
             if (i == 0)
             {
-                // int l = 0;
-                // while ( l < num_pipes)
-                // {
-                //     /* code */
-                //     close(pipes[l][0]);
-                //     close(pipes[l][1]);
-                //     l++;
-                // }
-                
-                
                 close(pipes[i][1]);
-                
             }
             else if (i == num_pipes)
             {
-                write(2, "last child process\n", 19);
                 close(pipes[i - 1][0]);
                 close(pipes[i - 1][1]);
                 
             }
             else
             {
-                close(pipes[i - 1][1]);
-                close(pipes[i - 1][0]);
                 close(pipes[i][1]);
+                close(pipes[i - 1][0]);
+                close(pipes[i - 1][1]);
             }
-             int status;
-        //     // parent process
-        //     // close all pipes
-            // ft_putstr_fd("parent process id = ", 2);
-            // ft_putnbr_fd(num_pipes, 2);
-            // ft_putstr_fd("\n", 2);
-            waitpid(pid[num_pipes], &status, 0);
-            
-            j = 0;
-           while (j < num_pipes) 
-           {
-            waitpid(pid[j], NULL, 0);
-            j++;
-           }
            table = table->next;
+           
             i++;
         }
-        
     }
-}  
+    
+        if(r)
+        {
+            int status;
+            waitpid(pid[num_pipes], &status, 0);
+            int j = 0;
+            while (j < num_pipes)
+            {
+                close(pipes[j][0]);
+                close(pipes[j][1]);
+                j++;
+            }
+            j = 0;
+           while (j < num_pipes) 
+            waitpid(pid[j++], NULL, 0);
+            
+        }
+    
+} 
     // parent process
     // close all pipes
     // i = 0;
