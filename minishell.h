@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/22 17:52:36 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/03/25 15:03:30 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+#include <signal.h>
+#include <sys/wait.h>
 
 typedef struct a_Cammand_Table3
 {
@@ -91,7 +93,7 @@ char	*ft_strjoin(char *s1, char *s2,int count);
 void	make_node(envp **st, char *str);
 char	*ft_strdupZ(const char *s1);
 void	ft_putchar_fd(char c, int fd);
-void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *envp1);
+void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **envp1);
 char	*ft_strjoin2(char *s1, char const *s2);
 void printnodeenv(envp *str);
 char *ft_strplusequal(char *str,int k);

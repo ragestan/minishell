@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:46:46 by zbentale          #+#    #+#             */
-/*   Updated: 2023/03/24 23:52:22 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/25 00:41:52 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,13 +132,14 @@ void	ft_error1(char *str, char *st)
 	write(2, "\n", 1);
 	exit(127);
 }
-void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *envp1) 
+void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **envp1) 
 {
     
     //num args is the number of arguments in the command you cam get it from the table struct
     //num pipes is the number of pipes in the command you can get it from the table struct
     
-    pathfinder(pipex,envp1);
+    pipex->paths = NULL;
+    pathfinder(pipex,*envp1);
     //printlinkdlist(table);
     int num_pipes = count(table);
      
@@ -164,13 +165,13 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *en
     {
         if(ft_strncmp(table->args[0], "cd", 3) == 0)
         {
-            ft_cd(&envp1, table->args[1]);
+            ft_cd(envp1, table->args[1]);
             return;
         }
         else if(ft_strncmp(table->args[0], "env", 4) == 0)
         {
             printf("env\n");
-            envv(envp1);
+            envv(*envp1);
             return;
         }
         else if(ft_strncmp(table->args[0], "unset", 6) == 0)
@@ -179,7 +180,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *en
             printf("unset\n");
             while (table->args[i])
             {
-                unset(&envp1, table->args[i]);
+                unset(envp1, table->args[i]);
                 i++;
             }
             return;  
@@ -189,16 +190,18 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *en
             int i = 1;
             if(table->args[1] == NULL)
             {
-                export(&envp1, NULL);
+               
+                export(envp1, NULL);
                 return;
             }
-            while (table->args[i])
-            {
-
-                export(&envp1, table->args[i]);
+            else{
+                while (table->args[i])
+                {
+                    export(envp1, table->args[i]);
+                    i++;
+                }
                 //printf("-------------------\n");
                 //export(&envp1, NULL);
-                i++;
             }
             return;  
         }
@@ -246,7 +249,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp *en
             pipex->i = 0;
             while(pipex->paths && pipex->paths[pipex->i])
             {
-                printf("%p\n",pipex->paths[pipex->i]);
+               
                 pipex->paths[pipex->i] = ft_strjoin2(pipex->paths[pipex->i], "/");
                 pipex->paths[pipex->i] = ft_strjoin2(pipex->paths[pipex->i], table->args[0]);
                 

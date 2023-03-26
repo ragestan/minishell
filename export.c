@@ -143,7 +143,6 @@ int updateenv(envp *env,char *str,int b)
             }
             else
                 ptr = ft_strplusequal(str,0);
-            printf("-----------%s\n", ptr);
             st->str = ft_strjoin(st->str,ptr,st->free);
             st->free = 1;
             return 1;
@@ -161,7 +160,7 @@ envp	*ft_lstnew(char *content,int option)
 	if (new == NULL)
 		return (NULL);
         
-	new->str = content;
+	new->str = ft_strdupZ(content);
     new->option = option;
     new->free = 0;
 	new->next = NULL;
@@ -222,10 +221,10 @@ void	ft_putstredit(char *s)
 	}
     write(1, "\"", 1);
 }
-void printnodeExport(envp *str)
+void printnodeExport(envp *stp)
 {
     envp *st;
-    st = str;
+    st = stp;
     while(st)
     {
         ft_putstr_fd("declare -x ",1);
@@ -239,6 +238,7 @@ void printnodeExport(envp *str)
          ft_putstr_fd("  | ",1);
         ft_putnbr_fd(st->option,1);
         printf("\n");
+        // printf("%s\n",st->str);
         st = st->next;
     }  
 }
@@ -368,7 +368,7 @@ void export(envp **env1 ,char *str)
 {
     int error = 0;
     int x = 0;
-    char *stredit;
+    char *stredit  = NULL;
     int b = 0;
     // static int i = 0;
     // if(i == 0)
@@ -378,8 +378,9 @@ void export(envp **env1 ,char *str)
     // }
     
     if(str == NULL)
+    {
         printnodeExport(*env1);
-   
+    }
     else
     {
         x = valideinput(str);
@@ -402,6 +403,7 @@ void export(envp **env1 ,char *str)
                     {
                         printf("babas\n");
                         ft_lstadd_back(env1,ft_lstnew(str,1));
+                    
                     }
                             
             }

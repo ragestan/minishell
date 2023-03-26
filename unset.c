@@ -17,15 +17,17 @@ int	ft_strncmp1(const char *s1, const char *s2)
 		i++;
 	}
     i = 0;
-    while(s1[i] != '=')
+    while(s1[i] != '\0' && s1[i] != '=')
     i++;
      if(i == ft_strlen3(s2))
 	    return (0);
     else
         return 1;
+
 }
 //------------------------------------------
-void deleteNode(envp** head, char* str) {
+void deleteNode(envp** head, char* str) 
+{
     // If the list is empty
     if (*head == NULL) {
         return;
@@ -75,6 +77,7 @@ int  unset(envp **env1,char *str)
         return 1;
     }
     deleteNode(env1,str);
+    //export(env1,NULL);
     return 0;
 }
 

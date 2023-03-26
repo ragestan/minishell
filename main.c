@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/24 23:33:07 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/26 15:31:26 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -728,9 +728,15 @@ int	main(int argc,char **argv,char **env)
         if (last_table == NULL)
             continue; 
 		printlinkdlist(last_table);
-       shell_with_pipes(last_table,env,&pipex,env1);
+        if(last_table->args[0] != NULL && last_table->infile != -1 && last_table->outfile != -1)
+        {
+            shell_with_pipes(last_table,env,&pipex,&env1);
+            ft_free(pipex.paths);
+        }
+        
        // execve("/usr/bin/make", last_table->args, NULL);
-		freestack_3(&last_table);  
+       
+		//freestack_3(&last_table);  
 		
 	}
 }
