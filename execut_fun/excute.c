@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:46:46 by zbentale          #+#    #+#             */
-/*   Updated: 2023/03/25 00:41:52 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/27 00:23:11 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,10 +232,14 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
             if(table->outfile != -2 && table->outfile != -1)
             {
                 dup2(table->outfile, STDOUT_FILENO);
+                close(table->outfile);
+               // close(table->infile);
             }
             if(table->infile != -2 && table->infile != -1)
             {
                 dup2(table->infile, STDIN_FILENO);
+                close(table->infile);
+                //close(table->outfile);
             }
             if ((table->args[0][0] == '.' || table->args[0][0] == '/') && access(table->args[0], F_OK) == 0)
             {
@@ -270,6 +274,8 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
         else
         {
            waitpid(pid[i], NULL, 0);
+           close(table->outfile);
+            close(table->infile);
         }
         
     }
@@ -350,10 +356,12 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
             if(table->outfile != -2 && table->outfile != -1)
             {
                 dup2(table->outfile, STDOUT_FILENO);
+                //close(table->outfile);
             }
             if(table->infile != -2 && table->infile != -1)
             {
                 dup2(table->infile, STDIN_FILENO);
+                //close(table->infile);
             }
             if ((table->args[0][0] == '.' || table->args[0][0] == '/') && access(table->args[0], F_OK) == 0)
             {
@@ -402,6 +410,8 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
                 close(pipes[i - 1][0]);
                 close(pipes[i - 1][1]);
             }
+            close(table->outfile);
+            close(table->infile);
            table = table->next;
            
             i++;
@@ -419,6 +429,8 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
                 close(pipes[j][1]);
                 j++;
             }
+            //close(table->outfile);
+            //close(table->infile);
             j = 0;
            while (j < num_pipes) 
             waitpid(pid[j++], NULL, 0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 14:52:26 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/23 19:37:14 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/03/26 22:40:27 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -315,11 +315,13 @@ int	last_outfile(t_Command_Table *table)
 			break ;
 		if (table->index == 0)
 		{
-			if (i != -2)
-				close(i);
+			// if (i != -2)
+			// 	close(i);
 			i = open(table->arg, O_RDONLY);
 			if (i == -1)
 				return (-1);
+            close(i);
+            
 		}
 		if (table->index == 4)
 		{
