@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/27 00:08:24 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/27 01:52:49 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -606,19 +606,41 @@ char *ft_en(char *arg,envp *env)
 				}
 				tmp= tmp->next;
 			}
-			if (z == 0 && arg[i + 1] != '\0' && arg[i + 1] != ' ' && arg[i + 1] != '\t' && arg[i + 1] != '\n' && arg[i + 1] != '$')
+			if (arg[i] == '$' && arg[i + 1] == '\0')
+				new[j++] = arg[i++];
+			else if (arg[i] == '$' && arg[i + 1] == '$')
 			{
-					while (arg[i] && arg[i] != ' ' && arg[i] != '\t' && arg[i] != '\n')
+				i = i + 2;
+				continue;
+			}
+			else if ((arg[i] == '$' && arg[i + 1] == '+' ) || (arg[i] == '$' && arg[i + 1] == '.') || (arg[i] == '$' && arg[i + 1] == ','))
+			{
+				new[j++] = arg[i++];
+				new[j++] = arg[i++];
+			}
+			else if (z == 0 && arg[i] != '$' && arg[i + 1] != '\0' && arg[i + 1] != ' ' && arg[i + 1] != '\t' && arg[i + 1] != '\n' && arg[i + 1] != '$')
+			{
+					while (arg[i] && arg[i] != ' ' && arg[i] != '\t' && arg[i] != '\n' && arg[i] != '$')
 						i++;
 			}
-			else if(z == 0 && arg[i + 1] == '$')
+			else if(z == 0 && arg[i] == '$')
 			{
-				new[j++] = arg[i++];
-				new[j++] = arg[i++];
-			}	
+				i++;
+				while (arg[i] && arg[i] != ' ' && arg[i] != '\t' && arg[i] != '\n' && arg[i] != '$')
+					i++;
+			}
 		}
+		
 		if (arg[i] && arg[i] != '$')
 			new[j++] = arg[i++];
+		else if (arg[i] && arg[i] == '$' && arg[i + 1] == '$')
+			new[j++] = arg[i++];
+		else if (arg[i] && arg[i] == '$' && arg[i + 1] == '\0')
+			new[j++] = arg[i++];
+		else if(arg[i] && arg[i] == '$' && arg[i + 1] != '\0' )
+			continue;
+		else
+			break;
 	}
 	new[j] = '\0';
 	free(arg);
@@ -653,7 +675,6 @@ t_Command_Table3 *ft_all(envp *env)
 	t_Command_Table *table;
 	t_Command_Table2 w;
     t_Command_Table3 *last_table;
-	(void)env;
    
     k = 0;
     i = 0;
@@ -671,6 +692,7 @@ t_Command_Table3 *ft_all(envp *env)
 		
 		split = ft_split(new, 12);
 		w = ft_init();
+		// mor hna l3iba;
 		while (split[i])
 			i = ft_make(&table, split,&w);
 		if (table == NULL)
