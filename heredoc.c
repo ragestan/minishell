@@ -176,6 +176,7 @@ char *heredocwhile(char **heredoc)
         string = heredocstring(heredoc[i]);
         //free(heredoc[i]);
         i++;
+        
     }
     
     return string;

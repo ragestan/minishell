@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/29 01:32:47 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/29 01:39:20 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -749,7 +749,7 @@ int	main(int argc,char **argv,char **env)
 		last_table = ft_all(env1);
         if (last_table == NULL)
             continue; 
-		printlinkdlist(last_table);
+		//printlinkdlist(last_table);
         if(last_table->args[0] != NULL && last_table->infile != -1 && last_table->outfile != -1)
         {
             shell_with_pipes(last_table,env,&pipex,&env1);
