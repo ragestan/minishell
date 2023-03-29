@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 11:27:59 by zbentale          #+#    #+#             */
-/*   Updated: 2023/03/26 15:35:45 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/28 15:17:20 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ char	*ft_strjoin1(char *s1, char *s2)
 	int		i;
 	int		j;
 
-    
 	i = 0;
 	j = 0;
 	if (!s1 || !s2)
@@ -67,6 +66,49 @@ char	*ft_strjoin1(char *s1, char *s2)
 	p[i++] = s2[j++];
 	p[i] = '\0';
 	return (p);
+}
+char *ft_strjoin3(char *s1, char *s2)
+{
+    char	*p;
+    int		s1_len;
+    int		s2_len;
+    int		i;
+    int		j;
+
+    i = 0;
+    j = 0;
+    // if (!s1 || !s2)
+    // 	return (0);
+    if(s2 == NULL)
+    {
+        s2_len = 0;
+        s1_len = ft_strlen3(s1);
+    }  
+    else if(s1 == NULL)
+    {
+        s1_len = 0;
+        s2_len = ft_strlen3(s2);
+    }
+    else
+    {
+        s1_len = ft_strlen3(s1);
+        s2_len = ft_strlen3(s2);
+    }
+    // s1_len = ft_strlen3(s1);
+    // s2_len = ft_strlen3(s2);
+    p = malloc(s2_len + s1_len + 1);
+    if (!p)
+        return (NULL);
+    while (i < s1_len)
+    {
+        p[i] = s1[i];
+        i++;
+    }
+    while (j < s2_len)
+    p[i++] = s2[j++];
+    p[i] = '\0';
+    free(s1);
+    return (p);
 }
 void updatepwd(envp **env,char *str)
 {

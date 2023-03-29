@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/25 15:03:30 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/29 00:14:10 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,9 @@ void printnodeenv(envp *str);
 char *ft_strplusequal(char *str,int k);
 int	ft_strcmpedit( char *s1,  char *s2);
 void 	printlinkdlist(t_Command_Table3 *table);
+char	*ft_strjoin1(char *s1, char *s2);
+char *ft_strjoin3(char *s1, char *s2);
+char *heredocwhile(char **heredoc);
 //------------------------------------zbentalh---------------------------------------
 void	ft_lstadd_back1(t_Command_Table **lst,
 					t_Command_Table *new);

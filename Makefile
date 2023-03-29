@@ -10,6 +10,7 @@ SRC = main.c\
 	  	env.c\
 		 execut_fun/utils1.c\
 		 execut_fun/excute.c\
+		 heredoc.c\
 
 CC = gcc 
 
@@ -20,7 +21,7 @@ OBJ=$(SRC:.c=.o)
 all:	$(NAME)
 
 $(NAME) : $(OBJ)
-	$(CC) -g -fsanitize=address ${CFLAGS} ${OBJ}   -o $(NAME) -lreadline
+	$(CC)  ${CFLAGS} ${OBJ}   -o $(NAME) -lreadline
 
 clean:	
 	$(RM) $(OBJ)

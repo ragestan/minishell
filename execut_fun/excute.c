@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:46:46 by zbentale          #+#    #+#             */
-/*   Updated: 2023/03/27 00:23:11 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/29 01:18:46 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,9 +146,11 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
     num_pipes--;
     int pipes[num_pipes][2];
     int pid[count(table)];
+    int pipa[2];
      int i = 0;
      int j = 0;
     int r = 0;
+    char *str = NULL;
     // create pipes
     i = 0;
     while (i < num_pipes) 
@@ -163,6 +165,27 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
     i = 0;
     if (num_pipes == 0)
     {
+        if(table->heredoc[0] != NULL)
+        {
+            printf("----------------------------\n");
+           str=heredocwhile(table->heredoc);
+           //printf("%s",str);
+           
+            if (pipe(pipa) < 0)
+            {
+               perror("pipe error");
+               exit(-1);
+            }
+            
+            //close(pipa[0]);
+            if (str)
+                write(pipa[1], str, ft_strlen3(str));
+            //ft_putstr_fd(str, pipa[1]);
+            close(pipa[1]);
+            free(str);
+              
+              
+        }
         if(ft_strncmp(table->args[0], "cd", 3) == 0)
         {
             ft_cd(envp1, table->args[1]);
@@ -216,11 +239,6 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
             }
             return;
          }
-        // if(ft_strncmp(table->args[0], "echo", 4) == 0)
-        // {
-        //     echo(table->;
-        //     return;
-        // }
         pid[i] = fork();
         if (pid[i] < 0) {
             perror("fork error");
@@ -240,6 +258,13 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
                 dup2(table->infile, STDIN_FILENO);
                 close(table->infile);
                 //close(table->outfile);
+            }
+            if( table->heredoc != NULL)
+            {
+                
+                dup2(pipa[0], STDIN_FILENO);
+                close(pipa[0]);
+                close(pipa[1]);
             }
             if ((table->args[0][0] == '.' || table->args[0][0] == '/') && access(table->args[0], F_OK) == 0)
             {
