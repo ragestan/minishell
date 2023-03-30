@@ -94,7 +94,7 @@ char *ft_strplusequal(char *str,int k)
     else
     size--;
     
-    char *str2 = malloc(sizeof(char) * size);
+    char *str2 = malloc(sizeof(char) * size + 1);
     i++;
     while(str[i] != '\0')
     {

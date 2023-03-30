@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/29 01:39:20 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/30 00:27:03 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -529,6 +529,8 @@ int	ft_env_count(char *arg,envp *env)
 {
 	int i;
 	int j;
+	int k;
+	int z;
 	char *new;
 	envp *tmp;
 
@@ -537,6 +539,20 @@ int	ft_env_count(char *arg,envp *env)
 	while (arg[i])
 	{
 		tmp = env;
+		if (arg[i] == '\'' && ft_checkcote(arg,i) == 1)
+		{
+			z = ft_is_ad(arg + i + 1);
+			i++;
+			j++;
+			while (arg[i] && arg[i] != '\'')
+			{
+				i++;
+				j++;
+			}
+			i++;
+			j++;
+			continue;
+		}
 		if (arg[i] == '$')
 		{
 			while(tmp)
@@ -547,10 +563,12 @@ int	ft_env_count(char *arg,envp *env)
 					j = j + ft_strlen3(new);
 					free(new);
 					i++;
-					while(arg[i] && arg[i] != ' ' && arg[i] != '\t' && arg[i] != '\n'&& arg[i] != '$')
+					k = 0;
+					while(arg[i] && k < z)
+					{
+						j++;
 						i++;
-					i--;
-					j--;
+					}
 					break;
 				}
 				tmp= tmp->next;
@@ -560,6 +578,24 @@ int	ft_env_count(char *arg,envp *env)
 			j++;
 	}
 	return (j);
+}
+
+int ft_checkcote(char *str , int j)
+{
+	int i;
+	int k;
+
+	i = 0;
+	k = 0;
+	while (str[i] && i < j)
+	{
+		if (str[i] == '"')
+			k++;
+		i++;
+	}
+	if (k % 2 == 0)
+		return (1);
+	return (0);
 }
 
 char *ft_en(char *arg,envp *env)
@@ -572,13 +608,21 @@ char *ft_en(char *arg,envp *env)
 	char *new2;
 	char *new;
 
-	new = malloc(sizeof(char) * ft_env_count(arg,env) + 1);
+	new = malloc(sizeof(char) * 70);
 	i = 0;
 	j = 0;
 	k = 0;
 	while (arg[i])
 	{
 		tmp = env;
+		if (arg[i] == '\'' && ft_checkcote(arg,i) == 1)
+		{
+				new[j++] = arg[i++];
+				while (arg[i] && arg[i] != '\'')
+					new[j++] = arg[i++];
+				new[j++] = arg[i++];
+				continue;
+		}
 		
 		if (arg[i] == '$')
 		{
@@ -632,7 +676,9 @@ char *ft_en(char *arg,envp *env)
 		}
 		
 		if (arg[i] && arg[i] != '$')
+		{
 			new[j++] = arg[i++];
+		}
 		else if (arg[i] && arg[i] == '$' && arg[i + 1] == '$')
 			new[j++] = arg[i++];
 		else if (arg[i] && arg[i] == '$' && arg[i + 1] == '\0')
@@ -661,6 +707,114 @@ t_Command_Table	*ft_var(t_Command_Table *table,envp *env)
 			if (tmp->index != 3)
 				tmp->arg = ft_en(tmp->arg,env);
 		}
+		tmp = tmp->next;
+	}
+	return (table);
+}
+size_t	ft_strlencote(const char *c)
+{
+	size_t	i;
+	size_t	j;
+
+	j = 0;
+	i = 0;
+	while (c[i] != '\0' && c[i] != ' ' && c[i] != '\t' && c[i] != 12)
+	{
+		if (c[i] == '\"')
+		{
+			i++;
+			while (c[i] && c[i] != '\"')
+			{
+				i++;
+				j++;
+			}
+			if (c[i])
+				i++;
+			continue;
+		}
+		if (c[i] == '\'')
+		{
+			i++;
+			while (c[i] && c[i] != '\'')
+			{
+				i++;
+				j++;
+			}
+			if (c[i])
+				i++;
+			continue;
+		}
+		j++;
+		i++;
+	}
+	return (j);
+}
+
+char	*ft_cote2(const char *src)
+{
+	int		i;
+	int		l;
+	char	*dest;
+	char	*j;
+
+    if (src == NULL)
+        return (NULL);
+	i = 0;
+	l = 0;
+	j = ((dest = (char *)malloc(ft_strlencote((char *)src) * sizeof(const char)
+					+ 1)));
+	if (!j)
+		return (0);
+	while (src[i] && src[i] != ' ' && src[i] != '\t' && src[i] != 12)
+	{
+		if (src[i] == '\"' && src[i + 1])
+		{
+			
+			i++;
+			while (src[i] && src[i] != '\"')
+			{
+				dest[l] = src[i];
+				i++;
+				l++;
+			}
+			if (src[i] == '\0')
+				break;
+			i++;
+			continue;
+		}
+		if (src[i] == '\'' && src[i + 1])
+		{
+			i++;
+			while (src[i] && src[i] != '\'')
+			{
+				dest[l] = src[i];
+				i++;
+				l++;
+			}
+			if (src[i] == '\0')
+				break;
+			i++;
+			continue;
+		}
+		dest[l] = src[i];
+		i++;
+		l++;
+	}
+	dest[l] = '\0';
+	return (dest);
+}
+
+t_Command_Table *ft_cote(t_Command_Table *table)
+{
+	char *new;
+	t_Command_Table *tmp;
+
+	tmp = table;
+	while (tmp)
+	{
+		new = ft_cote2(tmp->arg);
+		free(tmp->arg);
+		tmp->arg = new;
 		tmp = tmp->next;
 	}
 	return (table);
@@ -702,9 +856,13 @@ t_Command_Table3 *ft_all(envp *env)
 			return (NULL);
 		}
 		table = ft_var(table,env);
-		
+		table = ft_cote(table);
+		//printf("table = %s\n",table->next->arg);
     while(table)
+	{
+		//printf("------>%s\n",table->next->arg);
 		last_table = ft_make_last(&table,last_table, &k);
+	}
 	
 	
         free(new);

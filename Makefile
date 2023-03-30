@@ -21,7 +21,7 @@ OBJ=$(SRC:.c=.o)
 all:	$(NAME)
 
 $(NAME) : $(OBJ)
-	$(CC)  ${CFLAGS} ${OBJ}   -o $(NAME) -lreadline
+	$(CC) ${CFLAGS} ${OBJ}   -o $(NAME) -lreadline
 
 clean:	
 	$(RM) $(OBJ)

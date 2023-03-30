@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/29 00:14:10 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/29 20:48:20 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	ft_putstr_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 int	ft_isdigit(int c);
 int	ft_isalpha(int c);
+int ft_checkcote(char *str , int j);
 int	ft_isalnum(int c);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t	ft_strlen3(const char *s);
