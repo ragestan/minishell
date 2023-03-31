@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   excute.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:46:46 by zbentale          #+#    #+#             */
-/*   Updated: 2023/03/31 15:04:31 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/31 23:05:09 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,12 @@ char	*ft_collect(char **str,int i)
 			j++;
 			k++;
 		}
-		str2[k] = ' ';
+		if (str[i + 1] != NULL)
+		{
+			str2[k] = ' ';
+			k++;
+		}
 		i++;
-		k++;
 	}
 	str2[k] = '\0';
 	return (str2);

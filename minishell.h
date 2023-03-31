@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/31 15:09:19 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/31 23:10:30 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ typedef struct pipex
 	//int		file2;
 }			t_pipex;
 
-int rl_replace_line(char *str, int i);
+void rl_replace_line (const char *text, int clear_undo);
 int ft_strserarch(char *str,char c);
 void ft_pwd();
 char *ft_strplusequal(char *str,int k);
@@ -125,6 +125,8 @@ int							ft_make(t_Command_Table **a, char **new,
 char						*table_fixer_two(char **new);
 t_Command_Table3	*ft_make_last(t_Command_Table **a, t_Command_Table3 *table, int *k);
 int count(t_Command_Table3 *table);
+void	ft_free(char **str);
+int syntax_help(char *r);
 
 
 #endif

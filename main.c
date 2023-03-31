@@ -3,14 +3,67 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/31 15:40:13 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/31 23:38:00 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+
+int syntax_help(char *r)
+{
+	int i;
+
+	i = 0;
+	while (r[i] && (r[i] == ' ' || r[i] == '\t' || r[i] == '\n' || r[i] == 12))
+		i++;
+	if (r[i] == '\0')
+		return (1);
+	return (0);
+}
+
+char **arg(char **str)
+{
+	int i = 0;
+	int j = 2;
+	int k = 0;
+	char **arg;
+
+	if (ft_strcmp(str[0], "echo") == 0)
+		i++;
+	else
+		return (str);
+	while (str[i])
+	{
+		if (ft_strcmp(str[i] ,"-n") == 0)
+			i++;
+		else
+		 	break;
+	}
+	
+	if (i != 1 && i != 2)
+	{
+		while (str[k])
+			k++;
+		arg = malloc(sizeof(char *) * (k - i + 2 + 1));
+		arg[0] = ft_strdupZ("echo");
+		arg[1] = ft_strdupZ("-n");
+	}
+	else
+		return(str);
+	while(str[i])
+	{
+		arg[j] = ft_strdupZ(str[i]);
+		i++;
+		j++;
+	}
+	arg[j] = NULL;
+	ft_free(str);
+	return (arg);
+}
 
 // t_Command_Table *table_init(void)
 // {
@@ -369,9 +422,7 @@ void	freestack_3(t_Command_Table3 **stack)
     if (tmp->heredoc != NULL)
 	    ft_free(tmp->heredoc); 
 	if (tmp->in_or_here != NULL)
-    {
         free(tmp->in_or_here);
-    }
     if (tmp != NULL)
 	    free(tmp);
 }
@@ -403,7 +454,7 @@ int ft_check_syntax_3(char *new)
 	i = 0;
 	while(new[i])
 	{
-		if (new[i] == '|' && new[i + 1] == '\0')
+		if (new[i] == '|' && syntax_help(new + i + 1) == 1)
 			return (write(2,"minishell: syntax error near unexpected token `redirection'\n",61),-1);
 		i++;
 	}
@@ -421,13 +472,13 @@ int	ft_check_syntax_2(char *new)
 			i++;
 			continue;
 		}
-		if (new[i] == '<' && new[i + 1] == '<' && new[i + 2] == '\0')
+		if (new[i] == '<' && new[i + 1] == '<' && syntax_help(new + i + 1) == 1)
 			return (write(2,"minishell: syntax error near unexpected token `newline'\n",57),-1);
-		if (new[i] == '>' && new[i + 1] == '>' && new[i + 2] == '\0')
+		if (new[i] == '>' && new[i + 1] == '>' && syntax_help(new + i + 1) == 1)
 			return (write(2,"minishell: syntax error near unexpected token `newline'\n",57),-1);
-		if (new[i] == '<' && new[i + 1] == '\0')
+		if (new[i] == '<' && syntax_help(new + i + 1) == 1)
 			return (write(2,"minishell: syntax error near unexpected token `newline'\n",57),-1);
-		if (new[i] == '>' && new[i + 1] == '\0')
+		if (new[i] == '>' && syntax_help(new + i + 1) == 1)
 			return (write(2,"minishell: syntax error near unexpected token `newline'\n",57),-1);
 		if (new[i] == '<' && new[i + 1] == '<' && new[i + 2] == '<')
 			return (write(2,"minishell: syntax error near unexpected token `newline'\n",57),-1);
@@ -850,6 +901,7 @@ t_Command_Table3 *ft_all(envp *env)
 	t_Command_Table *table;
 	t_Command_Table2 w;
     t_Command_Table3 *last_table;
+	t_Command_Table3 *tmp;
    
     k = 0;
     i = 0;
@@ -884,7 +936,12 @@ t_Command_Table3 *ft_all(envp *env)
 		//printf("------>%s\n",table->next->arg);
 		last_table = ft_make_last(&table,last_table, &k);
 	}
-	
+	tmp = last_table;
+	while (tmp)
+	{
+		last_table->args = arg(last_table->args);
+		tmp = tmp->next;
+	}
 	
         free(new);
     ft_free(split);
@@ -928,16 +985,17 @@ int	main(int argc,char **argv,char **env)
 	while (1)
 	{
 		last_table = ft_all(env1);
+		//system("leaks minishell");
         if (last_table == NULL)
             continue; 
-		//printlinkdlist(last_table);
+		printlinkdlist(last_table);
         if(last_table->infile != -1 && last_table->outfile != -1)
         {
             shell_with_pipes(last_table,env,&pipex,&env1);
             ft_free(pipex.paths);
         }
         close(last_table->outfile);
-            close(last_table->infile);
+        close(last_table->infile);
        // execve("/usr/bin/make", last_table->args, NULL);
        
 		freestack_3(&last_table);  

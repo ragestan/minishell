@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 11:33:21 by zbentale          #+#    #+#             */
-/*   Updated: 2023/03/24 20:54:39 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/03/31 21:26:15 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,22 @@ void echo(char *option,char *str)
     if(option == NULL)
     {
         printf("%s\n",str);
+		if (str)
+			free(str);
         return;
     }
     else if(echo_option_check(option) == 0)
     {
         printf("%s %s\n",option,str);
+		if (str)
+			free(str);
         return;
     }
    else
    {
-       printf("%s",str);
+    	printf("%s",str);
+		if (str)
+			free(str);
+
    }
 }
