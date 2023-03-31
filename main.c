@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/30 00:27:03 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/03/31 15:40:13 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,15 +300,36 @@ t_Command_Table2  ft_init(void)
 
 void	sigint_handler(int sig)
 {
+    int i = 0;
+    
 	(void)sig;
-	write(1, "\nminishell$", 12);
+	//write(1, "\nminishell$", 12);
+    write(1, "\n", 1);
+    rl_on_new_line();
+    //rl_replace_line("", 0);
+    rl_replace_line("", 0);
+    rl_redisplay();
+    
+    while (i < g_globale.command_count)
+    {
+        if (g_globale.pid[i]!= 0)
+            kill(g_globale.pid[i], SIGINT);
+        i++;
+    }
+    if (g_globale.idheredok != 0)
+     kill(g_globale.idheredok, SIGINT);
+    //exit(0);
+    //kill(0, SIGINT);
 }
 
-void	sigint(int	sig)
+void	sigquit_handler(int	sig)
 {
 	(void)sig;
-	write(1, "exit\n", 4);
-	exit(0);
+    rl_on_new_line();
+    rl_redisplay();
+    return ;
+	//write(1, "exit\n", 4);
+	//exit(0);
 }
 void	freestack(t_Command_Table **stack)
 {
@@ -835,7 +856,7 @@ t_Command_Table3 *ft_all(envp *env)
 	table = NULL;
 		new = readline("minishell$ ");
 		if (!new)
-			(write(1,"exit\n",5),exit(0));
+			(write(1,"exit\n",5),exit(g_globale.exit_child));
 		add_history(new);
 		if (check_all(new) == -1)
         {
@@ -880,6 +901,8 @@ int	main(int argc,char **argv,char **env)
 	// int k;
 	// t_Command_Table *table;
 	// t_Command_Table2 w;
+    //expand in echo
+    g_globale.exit_child = 0;
 	t_Command_Table3 *last_table;
     envp *env1 = NULL;
     t_pipex pipex;
@@ -901,14 +924,14 @@ int	main(int argc,char **argv,char **env)
 		r--;
 	}
     
-	(signal(SIGINT, sigint_handler),signal(SIGQUIT, sigint));
+	(signal(SIGINT, sigint_handler),signal(SIGQUIT, sigquit_handler));
 	while (1)
 	{
 		last_table = ft_all(env1);
         if (last_table == NULL)
             continue; 
 		//printlinkdlist(last_table);
-        if(last_table->args[0] != NULL && last_table->infile != -1 && last_table->outfile != -1)
+        if(last_table->infile != -1 && last_table->outfile != -1)
         {
             shell_with_pipes(last_table,env,&pipex,&env1);
             ft_free(pipex.paths);

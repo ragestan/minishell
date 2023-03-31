@@ -21,7 +21,7 @@ OBJ=$(SRC:.c=.o)
 all:	$(NAME)
 
 $(NAME) : $(OBJ)
-	$(CC) ${CFLAGS} ${OBJ}   -o $(NAME) -lreadline
+	$(CC)  ${CFLAGS} ${OBJ}   -o $(NAME) -lreadline -L /Users/zbentale/goinfre/homebrew/opt/readline/lib -I /Users/zbentale/goinfre/homebrew/opt/readline/include
 
 clean:	
 	$(RM) $(OBJ)
