@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/01 01:31:30 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/01 01:56:45 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1017,6 +1017,7 @@ int	main(int argc,char **argv,char **env)
 	// t_Command_Table *table;
 	// t_Command_Table2 w;
     //expand in echo
+    //exit in builtin
     g_globale.exit_child = 0;
 	t_Command_Table3 *last_table;
     envp *env1 = NULL;
