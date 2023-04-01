@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   excute.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:46:46 by zbentale          #+#    #+#             */
-/*   Updated: 2023/03/31 23:52:18 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/01 01:33:43 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 	num_pipes--;
 	int pipes[num_pipes][2];
 	
-	g_globale.pid = malloc(sizeof(int) * count(table));
+	 g_globale.pid = malloc(sizeof(int) * count(table));
 	g_globale.command_count = count(table);
 	//int pid[count(table)];
 	int pipa[2];
@@ -225,12 +225,14 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 		if(ft_strncmp(table->args[0], "cd", 3) == 0)
 		{
 			ft_cd(envp1, table->args[1]);
+            free(g_globale.pid);
 			return;
 		}
 		else if(ft_strncmp(table->args[0], "env", 4) == 0)
 		{
 			printf("env\n");
 			envv(*envp1);
+            free(g_globale.pid);
 			return;
 		}
 		else if(ft_strncmp(table->args[0], "unset", 6) == 0)
@@ -242,6 +244,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 				unset(envp1, table->args[i]);
 				i++;
 			}
+            free(g_globale.pid);
 			return;  
 		}
 		else if(ft_strncmp(table->args[0], "export", 7) == 0)
@@ -251,6 +254,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 			{
 			   
 				export(envp1, NULL);
+                free(g_globale.pid);
 				return;
 			}
 			else{
@@ -259,9 +263,11 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 					export(envp1, table->args[i]);
 					i++;
 				}
+                
 				//printf("-------------------\n");
 				//export(&envp1, NULL);
 			}
+            free(g_globale.pid);
 			return;  
 		}
 		else if(ft_strncmp(table->args[0], "echo", 5) == 0)
@@ -273,9 +279,10 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 				//printf("%s------------>\n",ft_collect(table->args,1));
 				echo(NULL,ft_collect(table->args,1));
 			}
+            free(g_globale.pid);
 			return;
 		 }
-		 
+		
 		g_globale.pid[i] = fork();
 		if (g_globale.pid[i] < 0) {
 			perror("fork error");
@@ -347,6 +354,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 				{
 					g_globale.exit_child = WEXITSTATUS(status);
 				}
+                free(g_globale.pid);
 		}
 		
 	}

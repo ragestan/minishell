@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/01 00:08:30 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/01 01:31:30 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -731,7 +731,7 @@ char *ft_en(char *arg,envp *env)
 	char *new2;
 	char *new;
 
-	new = malloc(sizeof(char) * 70);
+	new = malloc(sizeof(char) * ft_env_count(arg,env) + 1);
 	i = 0;
 	j = 0;
 	k = 0;

@@ -110,6 +110,7 @@ int updateenv(envp *env,char *str,int b)
     envp *st;
     st = env;
     char *ptr = NULL;
+    
     while(st)
     {
         // printf("tst : %s\n",st->str);
@@ -119,11 +120,20 @@ int updateenv(envp *env,char *str,int b)
             //free(st->str);
             if(ft_strserarch(str,'=') == 1)
             {
+                
+                if(st->free == 1)
+                {
+                    printf("------------------------------------->free : %s\n",st->str);
+                    free(st->str);
+                }
+                    
                 //free(st->str);
-                st->str = str;
+                st->str = ft_strdupZ(str);
+                st->free = 1;
                 //free(str);
               if(ft_strserarch(str,'=') == 1)
               st->option = 1;
+              //free(st->str);
               return 1;
             }
             else
@@ -147,7 +157,7 @@ int updateenv(envp *env,char *str,int b)
             st->free = 1;
             return 1;
         }
-            
+        
         st = st->next;
     }
     return 0;
@@ -162,7 +172,8 @@ envp	*ft_lstnew(char *content,int option)
         
 	new->str = ft_strdupZ(content);
     new->option = option;
-    new->free = 0;
+    //w 3ndak 3la 7aga
+    new->free = 1;
 	new->next = NULL;
 	return (new);
 }
