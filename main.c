@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/01 01:56:45 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/01 22:02:58 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -597,7 +597,7 @@ int	ft_strcmpedit2( char *s1,  char *s2 ,size_t j)
 }
 
 
-int	ft_env_count(char *arg,envp *env)
+int	ft_env_count(char *arg,envp *env,int g)
 {
 	int i;
 	int j;
@@ -611,16 +611,7 @@ int	ft_env_count(char *arg,envp *env)
 	while (arg[i])
 	{
 		tmp = env;
-		if (arg[i + 1] == '?')
-		{
-			new = ft_itoa(g_globale.exit_child);
-			j = j + ft_strlen3(new);
-			free(new);
-			i = i + 2;
-			k = 0;
-			break;
-		}
-		if (arg[i] == '\'' && ft_checkcote(arg,i) == 1)
+		if (arg[i] == '\'' && ft_checkcote(arg,i) == 1 && g == 1)
 		{
 			z = ft_is_ad(arg + i + 1);
 			i++;
@@ -636,8 +627,18 @@ int	ft_env_count(char *arg,envp *env)
 		}
 		if (arg[i] == '$')
 		{
+			
 			while(tmp)
 			{
+				if (arg[i + 1] == '?')
+				{
+					new = ft_itoa(g_globale.exit_child);
+					j = j + ft_strlen3(new);
+					free(new);
+					i = i + 2;
+					k = 0;
+					break;
+				}
 				if(ft_strcmpedit2(arg + i + 1,tmp->str,ft_is_ad(arg + i +1)) == 0)
 				{
 					new = ft_strplusequal(tmp->str,0);
@@ -721,7 +722,7 @@ char	*ft_itoa(int n)
 	return (str);
 }
 
-char *ft_en(char *arg,envp *env)
+char *ft_en(char *arg,envp *env,int g)
 {
 	int i;
 	int j;
@@ -731,14 +732,14 @@ char *ft_en(char *arg,envp *env)
 	char *new2;
 	char *new;
 
-	new = malloc(sizeof(char) * ft_env_count(arg,env) + 1);
+	new = malloc(sizeof(char) * ft_env_count(arg,env,g) + 1);
 	i = 0;
 	j = 0;
 	k = 0;
 	while (arg[i])
 	{
 		tmp = env;
-		if (arg[i] == '\'' && ft_checkcote(arg,i) == 1)
+		if (arg[i] == '\'' && ft_checkcote(arg,i) == 1 && g == 1)
 		{
 				new[j++] = arg[i++];
 				while (arg[i] && arg[i] != '\'')
@@ -839,7 +840,7 @@ t_Command_Table	*ft_var(t_Command_Table *table,envp *env)
 		else
 		{
 			if (tmp->index != 3)
-				tmp->arg = ft_en(tmp->arg,env);
+				tmp->arg = ft_en(tmp->arg,env, 1);
 		}
 		tmp = tmp->next;
 	}
@@ -954,9 +955,42 @@ t_Command_Table *ft_cote(t_Command_Table *table)
 	return (table);
 }
 
+size_t	ft_strlen33(const char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] != '\0' && s[i] != ' ' && s[i] != '\t' && s[i] != 12)
+	{
+		i++;
+	}
+	return (i);
+}
+
+char	*ft_strdup3(const char *s1)
+{
+	char	*p;
+	size_t	i;
+	size_t	len;
+
+	i = 0;
+	len = ft_strlen33(s1);
+	p = malloc(sizeof(char) * (len + 1));
+	if (p == 0)
+		return (NULL);
+	while (s1[i] != '\0' && s1[i] != ' ' && s1[i] != '\t' && s1[i] != 12)
+	{
+		p[i] = s1[i];
+		i++;
+	}
+	p[i] = '\0';
+	return (p);
+}
+
 t_Command_Table3 *ft_all(envp *env)
 {
     char *new;
+	char *new2;
 	char **split;
 	int i;
 	int k;
@@ -974,11 +1008,29 @@ t_Command_Table3 *ft_all(envp *env)
 		add_history(new);
 		if (check_all(new) == -1)
         {
-            free(new);
+			g_globale.exit_child = 258;
+			new = new_new(new);
+			split = ft_split(new, 12);
+			free(new);
+			while (split[i])
+			{	
+				if (split[i][0] == '<' && split[i][1] == '<' && split[i][2] == '\0')
+				{	
+					if (split[i + 1])
+					{
+						new = ft_strdup3(split[i + 1]);
+						new2 = heredocstring(new);
+						free(new);
+						free(new2);
+					}
+				}
+				i++;
+			}
+			ft_free(split);
             return (NULL);
         }
-		new = new_new(new);
 		
+		new = new_new(new);
 		split = ft_split(new, 12);
 		w = ft_init();
 		// mor hna l3iba;
@@ -1000,8 +1052,7 @@ t_Command_Table3 *ft_all(envp *env)
 		last_table->args = arg(last_table->args);
 		tmp = tmp->next;
 	}
-	
-        free(new);
+    free(new);
     ft_free(split);
     freestack(&table);
     return (last_table);
@@ -1039,7 +1090,6 @@ int	main(int argc,char **argv,char **env)
 		make_node(&env1, env[r]);
 		r--;
 	}
-    
 	(signal(SIGINT, sigint_handler),signal(SIGQUIT, sigquit_handler));
 	while (1)
 	{
@@ -1056,7 +1106,7 @@ int	main(int argc,char **argv,char **env)
         close(last_table->outfile);
         close(last_table->infile);
        // execve("/usr/bin/make", last_table->args, NULL);
-       
+	
 		freestack_3(&last_table);  
 		
 	}

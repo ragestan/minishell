@@ -6,7 +6,7 @@
 /*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/01 00:07:34 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/01 21:51:52 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ void 	printlinkdlist(t_Command_Table3 *table);
 char	*ft_strjoin1(char *s1, char *s2);
 char *ft_strjoin3(char *s1, char *s2);
 char *heredocwhile(char **heredoc);
+char *heredocstring(char *delimiter);
 //------------------------------------zbentalh---------------------------------------
 void	ft_lstadd_back1(t_Command_Table **lst,
 					t_Command_Table *new);
@@ -128,5 +129,5 @@ int count(t_Command_Table3 *table);
 void	ft_free(char **str);
 int syntax_help(char *r);
 char	*ft_itoa(int n);
-
+char *ft_en(char *arg,envp *env,int g); // g != 1 for heredoc;
 #endif
