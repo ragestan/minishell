@@ -6,7 +6,7 @@
 /*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/31 23:38:00 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/01 00:08:30 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -611,6 +611,15 @@ int	ft_env_count(char *arg,envp *env)
 	while (arg[i])
 	{
 		tmp = env;
+		if (arg[i + 1] == '?')
+		{
+			new = ft_itoa(g_globale.exit_child);
+			j = j + ft_strlen3(new);
+			free(new);
+			i = i + 2;
+			k = 0;
+			break;
+		}
 		if (arg[i] == '\'' && ft_checkcote(arg,i) == 1)
 		{
 			z = ft_is_ad(arg + i + 1);
@@ -670,6 +679,48 @@ int ft_checkcote(char *str , int j)
 	return (0);
 }
 
+static size_t	ft_count(int n)
+{
+	int	i;
+
+	i = 0;
+	if (n == 0)
+		i++;
+	while (n != 0)
+	{
+		n /= 10;
+		i++;
+	}
+	return (i);
+}
+
+char	*ft_itoa(int n)
+{
+	char		*str;
+	int			i;
+	long int	j;
+
+	j = n;
+	i = ft_count(n);
+	if (n < 0)
+	{
+		j = -j;
+		i++;
+	}
+	str = malloc(i + 1);
+	if (!str)
+		return (NULL);
+	str[i] = '\0';
+	while (i--)
+	{
+		str[i] = j % 10 + '0';
+		j /= 10;
+	}
+	if (n < 0)
+	str[0] = '-';
+	return (str);
+}
+
 char *ft_en(char *arg,envp *env)
 {
 	int i;
@@ -702,7 +753,18 @@ char *ft_en(char *arg,envp *env)
 			z = 0;
 			while(tmp)
 			{
-				if(ft_strcmpedit2(arg + i + 1,tmp->str,ft_is_ad(arg + i +1)) == 0)
+				if (arg[i + 1] == '?')
+				{
+					z = ft_is_ad(arg + i + 1);
+					new2 = ft_itoa(g_globale.exit_child);
+					while (new2[k])
+						new[j++] = new2[k++];
+					free(new2);
+					i = i + 2;
+					k = 0;
+					break;
+				}
+				else if(ft_strcmpedit2(arg + i + 1,tmp->str,ft_is_ad(arg + i +1)) == 0)
 				{
 					z = ft_is_ad(arg + i +1);
 					new2 = ft_strplusequal(tmp->str,0);
@@ -930,12 +992,8 @@ t_Command_Table3 *ft_all(envp *env)
 		}
 		table = ft_var(table,env);
 		table = ft_cote(table);
-		//printf("table = %s\n",table->next->arg);
     while(table)
-	{
-		//printf("------>%s\n",table->next->arg);
 		last_table = ft_make_last(&table,last_table, &k);
-	}
 	tmp = last_table;
 	while (tmp)
 	{
@@ -988,7 +1046,7 @@ int	main(int argc,char **argv,char **env)
 		//system("leaks minishell");
         if (last_table == NULL)
             continue; 
-		printlinkdlist(last_table);
+		//printlinkdlist(last_table);
         if(last_table->infile != -1 && last_table->outfile != -1)
         {
             shell_with_pipes(last_table,env,&pipex,&env1);

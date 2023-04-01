@@ -6,7 +6,7 @@
 /*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/31 23:10:30 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/01 00:07:34 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #include <signal.h>
 #include <sys/wait.h>
 
-typedef struct globale
+typedef struct a_globale
 {
     int idheredok;
     int exit_child;
@@ -127,6 +127,6 @@ t_Command_Table3	*ft_make_last(t_Command_Table **a, t_Command_Table3 *table, int
 int count(t_Command_Table3 *table);
 void	ft_free(char **str);
 int syntax_help(char *r);
-
+char	*ft_itoa(int n);
 
 #endif

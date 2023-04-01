@@ -6,7 +6,7 @@
 /*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:46:46 by zbentale          #+#    #+#             */
-/*   Updated: 2023/03/31 23:05:09 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/03/31 23:52:18 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 	 
 	num_pipes--;
 	int pipes[num_pipes][2];
+	
 	g_globale.pid = malloc(sizeof(int) * count(table));
 	g_globale.command_count = count(table);
 	//int pid[count(table)];
