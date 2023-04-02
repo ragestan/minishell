@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/01 22:02:58 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/02 00:55:56 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ char **arg(char **str)
 	int k = 0;
 	char **arg;
 
-	if (ft_strcmp(str[0], "echo") == 0)
+    
+	if (str[0] && ft_strcmp(str[0], "echo") == 0)
 		i++;
 	else
 		return (str);
@@ -1091,6 +1092,7 @@ int	main(int argc,char **argv,char **env)
 		r--;
 	}
 	(signal(SIGINT, sigint_handler),signal(SIGQUIT, sigquit_handler));
+    g_globale.env1 = env1;
 	while (1)
 	{
 		last_table = ft_all(env1);

@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:46:46 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/01 01:33:43 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/02 01:17:08 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -309,6 +309,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 				dup2(pipa[0], STDIN_FILENO);
 				close(pipa[0]);
 				close(pipa[1]);
+                
 			}
 			if ((table->args[0][0] == '.' || table->args[0][0] == '/') && access(table->args[0], F_OK) == 0)
 			{

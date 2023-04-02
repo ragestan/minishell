@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/01 21:51:52 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/02 00:50:59 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,8 @@
 #include <signal.h>
 #include <sys/wait.h>
 
-typedef struct a_globale
-{
-    int idheredok;
-    int exit_child;
-    int *pid;
-    int command_count;
-} t_globale;
 
-t_globale g_globale;
+
 
 typedef struct a_Cammand_Table3
 {
@@ -77,6 +70,17 @@ typedef struct pipex
 	//int		file1;
 	//int		file2;
 }			t_pipex;
+
+typedef struct a_globale
+{
+    envp *env1;
+    int idheredok;
+    int exit_child;
+    int *pid;
+    int command_count;
+    
+} t_globale;
+t_globale g_globale;
 
 void rl_replace_line (const char *text, int clear_undo);
 int ft_strserarch(char *str,char c);

@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:24:40 by zbentale          #+#    #+#             */
-/*   Updated: 2023/03/31 15:24:41 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/02 01:09:39 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,61 +102,61 @@
 //     free(input);
 //   }
 // }
-int heredoc(char *delimiter)
-{
-    char* string = NULL;
-    char* line = NULL;
+// int heredoc(char *delimiter)
+// {
+//     char* string = NULL;
+//     char* line = NULL;
 
-    while ((line = readline("> ")))
-    {
-        if (strcmp(line, delimiter) == 0)
-        {
-            break;
-        }
-        string = ft_strjoin3(string, line);
-        string = ft_strjoin3(string, "\n");
-        free(line);
-    }
-    //create pipe
-    int pipefd[2];
-    if (pipe(pipefd) == -1)
-    {
-        perror("pipe");
-        return 1;
-    }
-    //fork process
-    int pid = fork();
-    if (pid == -1)
-    {
-        perror("fork");
-        return 1;
-    }
-    if (pid == 0)
-    {
-        //child process: write input to pipe
-        close(pipefd[0]);
-        write(pipefd[1], string, strlen(string));
-        close(pipefd[1]);
-        exit(EXIT_SUCCESS);
-    }
-    else
-    {
-        //parent process: read input from pipe
-        close(pipefd[1]);
-        //read from pipe with execve
-        dup2(pipefd[0], 0);
-        close(pipefd[0]);
-        //char *cat[] = {"/bin/cat", NULL};
-        char *wc[] = {"/usr/bin/wc","-l", NULL};
-        execve("/usr/bin/wc", wc, NULL);
-        //wait for child process to finish
-        waitpid(pid, NULL, 0);
-        close(pipefd[0]);
-        //free input memory
-        free(string);
-    }
-    return 0;
-}
+//     while ((line = readline("> ")))
+//     {
+//         if (strcmp(line, delimiter) == 0)
+//         {
+//             break;
+//         }
+//         string = ft_strjoin3(string, line);
+//         string = ft_strjoin3(string, "\n");
+//         free(line);
+//     }
+//     //create pipe
+//     int pipefd[2];
+//     if (pipe(pipefd) == -1)
+//     {
+//         perror("pipe");
+//         return 1;
+//     }
+//     //fork process
+//     int pid = fork();
+//     if (pid == -1)
+//     {
+//         perror("fork");
+//         return 1;
+//     }
+//     if (pid == 0)
+//     {
+//         //child process: write input to pipe
+//         close(pipefd[0]);
+//         write(pipefd[1], string, strlen(string));
+//         close(pipefd[1]);
+//         exit(EXIT_SUCCESS);
+//     }
+//     else
+//     {
+//         //parent process: read input from pipe
+//         close(pipefd[1]);
+//         //read from pipe with execve
+//         dup2(pipefd[0], 0);
+//         close(pipefd[0]);
+//         //char *cat[] = {"/bin/cat", NULL};
+//         char *wc[] = {"/usr/bin/wc","-l", NULL};
+//         execve("/usr/bin/wc", wc, NULL);
+//         //wait for child process to finish
+//         waitpid(pid, NULL, 0);
+//         close(pipefd[0]);
+//         //free input memory
+//         free(string);
+//     }
+//     return 0;
+// }
 char *heredocstring(char *delimiter)
 {
     char* string = NULL;
@@ -170,6 +170,7 @@ char *heredocstring(char *delimiter)
             free(line);
             break;
         }
+        //line = ft_en(line,g_globale.env1 ,0);
         string = ft_strjoin3(string, line);
         string = ft_strjoin3(string, "\n");
         free(line);
