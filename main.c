@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/02 00:55:56 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/02 22:01:19 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -560,6 +560,14 @@ int count(t_Command_Table3 *table)
     return (i);
 }
 
+int	char_is_ad(char c)
+{
+	if ((c >= 48 && c <= 57) || (c >= 65 && c <= 90) || (c >= 97 && c <= 122) ||(c >= 65 && c <= 90) || (c >= 97 && c <= 122) || (c == '_'))
+		return(0);
+	else
+		return (1);
+}
+
 int	ft_is_ad(char *str)
 {
 	int i;
@@ -614,7 +622,6 @@ int	ft_env_count(char *arg,envp *env,int g)
 		tmp = env;
 		if (arg[i] == '\'' && ft_checkcote(arg,i) == 1 && g == 1)
 		{
-			z = ft_is_ad(arg + i + 1);
 			i++;
 			j++;
 			while (arg[i] && arg[i] != '\'')
@@ -628,11 +635,13 @@ int	ft_env_count(char *arg,envp *env,int g)
 		}
 		if (arg[i] == '$')
 		{
-			
+			k = 0;
+			z = 0;
 			while(tmp)
 			{
 				if (arg[i + 1] == '?')
 				{
+					z = ft_is_ad(arg + i + 1);
 					new = ft_itoa(g_globale.exit_child);
 					j = j + ft_strlen3(new);
 					free(new);
@@ -642,6 +651,7 @@ int	ft_env_count(char *arg,envp *env,int g)
 				}
 				if(ft_strcmpedit2(arg + i + 1,tmp->str,ft_is_ad(arg + i +1)) == 0)
 				{
+					z = ft_is_ad(arg + i + 1);
 					new = ft_strplusequal(tmp->str,0);
 					j = j + ft_strlen3(new);
 					free(new);
@@ -649,16 +659,60 @@ int	ft_env_count(char *arg,envp *env,int g)
 					k = 0;
 					while(arg[i] && k < z)
 					{
-						j++;
+						k++;
 						i++;
 					}
 					break;
 				}
 				tmp= tmp->next;
 			}
+			if (arg[i] == '$' && arg[i + 1] == '\0')
+			{
+				i++;
+				j++;
+			}
+			else if (arg[i] == '$' && arg[i + 1] == '$')
+			{
+				i = i + 2;
+				continue;
+			}
+			else if ((arg[i] == '$' && arg[i + 1] == '+' ) || (arg[i] == '$' && arg[i + 1] == '.') || (arg[i] == '$' && arg[i + 1] == ','))
+			{
+				i = i + 2;
+				j = j + 2;
+			}
+			else if (z == 0 && arg[i] != '$' && arg[i + 1] != '\0' && arg[i + 1] != ' ' && arg[i + 1] != '\t' && arg[i + 1] != '\n' && arg[i + 1] != '$')
+			{
+					while (arg[i] && arg[i] != ' ' && arg[i] != '\t' && arg[i] != '\n' && arg[i] != '$')
+						i++;
+			}
+			else if(z == 0 && arg[i] == '$')
+			{
+				i++;
+				while (arg[i] && arg[i] != ' ' && arg[i] != '\t' && arg[i] != '\n' && arg[i] != '$' && char_is_ad(arg[i]) == 0)
+					i++;
+			}
 		}
+		
+		if (arg[i] && arg[i] != '$')
+		{
+			j++;
+			i++;
+		}
+		else if (arg[i] && arg[i] == '$' && arg[i + 1] == '$')
+		{
 			i++;
 			j++;
+		}
+		else if (arg[i] && arg[i] == '$' && arg[i + 1] == '\0')
+		{
+			i++;
+			j++;
+		}
+		else if(arg[i] && arg[i] == '$' && arg[i + 1] != '\0' )
+			continue;
+		else
+			break;
 	}
 	return (j);
 }
@@ -734,6 +788,7 @@ char *ft_en(char *arg,envp *env,int g)
 	char *new;
 
 	new = malloc(sizeof(char) * ft_env_count(arg,env,g) + 1);
+	printf("%d\n",ft_env_count(arg,env,g));
 	i = 0;
 	j = 0;
 	k = 0;
@@ -771,9 +826,7 @@ char *ft_en(char *arg,envp *env,int g)
 					z = ft_is_ad(arg + i +1);
 					new2 = ft_strplusequal(tmp->str,0);
 					while (new2[k])
-					{
 						new[j++] = new2[k++];
-					}
 					free(new2);
 					i++;
 					k = 0;
@@ -806,7 +859,7 @@ char *ft_en(char *arg,envp *env,int g)
 			else if(z == 0 && arg[i] == '$')
 			{
 				i++;
-				while (arg[i] && arg[i] != ' ' && arg[i] != '\t' && arg[i] != '\n' && arg[i] != '$')
+				while (arg[i] && arg[i] != ' ' && arg[i] != '\t' && arg[i] != '\n' && arg[i] != '$' && char_is_ad(arg[i]) == 0)
 					i++;
 			}
 		}

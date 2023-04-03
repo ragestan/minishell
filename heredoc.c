@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:24:40 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/02 01:09:39 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/02 21:07:17 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,8 @@ char *heredocstring(char *delimiter)
             free(line);
             break;
         }
-        //line = ft_en(line,g_globale.env1 ,0);
+		//printf("ayaya\n");
+        line = ft_en(line,g_globale.env1 ,0);
         string = ft_strjoin3(string, line);
         string = ft_strjoin3(string, "\n");
         free(line);
