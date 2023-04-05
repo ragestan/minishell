@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/04 20:29:37 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/05 20:08:48 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1169,6 +1169,7 @@ int	main(int argc,char **argv,char **env)
        // execve("/usr/bin/make", last_table->args, NULL);
 	
 		freestack_3(&last_table);  
+        
 		
 	}
 }

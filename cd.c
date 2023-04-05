@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 11:27:59 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/05 16:23:47 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/05 20:12:36 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,7 @@ void	ft_cd(envp **env, char *str)
 		if (value < 0)
 		{
 			perror("cd");
+             g_globale.exit_child = 1;
 			//free(ptr);
             //free(ptr1);
 			//exit(1);
@@ -183,6 +184,7 @@ void	ft_cd(envp **env, char *str)
             free(oldpwd);
             free(ptr1);
             free(pwd);
+            g_globale.exit_child = 0;
         }
 	}
 	else if(ft_strcmp(str,"-") == 0)
@@ -193,12 +195,14 @@ void	ft_cd(envp **env, char *str)
             printf("OLDPWD not set\n");
             //free(ptr);
             free(oldpwd);
+            g_globale.exit_child = 1;
             return;
         }
         value = chdir(ptr);
         if (value < 0)
         {
             perror("cd");
+            g_globale.exit_child = 1;
             //free(ptr);
             //free(ptr1);
             //exit(1);
@@ -212,6 +216,7 @@ void	ft_cd(envp **env, char *str)
             free(oldpwd);
             free(ptr);
             free(pwd);
+            g_globale.exit_child = 0;
             
         }
 	}
@@ -222,18 +227,21 @@ void	ft_cd(envp **env, char *str)
         if (value < 0)
 	    {
 		perror("cd");
+        g_globale.exit_child = 1;
 		//free(ptr);
         //free(ptr1);
 		//exit(1);
 	    }
         else if (value == 0)
         {
+            
             pwd = getcwd(NULL, 1);
             updatepwd(env,pwd);
             updateoldpwd(env,oldpwd);
             free(oldpwd);
             free(ptr);
             free(pwd);
+            g_globale.exit_child = 0;
         }
         
     }

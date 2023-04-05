@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:46:46 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/05 19:57:28 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/05 20:55:56 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,12 +280,14 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 				echo(NULL,ft_collect(table->args,1));
 			}
             free(g_globale.pid);
+            g_globale.exit_child = 0;
 			return;
 		 }
          else if(ft_strncmp(table->args[0], "pwd", 4) == 0)
          {
              ft_pwd();
              free(g_globale.pid);
+             g_globale.exit_child = 0;
              return;
          }
 		
