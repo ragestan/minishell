@@ -12,6 +12,7 @@ SRC = main.c\
 		 execut_fun/excute.c\
 		 heredoc.c\
 		 pwd.c\
+		 syntax_handler.c\
 
 CC = gcc 
 
@@ -22,7 +23,7 @@ OBJ=$(SRC:.c=.o)
 all:	$(NAME)
 
 $(NAME) : $(OBJ)
-	$(CC) -g -fsanitize=address ${CFLAGS} ${OBJ}   -o $(NAME) -lreadline -L /Users/zbentale/goinfre/homebrew/opt/readline/lib -I /Users/zbentale/goinfre/homebrew/opt/readline/include
+	$(CC) -g -fsanitize=address ${CFLAGS} ${OBJ}   -o $(NAME) -lreadline -L /Users/zbentalh/goinfre/homebrew/opt/readline/lib -I /Users/zbentalh/goinfre/homebrew/opt/readline/include
 
 clean:	
 	$(RM) $(OBJ)

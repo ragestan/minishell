@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   excute.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:46:46 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/05 20:55:56 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/05 21:08:55 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,7 +311,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 				close(table->infile);
 				//close(table->outfile);
 			}
-			if( *table->heredoc != NULL)
+			if( table->heredoc[0] != NULL)
 			{
 				dup2(pipa[0], STDIN_FILENO);
 				close(pipa[0]);
