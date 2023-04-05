@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:46:46 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/02 01:17:08 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/05 19:57:28 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,7 +230,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 		}
 		else if(ft_strncmp(table->args[0], "env", 4) == 0)
 		{
-			printf("env\n");
+			
 			envv(*envp1);
             free(g_globale.pid);
 			return;
@@ -238,7 +238,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 		else if(ft_strncmp(table->args[0], "unset", 6) == 0)
 		{
 			int i = 1;
-			printf("unset\n");
+			
 			while (table->args[i])
 			{
 				unset(envp1, table->args[i]);
@@ -282,6 +282,12 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
             free(g_globale.pid);
 			return;
 		 }
+         else if(ft_strncmp(table->args[0], "pwd", 4) == 0)
+         {
+             ft_pwd();
+             free(g_globale.pid);
+             return;
+         }
 		
 		g_globale.pid[i] = fork();
 		if (g_globale.pid[i] < 0) {
@@ -303,9 +309,8 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 				close(table->infile);
 				//close(table->outfile);
 			}
-			if( table->heredoc != NULL)
+			if( *table->heredoc != NULL)
 			{
-				
 				dup2(pipa[0], STDIN_FILENO);
 				close(pipa[0]);
 				close(pipa[1]);
@@ -313,11 +318,12 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 			}
 			if ((table->args[0][0] == '.' || table->args[0][0] == '/') && access(table->args[0], F_OK) == 0)
 			{
+                
 				if(execve(table->args[0], table->args, env) == -1)
 				{
 					write(2, "minishell: ", 11);
 					perror(table->args[0]);
-					exit(-1);
+					exit(126);
 				}
 			}
 			pipex->i = 0;
@@ -339,6 +345,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 				pipex->i++;
 				free(pipex->paths[pipex->i - 1]);
 			}
+            if(table->args)
 			ft_error1("minishell: command not found: ", table->args[0]);
 		}
 		else
@@ -349,6 +356,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 			close(table->infile);
 			if(WIFSIGNALED(status))
 				{
+                    
 					g_globale.exit_child = 128 + WTERMSIG(status);
 				}
 				if(WIFEXITED(status))
@@ -489,13 +497,79 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 				dup2(table->infile, STDIN_FILENO);
 				//close(table->infile);
 			}
-			if( table->heredoc != NULL)
+			if( *table->heredoc != NULL)
 			{
 				
 				dup2(pipa[0], STDIN_FILENO);
 				close(pipa[0]);
 				close(pipa[1]);
 			}
+            if(ft_strncmp(table->args[0], "cd", 3) == 0)
+		{
+			ft_cd(envp1, table->args[1]);
+           
+			exit(0);
+		}
+		else if(ft_strncmp(table->args[0], "env", 4) == 0)
+		{
+			printf("env\n");
+			envv(*envp1);
+            
+			exit(0);
+		}
+		else if(ft_strncmp(table->args[0], "unset", 6) == 0)
+		{
+			int i = 1;
+			printf("unset\n");
+			while (table->args[i])
+			{
+				unset(envp1, table->args[i]);
+				i++;
+			}
+            
+            exit(0);
+		}
+		else if(ft_strncmp(table->args[0], "export", 7) == 0)
+		{
+			int i = 1;
+			if(table->args[1] == NULL)
+			{
+			   
+				export(envp1, NULL);
+                
+				    exit(0);
+			}
+			else{
+				while (table->args[i])
+				{
+					export(envp1, table->args[i]);
+					i++;
+				}
+                
+				//printf("-------------------\n");
+				//export(&envp1, NULL);
+			}
+            
+			exit(0); 
+		}
+		else if(ft_strncmp(table->args[0], "echo", 5) == 0)
+		{
+			if (ft_test(table->args) == 1)
+				echo(table->args[1],ft_collect(table->args,2));
+			else
+			{
+				//printf("%s------------>\n",ft_collect(table->args,1));
+				echo(NULL,ft_collect(table->args,1));
+			}
+            
+			exit(0);
+		 }
+         else if(ft_strncmp(table->args[0], "pwd", 4) == 0)
+         {
+             ft_pwd();
+             
+            exit(0);
+         }
 			if ((table->args[0][0] == '.' || table->args[0][0] == '/') && access(table->args[0], F_OK) == 0)
 			{
 				if(execve(table->args[0], table->args, env) == -1)

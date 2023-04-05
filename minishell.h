@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/02 00:50:59 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/05 16:20:02 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <unistd.h>
 #include <signal.h>
 #include <sys/wait.h>
-
+# include <termios.h>
 
 
 
@@ -119,6 +119,7 @@ char	*ft_strjoin1(char *s1, char *s2);
 char *ft_strjoin3(char *s1, char *s2);
 char *heredocwhile(char **heredoc);
 char *heredocstring(char *delimiter);
+char	*ft_getenv(envp *env, char *str);
 //------------------------------------zbentalh---------------------------------------
 void	ft_lstadd_back1(t_Command_Table **lst,
 					t_Command_Table *new);

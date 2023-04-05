@@ -6,21 +6,21 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 11:27:59 by zbentale          #+#    #+#             */
-/*   Updated: 2023/03/28 15:17:20 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/05 16:23:47 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //should fix CD only;
-void	ft_pwd(void)
-{
-	char	*ptr;
+// void	ft_pwd(void)
+// {
+// 	char	*ptr;
 
-	ptr = getcwd(NULL, 1);
-	printf("%s\n", ptr);
-	free(ptr);
-}
+// 	ptr = getcwd(NULL, 1);
+// 	printf("%s\n", ptr);
+// 	free(ptr);
+// }
 char	*ft_getenv(envp *env, char *str)
 {
 	char	*ptr;
@@ -160,6 +160,10 @@ void	ft_cd(envp **env, char *str)
 	
 	
 	oldpwd = getcwd(NULL, 1);
+    if(oldpwd == NULL)
+    {
+        oldpwd = ft_getenv(*env,"PWD");
+    }
 	if (str == NULL || ft_strcmp(str,"~") == 0)
 	{
 		ptr1 = ft_getenv(*env, "HOME");
@@ -197,7 +201,7 @@ void	ft_cd(envp **env, char *str)
             perror("cd");
             //free(ptr);
             //free(ptr1);
-            exit(1);
+            //exit(1);
         }
         else if (value == 0)
         {
