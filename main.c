@@ -6,7 +6,7 @@
 /*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/05 22:43:02 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/06 02:09:33 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -814,23 +814,16 @@ t_Command_Table	*ft_var(t_Command_Table *table, envp *env)
 	}
 	return (table);
 }
-size_t	ft_strlencote(const char *c)
-{
-	size_t	i;
-	size_t	j;
 
-	j = 0;
-	i = 0;
+size_t	ft_strlencote(const char *c, size_t i, size_t j)
+{
 	while (c[i] != '\0' && c[i] != ' ' && c[i] != '\t' && c[i] != 12)
 	{
 		if (c[i] == '\"')
 		{
 			i++;
 			while (c[i] && c[i] != '\"')
-			{
-				i++;
-				j++;
-			}
+				ft_plus(&i, &j);
 			if (c[i])
 				i++;
 			continue ;
@@ -839,16 +832,12 @@ size_t	ft_strlencote(const char *c)
 		{
 			i++;
 			while (c[i] && c[i] != '\'')
-			{
-				i++;
-				j++;
-			}
+				ft_plus(&i, &j);
 			if (c[i])
 				i++;
 			continue ;
 		}
-		j++;
-		i++;
+		ft_plus(&i, &j);
 	}
 	return (j);
 }
@@ -864,8 +853,8 @@ char	*ft_cote2(const char *src)
 		return (NULL);
 	i = 0;
 	l = 0;
-	j = ((dest = (char *)malloc(ft_strlencote((char *)src) * sizeof(const char)
-					+ 1)));
+	j = ((dest = (char *)malloc(ft_strlencote((char *)src, 0, 0)
+					* sizeof(const char) + 1)));
 	if (!j)
 		return (0);
 	while (src[i] && src[i] != ' ' && src[i] != '\t' && src[i] != 12)
@@ -1088,25 +1077,3 @@ int	main(int argc, char **argv, char **env)
 		freestack_3(&last_table);
 	}
 }
-
-// i = count_of_outfile(split);
-// while (i > 0)
-// {
-// 	table = ft_make(table, split);
-// 	i--;
-// }
-// table->input = table_fixer(split);
-// lf_outfile(split, 0);
-// printf("%s\n", table->input);
-// while (table)
-// {
-// 	printf("%s\n", table->output);
-// 	table = table->next;
-// }
-
-// while(table)
-// {
-// 	printf("%i\n", table->index);
-// 	printf("%s\n", table->arg);
-// 	table = table->next;
-// }
