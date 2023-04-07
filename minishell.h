@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/06 14:54:41 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/07 15:10:43 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include <fcntl.h>
+# include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
@@ -21,7 +22,6 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
-# include <limits.h>
 
 typedef struct a_Cammand_Table3
 {
@@ -49,6 +49,15 @@ typedef struct a_Command_Table2
 	int						n;
 	int						k;
 }							t_Command_Table2;
+
+typedef struct a_int
+{
+	int						i;
+	int						j;
+	int						k;
+	int						z;
+	char					*new2;
+}							t_int;
 //---------------------------------------zbentale--------------------------------
 typedef struct NODE
 {
@@ -100,7 +109,7 @@ void						ft_putstr_fd(char *s, int fd);
 void						ft_putnbr_fd(int n, int fd);
 int							ft_isdigit(int c);
 int							ft_isalpha(int c);
-int							ft_checkcote(char *str, int j);
+int							ft_checkcote(char *str, int j, int i, int k);
 int							ft_isalnum(int c);
 int							ft_strncmp(const char *s1, const char *s2,
 								size_t n);
@@ -109,8 +118,10 @@ char						*ft_strjoin(char *s1, char *s2, int count);
 void						make_node(envp **st, char *str);
 char						*ft_strdupZ(const char *s1);
 void						ft_putchar_fd(char c, int fd);
-void						shell_with_pipes(t_Command_Table3 *table,
-								char **env, t_pipex *pipex, envp **envp1);
+void	shell_with_pipes(t_Command_Table3 *table,
+						char **env,
+						t_pipex *pipex,
+						envp **envp1);
 char						*ft_strjoin2(char *s1, char const *s2);
 void						printnodeenv(envp *str);
 char						*ft_strplusequal(char *str, int k);
@@ -121,11 +132,11 @@ char						*ft_strjoin3(char *s1, char *s2);
 char						*heredocwhile(char **heredoc);
 char						*heredocstring(char *delimiter);
 char						*ft_getenv(envp *env, char *str);
-void                        ft_exit(int exit_code);
-int	                        ft_atoi(const char *str);
-int                         ft_isdigit1(char *str);
+void						ft_exit(int exit_code);
+int							ft_atoi(const char *str);
+int							ft_isdigit1(char *str);
 //------------------------------------zbentalh---------------------------------------
-void						ft_lstadd_back1(t_Command_Table **lst,
+void	ft_lstadd_back1(t_Command_Table **lst,
 						t_Command_Table *new);
 t_Command_Table3			*make_last(t_Command_Table *table);
 t_Command_Table				*ft_lst(char **new, int *i, t_Command_Table2 *w);
@@ -133,14 +144,15 @@ char						**ft_split(char const *s, char c);
 int							ft_make(t_Command_Table **a, char **new,
 								t_Command_Table2 *w);
 char						*table_fixer_two(char **new);
-t_Command_Table3			*ft_make_last(t_Command_Table **a,
-								t_Command_Table3 *table, int *k);
+t_Command_Table3	*ft_make_last(t_Command_Table **a,
+								t_Command_Table3 *table,
+								int *k);
 int							count(t_Command_Table3 *table);
 void						ft_free(char **str);
 int							syntax_help(char *r);
 char						*ft_itoa(int n);
 char						*ft_en(char *arg, envp *env, int g);
-								// g != 1 for heredoc;
+// g != 1 for heredoc;
 int							check_all(char *new);
 int							ft_check_syntax_2_cnt(char *new, int i, int j);
 #endif

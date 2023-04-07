@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/06 21:47:05 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/07 15:34:07 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,128 +51,22 @@ char	**arg(char **str, int i, int j)
 	return (ft_free(str), arg);
 }
 
-// int	count_of_outfile(char **new)
-// {
-// 	int	i;
-// 	int	j;
-
-// 	i = 0;
-// 	j = 0;
-// 	while (new[i])
-// 	{
-// 		if (new[i][0] == '>' && new[i][1] == '\0')
-// 			j++;
-// 		i++;
-// 	}
-// 	return (j);
-// }
-
-// int	lf_infile(char **new)
-// {
-// 	int	i;
-// 	int	j;
-
-// 	i = 0;
-// 	j = -1;
-// 	while (new[i])
-// 	{
-// 		if (new[i][0] == '<' && new[i][1] == '\0')
-// 			j = i;
-// 		i++;
-// 	}
-// 	return (j);
-// }
-
-// int	lf_outfile(char **new, int k)
-// {
-// 	static int	i;
-// 	int			j;
-
-// 	j = -1;
-// 	if (k == 0)
-// 	{
-// 		i = 0;
-// 		return (0);
-// 	}
-// 	while (new[i])
-// 	{
-// 		if (new[i][0] == '>' && new[i][1] == '\0')
-// 		{
-// 			j = i;
-// 			i++;
-// 			break ;
-// 		}
-// 		i++;
-// 	}
-// 	return (j);
-// }
-
-// int	count_infile(char **new, int i, int j)
-// {
-// 	int	z;
-
-// 	z = j;
-// 	while (new[i + 1][j] && new[i + 1][j] != ' ' && new[i + 1][j] != '\t')
-// 		j++;
-// 	j = j - z;
-// 	return (j);
-// }
-
-// char	*table_fixer(char **new)
-// {
-// 	int		i;
-// 	int		j;
-// 	int		k;
-// 	char	*table;
-
-// 	k = 0;
-// 	i = lf_infile(new);
-// 	j = 0;
-// 	if (i == -1)
-// 	{
-// 		table = malloc(1);
-// 		table[k] = '\0';
-// 		return (table);
-// 	}
-// 	while (new[i + 1][j] && (new[i + 1][j] == ' ' || new[i + 1][j] == '\t'
-// 			|| new[i + 1][j] == 12))
-// 		j++;
-// 	table = malloc(sizeof(char) * (count_infile(new, i, j) + 1));
-// 	while (new[i + 1][j] && new[i + 1][j] != ' ' && new[i + 1][j] != '\t')
-// 		table[k++] = new[i + 1][j++];
-// 	table[k] = '\0';
-// 	return (table);
-// }
-
-// char	*table_fixer_two(char **new)
-// {
-// 	int		i;
-// 	int		j;
-// 	int		k;
-// 	char	*outfile;
-
-// 	k = 0;
-// 	i = lf_outfile(new, 1);
-// 	j = 0;
-// 	if (i == -1)
-// 	{
-// 		outfile = malloc(1);
-// 		outfile[k] = '\0';
-// 		return (outfile);
-// 	}
-// 	while (new[i + 1][j] == ' ' || new[i + 1][j] == '\t' || new[i + 1][j] == 12)
-// 		j++;
-// 	outfile = malloc(sizeof(char) * (count_infile(new, i, j) + 1));
-// 	while (new[i + 1][j] && new[i + 1][j] != ' ' && new[i + 1][j] != '\t')
-// 		outfile[k++] = new[i + 1][j++];
-// 	outfile[k] = '\0';
-// 	return (outfile);
-// }
-
 void	ft_plus(size_t *i, size_t *j)
 {
 	*i = *i + 1;
 	*j = *j + 1;
+}
+
+void	ft_plusi(int *i, int *j)
+{
+	*i = *i + 1;
+	*j = *j + 1;
+}
+
+void	ft_plus2(int *i, int *j)
+{
+	*i = *i + 2;
+	*j = *j + 2;
 }
 
 void	ft_plus3(size_t *i, size_t *j)
@@ -219,6 +113,96 @@ size_t	new_count(char *new, size_t k)
 	return (j);
 }
 
+char	*char_plus_2cote(char *str, char *new, int *i, int *j)
+{
+	new[*j] = str[*i];
+	*j = *j + 1;
+	*i = *i + 1;
+	while (str[*i] && str[*i] != '\"')
+	{
+		new[*j] = str[*i];
+		*j = *j + 1;
+		*i = *i + 1;
+	}
+	new[*j] = str[*i];
+	*j = *j + 1;
+	*i = *i + 1;
+	return (new);
+}
+
+char	*char_plus_1cote(char *str, char *new, int *i, int *j)
+{
+	new[*j] = str[*i];
+	*j = *j + 1;
+	*i = *i + 1;
+	while (str[*i] && str[*i] != '\'')
+	{
+		new[*j] = str[*i];
+		*j = *j + 1;
+		*i = *i + 1;
+	}
+	new[*j] = str[*i];
+	*j = *j + 1;
+	*i = *i + 1;
+	return (new);
+}
+
+char	*char_plus_outfile(char *str, char *new, int *i, int *j)
+{
+	new[*j] = 12;
+	*j = *j + 1;
+	new[*j] = str[*i];
+	*j = *j + 1;
+	*i = *i + 1;
+	new[*j] = 12;
+	*j = *j + 1;
+	return (new);
+}
+
+char	*char_plus_heredoc(char *str, char *new, int *i, int *j)
+{
+	new[*j] = 12;
+	*j = *j + 1;
+	new[*j] = str[*i];
+	*j = *j + 1;
+	*i = *i + 1;
+	new[*j] = str[*i];
+	*j = *j + 1;
+	*i = *i + 1;
+	new[*j] = 12;
+	*j = *j + 1;
+	return (new);
+}
+
+char	*char_plus(char *str, char *new, int *i, int *j)
+{
+	new[*j] = str[*i];
+	*j = *j + 1;
+	*i = *i + 1;
+	return (new);
+}
+
+char	*new_all(char *new, char *new_new, int *i, int *j)
+{
+	if (new[*i] == '\"')
+		new_new = char_plus_2cote(new, new_new, i, j);
+	if (new[*i] == '\'')
+		new_new = char_plus_1cote(new, new_new, i, j);
+	if (new[*i] == '<' && new[*i + 1] != '<')
+		new_new = char_plus_outfile(new, new_new, i, j);
+	else if (new[*i] == '>' && new[*i + 1] != '>')
+		new_new = char_plus_outfile(new, new_new, i, j);
+	else if (new[*i] == '<' && new[*i + 1] == '<')
+		new_new = char_plus_heredoc(new, new_new, i, j);
+	else if (new[*i] == '>' && new[*i + 1] == '>')
+		new_new = char_plus_heredoc(new, new_new, i, j);
+	else if (new[*i] == '|')
+		new_new = char_plus_outfile(new, new_new, i, j);
+	else
+		new_new = char_plus(new, new_new, i, j);
+	return (new_new);
+}
+
 char	*new_new(char *new, int k)
 {
 	int		i;
@@ -231,63 +215,7 @@ char	*new_new(char *new, int k)
 	i = 0;
 	j = 0;
 	while (new[i] && i <= k)
-	{
-		if (new[i] == '\"')
-		{
-			new_new[j++] = new[i++];
-			while (new[i] && new[i] != '\"')
-				new_new[j++] = new[i++];
-		}
-		if (new[i] == '\'')
-		{
-			new_new[j++] = new[i++];
-			while (new[i] && new[i] != '\'')
-				new_new[j++] = new[i++];
-		}
-		if (new[i] == '<' && new[i + 1] != '<')
-		{
-			new_new[j] = 12;
-			new_new[++j] = new[i++];
-			new_new[++j] = 12;
-			j++;
-		}
-		else if (new[i] == '>' && new[i + 1] != '>')
-		{
-			new_new[j] = 12;
-			new_new[++j] = new[i++];
-			new_new[++j] = 12;
-			j++;
-		}
-		else if (new[i] == '<' && new[i + 1] == '<')
-		{
-			new_new[j] = 12;
-			new_new[++j] = new[i++];
-			new_new[++j] = new[i++];
-			new_new[++j] = 12;
-			j++;
-		}
-		else if (new[i] == '>' && new[i + 1] == '>')
-		{
-			new_new[j] = 12;
-			new_new[++j] = new[i++];
-			new_new[++j] = new[i++];
-			new_new[++j] = 12;
-			j++;
-		}
-		else if (new[i] == '|')
-		{
-			new_new[j] = 12;
-			new_new[++j] = new[i++];
-			new_new[++j] = 12;
-			j++;
-		}
-		else
-		{
-			new_new[j] = new[i];
-			j++;
-			i++;
-		}
-	}
+		new_new = new_all(new, new_new, &i, &j);
 	new_new[j] = '\0';
 	free(new);
 	return (new_new);
@@ -326,7 +254,6 @@ void	sigint_handler(int sig)
 
 	i = 0;
 	(void)sig;
-	//write(1, "\nminishell$", 12);
 	write(1, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
@@ -338,13 +265,10 @@ void	sigint_handler(int sig)
 		i++;
 	}
 	if (g_globale.idheredok != 0)
-    {
-        g_globale.exit_child = 1;
-        kill(g_globale.idheredok, SIGINT);
-    }
-		
-	//exit(0);
-	//kill(0, SIGINT);
+	{
+		g_globale.exit_child = 1;
+		kill(g_globale.idheredok, SIGINT);
+	}
 }
 
 void	sigquit_handler(int sig)
@@ -353,9 +277,8 @@ void	sigquit_handler(int sig)
 	rl_on_new_line();
 	rl_redisplay();
 	return ;
-	//write(1, "exit\n", 4);
-	//exit(0);
 }
+
 void	freestack(t_Command_Table **stack)
 {
 	t_Command_Table	*temp;
@@ -446,7 +369,6 @@ int	ft_strcmpedit2(char *s1, char *s2, size_t j)
 	size_t	i;
 
 	i = 0;
-	//printf("s1 : %s s2: %s \n ",s1,s2);
 	while ((s1[i] != '=' || s2[i] != '=') && (s1[i] != '\0' || s2[i] != '\0')
 		&& (s1[i] != '=' || s2[i] != '\0') && (s1[i] != '\0' || s2[i] != '=')
 		&& i < j)
@@ -462,142 +384,131 @@ int	ft_strcmpedit2(char *s1, char *s2, size_t j)
 	return (-1);
 }
 
+t_int	ft_initint(void)
+{
+	t_int	w;
+
+	w.i = 0;
+	w.j = 0;
+	w.k = 0;
+	w.z = 0;
+	w.new2 = NULL;
+	return (w);
+}
+
+void	ft_env_cote(char *arg, int *i, int *j)
+{
+	ft_plusi(i, j);
+	while (arg[*i] && arg[*i] != '\'')
+		ft_plusi(i, j);
+	ft_plusi(i, j);
+}
+
+void	ft_env_norm(char *arg, char *new, t_int *w)
+{
+	w->z = ft_is_ad(arg + w->i + 1);
+	new = ft_itoa(g_globale.exit_child);
+	w->j = w->j + ft_strlen3(new);
+	free(new);
+	w->i = w->i + 2;
+	w->k = 0;
+}
+
+void	ft_env_norm2(envp *tmp, char *arg, char *new, t_int *w)
+{
+	while (tmp)
+	{
+		if (arg[w->i + 1] == '?')
+		{
+			ft_env_norm(arg, new, w);
+			break ;
+		}
+		if (ft_strcmpedit2(arg + w->i + 1, tmp->str, ft_is_ad(arg + w->i
+					+ 1)) == 0)
+		{
+			w->z = ft_is_ad(arg + w->i + 1);
+			new = ft_strplusequal(tmp->str, 0);
+			w->j = w->j + ft_strlen3(new);
+			free(new);
+			w->i++;
+			w->k = 0;
+			while (arg[w->i] && w->k < w->z)
+				ft_plusi(&w->k, &w->i);
+			break ;
+		}
+		tmp = tmp->next;
+	}
+}
+
+void	ft_env_norm3(char *arg, t_int *w)
+{
+	w->i++;
+	while (arg[w->i] && arg[w->i] != ' ' && arg[w->i] != '\t'
+		&& arg[w->i] != '\n' && arg[w->i] != '$' && char_is_ad(arg[w->i]) == 0)
+		w->i++;
+}
+
+void	ft_env_norm4(char *arg, t_int *w)
+{
+	while (arg[w->i] && arg[w->i] != ' ' && arg[w->i] != '\t'
+		&& arg[w->i] != '\n' && arg[w->i] != '$')
+		w->i++;
+}
+
+void	ft_env_norm5(char *arg, char *new, envp *tmp, t_int *w)
+{
+	w->k = 0;
+	w->z = 0;
+	ft_env_norm2(tmp, arg, new, w);
+	if (arg[w->i] == '$' && arg[w->i + 1] == '\0')
+		ft_plusi(&w->i, &w->j);
+	else if (arg[w->i] == '$' && arg[w->i + 1] == '$')
+		w->i = w->i + 2;
+	else if ((arg[w->i] == '$' && arg[w->i + 1] == '+') || (arg[w->i] == '$'
+				&& arg[w->i + 1] == '.') || (arg[w->i] == '$' && arg[w->i
+				+ 1] == ','))
+		ft_plus2(&w->i, &w->j);
+	else if (w->z == 0 && arg[w->i] != '$' && arg[w->i + 1] != '\0' && arg[w->i
+			+ 1] != ' ' && arg[w->i + 1] != '\t' && arg[w->i + 1] != '\n'
+			&& arg[w->i + 1] != '$')
+		ft_env_norm4(arg, w);
+	else if (w->z == 0 && arg[w->i] == '$' && char_is_ad(arg[w->i + 1]) == 0)
+		ft_env_norm3(arg, w);
+	else if (w->z == 0 && arg[w->i] == '$')
+		ft_plusi(&w->i, &w->j);
+	else if (arg[w->i] && arg[w->i] == '$' && arg[w->i + 1] == '$')
+		ft_plusi(&w->i, &w->j);
+	else if (arg[w->i] && arg[w->i] == '$' && arg[w->i + 1] == '\0')
+		ft_plusi(&w->i, &w->j);
+	else if (w->z == 0 && arg[w->i] == '$')
+		ft_plusi(&w->i, &w->j);
+}
+
 int	ft_env_count(char *arg, envp *env, int g)
 {
-	int		i;
-	int		j;
-	int		k;
-	int		z;
+	t_int	w;
 	char	*new;
 	envp	*tmp;
 
-	i = 0;
-	j = 0;
-	while (arg[i])
+	new = NULL;
+	w = ft_initint();
+	while (arg[w.i])
 	{
 		tmp = env;
-		if (arg[i] == '\'' && ft_checkcote(arg, i) == 1 && g == 1)
-		{
-			i++;
-			j++;
-			while (arg[i] && arg[i] != '\'')
-			{
-				i++;
-				j++;
-			}
-			i++;
-			j++;
-			continue ;
-		}
-		if (arg[i] == '$')
-		{
-			k = 0;
-			z = 0;
-			while (tmp)
-			{
-				if (arg[i + 1] == '?')
-				{
-					z = ft_is_ad(arg + i + 1);
-					new = ft_itoa(g_globale.exit_child);
-					j = j + ft_strlen3(new);
-					free(new);
-					i = i + 2;
-					k = 0;
-					break ;
-				}
-				if (ft_strcmpedit2(arg + i + 1, tmp->str, ft_is_ad(arg + i
-							+ 1)) == 0)
-				{
-					z = ft_is_ad(arg + i + 1);
-					new = ft_strplusequal(tmp->str, 0);
-					j = j + ft_strlen3(new);
-					free(new);
-					i++;
-					k = 0;
-					while (arg[i] && k < z)
-					{
-						k++;
-						i++;
-					}
-					break ;
-				}
-				tmp = tmp->next;
-			}
-			if (arg[i] == '$' && arg[i + 1] == '\0')
-			{
-				i++;
-				j++;
-			}
-			else if (arg[i] == '$' && arg[i + 1] == '$')
-			{
-				i = i + 2;
-				continue ;
-			}
-			else if ((arg[i] == '$' && arg[i + 1] == '+') || (arg[i] == '$'
-						&& arg[i + 1] == '.') || (arg[i] == '$' && arg[i
-						+ 1] == ','))
-			{
-				i = i + 2;
-				j = j + 2;
-			}
-			else if (z == 0 && arg[i] != '$' && arg[i + 1] != '\0' && arg[i
-					+ 1] != ' ' && arg[i + 1] != '\t' && arg[i + 1] != '\n'
-					&& arg[i + 1] != '$')
-			{
-				while (arg[i] && arg[i] != ' ' && arg[i] != '\t'
-					&& arg[i] != '\n' && arg[i] != '$')
-					i++;
-			}
-			else if (z == 0 && arg[i] == '$' && char_is_ad(arg[i + 1]) == 0)
-			{
-				i++;
-				while (arg[i] && arg[i] != ' ' && arg[i] != '\t'
-					&& arg[i] != '\n' && arg[i] != '$'
-					&& char_is_ad(arg[i]) == 0)
-					i++;
-			}
-			else if (z == 0 && arg[i] == '$')
-			{
-				i++;
-				j++;
-				continue ;
-			}
-		}
-		if (arg[i] && arg[i] != '$')
-		{
-			j++;
-			i++;
-		}
-		else if (arg[i] && arg[i] == '$' && arg[i + 1] == '$')
-		{
-			i++;
-			j++;
-		}
-		else if (arg[i] && arg[i] == '$' && arg[i + 1] == '\0')
-		{
-			i++;
-			j++;
-		}
-		else if (arg[i] && arg[i] == '$' && arg[i + 1] != '\0')
-			continue ;
-		else if (z == 0 && arg[i] == '$')
-		{
-			j++;
-			i++;
-		}
+		if (arg[w.i] == '\'' && ft_checkcote(arg, w.i, 0, 0) == 1 && g == 1)
+			ft_env_cote(arg, &w.i, &w.j);
+		else if (arg[w.i] == '$')
+			ft_env_norm5(arg, new, tmp, &w);
+		else if (arg[w.i] && arg[w.i] != '$')
+			ft_plusi(&w.i, &w.j);
 		else
 			break ;
 	}
-	return (j);
+	return (w.j);
 }
 
-int	ft_checkcote(char *str, int j)
+int	ft_checkcote(char *str, int j, int i, int k)
 {
-	int	i;
-	int	k;
-
-	i = 0;
-	k = 0;
 	while (str[i] && i < j)
 	{
 		if (str[i] == '\'')
@@ -607,22 +518,17 @@ int	ft_checkcote(char *str, int j)
 				i++;
 			if (str[i] && i < j)
 				i++;
-			continue ;
 		}
-		if (str[i] == '"')
+		else if (str[i] == '"')
 		{
-			i++;
-			k++;
+			ft_plusi(&k, &i);
 			while (str[i] && str[i] != '"' && i < j)
 				i++;
 			if (str[i] && i < j)
-			{
-				k++;
-				i++;
-			}
-			continue ;
+				ft_plusi(&k, &i);
 		}
-		i++;
+		else
+			i++;
 	}
 	if (k % 2 == 0)
 		return (1);
@@ -671,131 +577,115 @@ char	*ft_itoa(int n)
 	return (str);
 }
 
+char	*ft_en_cote(char *arg, char *new, t_int *w)
+{
+	new[w->j++] = arg[w->i++];
+	while (arg[w->i] && arg[w->i] != '\'')
+		new[w->j++] = arg[w->i++];
+	new[w->j++] = arg[w->i++];
+	return (new);
+}
+
+char	*ft_en_norm(char *arg, char *new, char *new2, t_int *w)
+{
+	w->z = ft_is_ad(arg + w->i + 1);
+	new2 = ft_itoa(g_globale.exit_child);
+	while (new2[w->k])
+		new[w->j++] = new2[w->k++];
+	free(new2);
+	w->i = w->i + 2;
+	w->k = 0;
+	return (new);
+}
+
+char	*ft_en_norm2(envp *tmp, char *arg, char *new, t_int *w)
+{
+	while (tmp)
+	{
+		if (arg[w->i + 1] == '?')
+		{
+			new = ft_en_norm(arg, new, w->new2, w);
+			break ;
+		}
+		if (ft_strcmpedit2(arg + w->i + 1, tmp->str, ft_is_ad(arg + w->i
+					+ 1)) == 0)
+		{
+			w->z = ft_is_ad(arg + w->i + 1);
+			w->new2 = ft_strplusequal(tmp->str, 0);
+			while (w->new2[w->k])
+				new[w->j++] = w->new2[w->k++];
+			free(w->new2);
+			w->i++;
+			w->k = 0;
+			while (arg[w->i] && w->k < w->z)
+				ft_plusi(&w->i, &w->k);
+			break ;
+		}
+		tmp = tmp->next;
+	}
+	return (new);
+}
+
+char	*ft_en_norm3(char *arg, char *new, t_int *w)
+{
+	new[w->j++] = arg[w->i++];
+	new[w->j++] = arg[w->i++];
+	return (new);
+}
+
+char	*ft_en_norm4(char *arg, char *new, envp *tmp, t_int *w)
+{
+	new = ft_en_norm2(tmp, arg, new, w);
+	if (arg[w->i] == '$' && arg[w->i + 1] == '\0')
+		new[w->j++] = arg[w->i++];
+	else if (arg[w->i] == '$' && arg[w->i + 1] == '$')
+		w->i = w->i + 2;
+	else if ((arg[w->i] == '$' && arg[w->i + 1] == '+') || (arg[w->i] == '$'
+				&& arg[w->i + 1] == '.') || (arg[w->i] == '$' && arg[w->i
+				+ 1] == ','))
+		new = ft_en_norm3(arg, new, w);
+	else if (w->z == 0 && arg[w->i] != '$' && arg[w->i + 1] != '\0' && arg[w->i
+			+ 1] != ' ' && arg[w->i + 1] != '\t' && arg[w->i + 1] != '\n'
+			&& arg[w->i + 1] != '$')
+		ft_env_norm4(arg, w);
+	else if (w->z == 0 && arg[w->i] == '$' && char_is_ad(arg[w->i + 1]) == 0)
+		ft_env_norm3(arg, w);
+	else if (w->z == 0 && arg[w->i] == '$')
+		new[w->j++] = arg[w->i++];
+	else if (arg[w->i] && arg[w->i] == '$' && arg[w->i + 1] == '$')
+		new[w->j++] = arg[w->i++];
+	else if (arg[w->i] && arg[w->i] == '$' && arg[w->i + 1] == '\0')
+		new[w->j++] = arg[w->i++];
+	else if (w->z == 0 && arg[w->i] == '$')
+		new[w->j++] = arg[w->i++];
+	return (new);
+}
+
 char	*ft_en(char *arg, envp *env, int g)
 {
-	int		i;
-	int		j;
-	int		k;
-	int		z;
+	t_int	w;
 	envp	*tmp;
-	char	*new2;
 	char	*new;
 
 	new = malloc(sizeof(char) * ft_env_count(arg, env, g) + 1);
-	//printf("%d\n",ft_env_count(arg,env,g));
-	i = 0;
-	j = 0;
-	k = 0;
-	while (arg[i])
+	w = ft_initint();
+	while (arg[w.i])
 	{
-		//printf("--%i--%c---->%c\n",i,arg[i],arg[i + 1]);
 		tmp = env;
-		if (arg[i] == '\'' && ft_checkcote(arg, i) == 1 && g == 1)
+		if (arg[w.i] == '\'' && ft_checkcote(arg, w.i, 0, 0) == 1 && g == 1)
+			new = ft_en_cote(arg, new, &w);
+		else if (arg[w.i] == '$')
 		{
-			new[j++] = arg[i++];
-			while (arg[i] && arg[i] != '\'')
-				new[j++] = arg[i++];
-			new[j++] = arg[i++];
-			continue ;
+			w.k = 0;
+			w.z = 0;
+			new = ft_en_norm4(arg, new, tmp, &w);
 		}
-		if (arg[i] == '$')
-		{
-			k = 0;
-			z = 0;
-			while (tmp)
-			{
-				if (arg[i + 1] == '?')
-				{
-					z = ft_is_ad(arg + i + 1);
-					new2 = ft_itoa(g_globale.exit_child);
-					while (new2[k])
-						new[j++] = new2[k++];
-					free(new2);
-					i = i + 2;
-					k = 0;
-					break ;
-				}
-				else if (ft_strcmpedit2(arg + i + 1, tmp->str, ft_is_ad(arg + i
-								+ 1)) == 0)
-				{
-					z = ft_is_ad(arg + i + 1);
-					new2 = ft_strplusequal(tmp->str, 0);
-					while (new2[k])
-						new[j++] = new2[k++];
-					free(new2);
-					i++;
-					k = 0;
-					while (arg[i] && k < z)
-					{
-						k++;
-						i++;
-					}
-					break ;
-				}
-				tmp = tmp->next;
-			}
-			if (arg[i] == '\'' && ft_checkcote(arg, i) == 1 && g == 1)
-			{
-				new[j++] = arg[i++];
-				while (arg[i] && arg[i] != '\'')
-					new[j++] = arg[i++];
-				new[j++] = arg[i++];
-				continue ;
-			}
-			if (arg[i] == '$' && arg[i + 1] == '\0')
-				new[j++] = arg[i++];
-			else if (arg[i] == '$' && arg[i + 1] == '$')
-			{
-				i = i + 2;
-				continue ;
-			}
-			else if ((arg[i] == '$' && arg[i + 1] == '+') || (arg[i] == '$'
-						&& arg[i + 1] == '.') || (arg[i] == '$' && arg[i
-						+ 1] == ','))
-			{
-				new[j++] = arg[i++];
-				new[j++] = arg[i++];
-			}
-			else if (z == 0 && arg[i] != '$' && arg[i + 1] != '\0' && arg[i
-					+ 1] != ' ' && arg[i + 1] != '\t' && arg[i + 1] != '\n'
-					&& arg[i + 1] != '$')
-			{
-				while (arg[i] && arg[i] != ' ' && arg[i] != '\t'
-					&& arg[i] != '\n' && arg[i] != '$')
-					i++;
-			}
-			else if (z == 0 && arg[i] == '$' && char_is_ad(arg[i + 1]) == 0)
-			{
-				i++;
-				while (arg[i] && arg[i] != ' ' && arg[i] != '\t'
-					&& arg[i] != '\n' && arg[i] != '$'
-					&& char_is_ad(arg[i]) == 0)
-					i++;
-			}
-			else if (z == 0 && arg[i] == '$')
-			{
-				new[j++] = arg[i++];
-				continue ;
-			}
-		}
-		if (arg[i] && arg[i] != '$')
-		{
-			new[j++] = arg[i++];
-		}
-		else if (arg[i] && arg[i] == '$' && arg[i + 1] == '$')
-			new[j++] = arg[i++];
-		else if (arg[i] && arg[i] == '$' && arg[i + 1] == '\0')
-			new[j++] = arg[i++];
-		else if (arg[i] && arg[i] == '$' && arg[i + 1] != '\0')
-			continue ;
-		else if (z == 0 && arg[i] == '$')
-		{
-			new[j++] = arg[i++];
-		}
+		else if (arg[w.i] && arg[w.i] != '$')
+			new[w.j++] = arg[w.i++];
 		else
 			break ;
 	}
-	new[j] = '\0';
+	new[w.j] = '\0';
 	free(arg);
 	return (new);
 }
@@ -846,55 +736,43 @@ size_t	ft_strlencote(const char *c, size_t i, size_t j)
 	return (j);
 }
 
-char	*ft_cote2(const char *src)
+char	*ft_cote2_norm(char *dest, char *src, int *i, int *l)
 {
-	int		i;
-	int		l;
+	while (src[*i] && src[*i] != ' ' && src[*i] != '\t' && src[*i] != 12)
+	{
+		if (src[*i] == '\"' && src[*i + 1])
+		{
+			(*i)++;
+			while (src[*i] && src[*i] != '\"')
+				dest[(*l)++] = src[(*i)++];
+			if (src[*i] == '\0')
+				break ;
+			(*i)++;
+		}
+		else if (src[*i] == '\'' && src[*i + 1])
+		{
+			(*i)++;
+			while (src[*i] && src[*i] != '\'')
+				dest[(*l)++] = src[(*i)++];
+			if (src[*i] == '\0')
+				break ;
+			(*i)++;
+		}
+		else
+			dest[(*l)++] = src[(*i)++];
+	}
+	return (dest);
+}
+
+char	*ft_cote2(const char *src, int i, int l)
+{
 	char	*dest;
-	char	*j;
 
 	if (src == NULL)
 		return (NULL);
-	i = 0;
-	l = 0;
-	j = ((dest = (char *)malloc(ft_strlencote((char *)src, 0, 0)
-					* sizeof(const char) + 1)));
-	if (!j)
-		return (0);
-	while (src[i] && src[i] != ' ' && src[i] != '\t' && src[i] != 12)
-	{
-		if (src[i] == '\"' && src[i + 1])
-		{
-			i++;
-			while (src[i] && src[i] != '\"')
-			{
-				dest[l] = src[i];
-				i++;
-				l++;
-			}
-			if (src[i] == '\0')
-				break ;
-			i++;
-			continue ;
-		}
-		if (src[i] == '\'' && src[i + 1])
-		{
-			i++;
-			while (src[i] && src[i] != '\'')
-			{
-				dest[l] = src[i];
-				i++;
-				l++;
-			}
-			if (src[i] == '\0')
-				break ;
-			i++;
-			continue ;
-		}
-		dest[l] = src[i];
-		i++;
-		l++;
-	}
+	dest = (char *)malloc(ft_strlencote((char *)src, 0, 0) * sizeof(const char)
+			+ 1);
+	dest = ft_cote2_norm(dest, (char *)src, &i, &l);
 	dest[l] = '\0';
 	return (dest);
 }
@@ -907,7 +785,7 @@ t_Command_Table	*ft_cote(t_Command_Table *table)
 	tmp = table;
 	while (tmp)
 	{
-		new = ft_cote2(tmp->arg);
+		new = ft_cote2(tmp->arg, 0, 0);
 		free(tmp->arg);
 		tmp->arg = new;
 		tmp = tmp->next;
@@ -967,18 +845,18 @@ t_Command_Table3	*ft_all(envp *env)
 	t_Command_Table2	w;
 	t_Command_Table3	*last_table;
 	t_Command_Table3	*tmp;
-    struct termios term;
-    struct termios oldterm;
+	struct termios		term;
+	struct termios		oldterm;
 
 	k = 0;
 	i = 0;
-    tcgetattr(0, &term);
-    oldterm = term;
-    term.c_lflag &= ~ECHOCTL;
+	tcgetattr(0, &term);
+	oldterm = term;
+	term.c_lflag &= ~ECHOCTL;
 	table = NULL;
 	tcsetattr(0, TCSANOW, &term);
 	new = readline("minishell$ ");
-    tcsetattr(0, TCSANOW, &oldterm);
+	tcsetattr(0, TCSANOW, &oldterm);
 	if (!new)
 		(write(1, "exit\n", 5), exit(g_globale.exit_child));
 	add_history(new);
