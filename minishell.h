@@ -6,7 +6,7 @@
 /*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/07 15:10:43 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/07 17:38:32 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ int							ft_isdigit1(char *str);
 //------------------------------------zbentalh---------------------------------------
 void	ft_lstadd_back1(t_Command_Table **lst,
 						t_Command_Table *new);
-t_Command_Table3			*make_last(t_Command_Table *table);
+t_Command_Table3			*make_last(t_Command_Table *table, int i, int j);
 t_Command_Table				*ft_lst(char **new, int *i, t_Command_Table2 *w);
 char						**ft_split(char const *s, char c);
 int							ft_make(t_Command_Table **a, char **new,

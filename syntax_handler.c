@@ -6,7 +6,7 @@
 /*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 17:46:12 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/05 21:19:13 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/07 17:27:40 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,25 @@ int	ft_check_syntax_4(char *new, int i)
 	return (-1);
 }
 
+int	ft_check_syntax_5(char *new,int i)
+{
+	int j;
+	while (new[i])
+	{
+		j = i;
+		if (new[i] == '|')
+			i++;
+		{
+			while (new[i] && (new[i] == ' ' || new[i] == '\t' || new[i] == '\n' || new[i] == 12))
+				i++;
+			if (new[i] == '\0' || new[i] == '|')
+				return (j);
+		}
+		i++;
+	}
+	return (-1);
+}
+
 int	check_all(char *new)
 {
 	int	i;
@@ -160,6 +179,11 @@ int	check_all(char *new)
 		return (i);
 	}
 	i = ft_check_syntax_4(new, 0);
+	if (i != -1)
+	{
+		return (i);
+	}
+	i = ft_check_syntax_5(new, 0);
 	if (i != -1)
 	{
 		return (i);
