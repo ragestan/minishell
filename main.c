@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/06 02:09:33 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/06 21:47:05 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -338,7 +338,11 @@ void	sigint_handler(int sig)
 		i++;
 	}
 	if (g_globale.idheredok != 0)
-		kill(g_globale.idheredok, SIGINT);
+    {
+        g_globale.exit_child = 1;
+        kill(g_globale.idheredok, SIGINT);
+    }
+		
 	//exit(0);
 	//kill(0, SIGINT);
 }
@@ -963,11 +967,18 @@ t_Command_Table3	*ft_all(envp *env)
 	t_Command_Table2	w;
 	t_Command_Table3	*last_table;
 	t_Command_Table3	*tmp;
+    struct termios term;
+    struct termios oldterm;
 
 	k = 0;
 	i = 0;
+    tcgetattr(0, &term);
+    oldterm = term;
+    term.c_lflag &= ~ECHOCTL;
 	table = NULL;
+	tcsetattr(0, TCSANOW, &term);
 	new = readline("minishell$ ");
+    tcsetattr(0, TCSANOW, &oldterm);
 	if (!new)
 		(write(1, "exit\n", 5), exit(g_globale.exit_child));
 	add_history(new);
@@ -1049,7 +1060,7 @@ int	main(int argc, char **argv, char **env)
 	r = 0;
 	//int j = 1;
 	//int error = 0;
-	while (env[r] != '\0')
+	while (env[r] != NULL)
 		r++;
 	r -= 2;
 	while (r >= 0)

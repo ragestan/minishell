@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   excute.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:46:46 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/05 21:08:55 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/07 02:39:50 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 		if (pipe(pipes[i]) < 0) 
 		{
 			perror("pipe error");
-			exit(-1);
+			return;
 		}
 		i++;
 	}
@@ -180,7 +180,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 			if (pipe(pipa) < 0)
 			{
 			   perror("pipe error");
-			   exit(-1);
+			   return;
 			}
 			
 			g_globale.idheredok = 0;
@@ -237,18 +237,25 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 		}
 		else if(ft_strncmp(table->args[0], "unset", 6) == 0)
 		{
+            
 			int i = 1;
+            int j = 0;
 			
 			while (table->args[i])
 			{
-				unset(envp1, table->args[i]);
+				j = unset(envp1, table->args[i]);
+                if (j == 1)
+                    g_globale.exit_child = 1;
 				i++;
 			}
+            if ( i == 1)
+                g_globale.exit_child = 0;
             free(g_globale.pid);
 			return;  
 		}
 		else if(ft_strncmp(table->args[0], "export", 7) == 0)
 		{
+            g_globale.exit_child = 0;
 			int i = 1;
 			if(table->args[1] == NULL)
 			{
@@ -257,7 +264,8 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
                 free(g_globale.pid);
 				return;
 			}
-			else{
+			else
+            {
 				while (table->args[i])
 				{
 					export(envp1, table->args[i]);
@@ -289,6 +297,29 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
              free(g_globale.pid);
              g_globale.exit_child = 0;
              return;
+         }
+         else if (ft_strncmp(table->args[0], "exit", 5) == 0)
+         {
+             free(g_globale.pid);
+             printf("exit\n");
+             if(table->args[1] != NULL)
+             {
+                if (table->args[2] != NULL)
+                {
+                    printf("minishell: exit: too many arguments\n");
+                    g_globale.exit_child = 1;
+                    return;
+                }
+                if (ft_isdigit1(table->args[1]) == 0)
+                 g_globale.exit_child = ft_atoi(table->args[1]);
+                else
+                {
+                    printf("minishell: exit: %s: numeric argument required\n", table->args[1]);
+                    g_globale.exit_child = 255;
+                    exit(g_globale.exit_child);
+                }
+             }
+             exit(g_globale.exit_child);
          }
 		
 		g_globale.pid[i] = fork();
@@ -369,18 +400,29 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 		}
 		
 	}
+
 	//multiple pipes
 	else
 	{
 	int k = count(table);
 	int b = 0;
-	
-	if(table->heredoc[0] != NULL)
+    int aka = 0;
+	t_Command_Table3 *table3 = table;
+    while (table3)
+    {
+        if(table3->heredoc[0] != NULL)
+        {
+            aka = 1;
+        }
+        table3 = table3->next;
+    }
+	if(table->heredoc[0] != NULL || aka == 1)
 	{
+        
 		if(pipe(pipa) == -1)
 		{
 			perror("pipe error");
-			exit(-1);
+			return;
 		}
 		
 		g_globale.idheredok = fork();
@@ -393,10 +435,13 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 		{
 			signal(SIGINT, SIG_DFL);
 			t_Command_Table3 *table2 = table;
+           
 			while(table2)
 			{
+                
 				if(table2->heredoc[0] != NULL)
 				{
+                    
 					str = heredocwhile(table2->heredoc);
 				}
 				table2 = table2->next;
@@ -405,6 +450,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 			write(pipa[1], str, ft_strlen3(str));
 			close(pipa[1]);
 			close(pipa[0]);
+            free(str);
 			exit(0);
 		}
 		else
@@ -499,7 +545,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 				dup2(table->infile, STDIN_FILENO);
 				//close(table->infile);
 			}
-			if( *table->heredoc != NULL)
+			if( table->heredoc[0] != NULL)
 			{
 				
 				dup2(pipa[0], STDIN_FILENO);
@@ -571,6 +617,28 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
              ft_pwd();
              
             exit(0);
+         }
+          else if (ft_strncmp(table->args[0], "exit", 5) == 0)
+         {
+             
+             if(table->args[1] != NULL)
+             {
+                if (table->args[2] != NULL)
+                {
+                    printf("minishell: exit: too many arguments\n");
+                    g_globale.exit_child = 1;
+                    exit(1);
+                }
+                 if (ft_isdigit1(table->args[1]) == 0)
+                 g_globale.exit_child = ft_atoi(table->args[1]);
+                else
+                {
+                    printf("minishell: exit: %s: numeric argument required\n", table->args[1]);
+                    g_globale.exit_child = 255;
+                    exit(g_globale.exit_child);
+                }
+             }
+             exit(g_globale.exit_child);
          }
 			if ((table->args[0][0] == '.' || table->args[0][0] == '/') && access(table->args[0], F_OK) == 0)
 			{
@@ -659,6 +727,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 			}
 			
 		}
+        free(g_globale.pid);
 } 
 	// parent process
 	// close all pipes

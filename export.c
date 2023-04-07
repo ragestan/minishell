@@ -377,8 +377,8 @@ char	*ft_strdupedit(const char *s1)
 }
 void export(envp **env1 ,char *str)
 {
-    int error = 0;
-    int x = 0;
+    
+    static int x = 0;
     char *stredit  = NULL;
     int b = 0;
     // static int i = 0;
@@ -391,15 +391,17 @@ void export(envp **env1 ,char *str)
     if(str == NULL)
     {
         printnodeExport(*env1);
+        g_globale.exit_child = 0;
     }
     else
     {
+        
         x = valideinput(str);
         //updt  export data
         if(x == 1)//add all the error char
             {
-                printf("export: `%s': not a valid identifier\n",str);
-                error = 1;
+               printf("export: `%s': not a valid identifier\n",str);
+               g_globale.exit_child = 1;
             }
 
              if ((ft_strserarch(str,'=') == 1) &&  (ft_strnstredit(str) == 0) &&  x == 0)
@@ -416,24 +418,29 @@ void export(envp **env1 ,char *str)
                         ft_lstadd_back(env1,ft_lstnew(str,1));
                     
                     }
+                   
                             
             }
             else if ((ft_strserarch(str,'=') == 1) && (ft_strnstredit(str) == 1) && x == 0)
             {
-                
+                 
                 stredit = ft_strdupedit(str);
+               
                       if(updateenv(*env1,stredit,1) == 1)
-                     {
+                     { 
+                       
                         free(stredit);
                          printf("update2 :%s\n",str);
                          //updt  export data
                      }
-                         else
-                         {
-                                //free(stredit);
-                            ft_lstadd_back(env1,ft_lstnew(stredit,1));
-                         }
-                         
+                    else
+                    {
+                        
+                        ft_lstadd_back(env1,ft_lstnew(stredit,1));
+                        free(stredit);
+                    }
+                    
+                   
             }
             
             else if ((ft_strserarch(str,'=') == 0) && x == 0)
@@ -454,6 +461,8 @@ void export(envp **env1 ,char *str)
                 {
                     printf("jiji\n");
                 }
+                
+                
             }
 
     }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/05 21:16:26 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/06 14:54:41 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
+# include <limits.h>
 
 typedef struct a_Cammand_Table3
 {
@@ -120,6 +121,9 @@ char						*ft_strjoin3(char *s1, char *s2);
 char						*heredocwhile(char **heredoc);
 char						*heredocstring(char *delimiter);
 char						*ft_getenv(envp *env, char *str);
+void                        ft_exit(int exit_code);
+int	                        ft_atoi(const char *str);
+int                         ft_isdigit1(char *str);
 //------------------------------------zbentalh---------------------------------------
 void						ft_lstadd_back1(t_Command_Table **lst,
 						t_Command_Table *new);

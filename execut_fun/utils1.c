@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 11:26:19 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/05 16:03:50 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/06 14:53:22 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,19 @@ int	ft_isdigit(int c)
 	if (c >= 48 && c <= 57)
 		return (1);
 	return (0);
+}
+int ft_isdigit1(char *str)
+{
+    int i;
+
+    i = 0;
+    while(str[i] != '\0')
+    {
+        if(ft_isdigit(str[i]) == 0)
+            return (1);
+        i++;
+    }
+    return (0);
 }
 int	ft_isalpha(int c)
 {
@@ -149,4 +162,32 @@ char	*ft_strjoin2(char *s1, char const *s2)
 	p[i] = '\0';
 	free(s1);
 	return (p);
+}
+int	ft_atoi(const char *str)
+{
+	int					i;
+	int					sign;
+	unsigned long long	result;
+
+	i = 0;
+	sign = 1;
+	result = 0;
+	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			sign *= -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		result = result * 10 + str[i] - '0';
+		if (result > LLONG_MAX && sign == -1)
+			return (0);
+		else if (result > LLONG_MAX && sign == 1)
+			return (-1);
+		i++;
+	}
+	return (result * sign);
 }
