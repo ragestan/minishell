@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 15:24:40 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/02 21:07:17 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/08 00:46:06 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,7 @@ char *heredocstring(char *delimiter)
         free(line);
         line = readline("> ");
     }
+    
     return string;
 }
 char *heredocwhile(char **heredoc)

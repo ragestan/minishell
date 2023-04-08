@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:46:46 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/07 02:39:50 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/08 17:35:48 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,9 +142,13 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 	
 	//num args is the number of arguments in the command you cam get it from the table struct
 	//num pipes is the number of pipes in the command you can get it from the table struct
-	
+	DIR *dir;
+  
+  
+        
 	pipex->paths = NULL;
-	pathfinder(pipex,*envp1);
+	pathfinder(pipex,*envp1); 
+   
 	//printlinkdlist(table);
 	int num_pipes = count(table);
 	 
@@ -173,9 +177,17 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 	}
 	i = 0;
 	if (num_pipes == 0)
-	{
+	{   
+        if ((dir = opendir(table->args[0])) != NULL)
+         {
+         closedir(dir);
+          printf("mini: %s: is a directory\n", table->args[0]);
+          g_globale.exit_child = 126;
+         return;
+         }
 		if(table->heredoc[0] != NULL)
 		{
+          
 			//write(2, "heredoc not supported\n", 22);
 			if (pipe(pipa) < 0)
 			{
@@ -329,6 +341,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 		}
 		else if(g_globale.pid[i] == 0)
 		{
+ 
 			//write in a file
 			if(table->outfile != -2 && table->outfile != -1)
 			{
@@ -357,8 +370,21 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 					write(2, "minishell: ", 11);
 					perror(table->args[0]);
 					exit(126);
-				}
+				} 
+                // else
+                // {
+                // write(2, "minishell: ", 11);
+                // perror(table->args[0]);
+                // exit(127);
+                // }
 			}
+            else if (table->args[0][0] == '.' || table->args[0][0] == '/')
+            {
+                write(2, "minishell: ", 11);
+                perror(table->args[0]);
+                exit(127);
+            }
+           
 			pipex->i = 0;
 			while(pipex->paths && pipex->paths[pipex->i])
 			{
@@ -371,6 +397,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 					
 					if(execve(pipex->paths[pipex->i], table->args, env) == -1)
 					{
+                        
 						perror("execve error");
 						exit(-1);
 					}
@@ -379,7 +406,16 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 				free(pipex->paths[pipex->i - 1]);
 			}
             if(table->args)
-			ft_error1("minishell: command not found: ", table->args[0]);
+            {
+               if(ft_strserarch(table->args[0], '/') == 1)
+                {
+                    ft_error1("minishell: No such file or directory: ", table->args[0]);
+                }
+                else
+                ft_error1("minishell: command not found: ", table->args[0]);
+                
+            }
+			
 		}
 		else
 		{
@@ -535,6 +571,16 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 				}
 			}
 			// execute command
+             if ((dir = opendir(table->args[0])) != NULL)
+            {
+            closedir(dir);
+            
+            write(2, "minishell: is a directory : ", 28);
+            write(2, table->args[0], ft_strlen3(table->args[0]));
+            write(2, "\n", 1);
+            g_globale.exit_child = 126;
+            exit(g_globale.exit_child);
+            }
 			if(table->outfile != -2 && table->outfile != -1)
 			{
 				dup2(table->outfile, STDOUT_FILENO);
@@ -579,6 +625,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 		}
 		else if(ft_strncmp(table->args[0], "export", 7) == 0)
 		{
+            g_globale.exit_child = 0;
 			int i = 1;
 			if(table->args[1] == NULL)
 			{
@@ -640,6 +687,7 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
              }
              exit(g_globale.exit_child);
          }
+         
 			if ((table->args[0][0] == '.' || table->args[0][0] == '/') && access(table->args[0], F_OK) == 0)
 			{
 				if(execve(table->args[0], table->args, env) == -1)
@@ -648,6 +696,13 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 					exit(-1);
 				}
 			}
+            else if (table->args[0][0] == '.' || table->args[0][0] == '/')
+            {
+                write(2, "minishell: ", 11);
+                perror(table->args[0]);
+                g_globale.exit_child = 127;
+                exit(g_globale.exit_child);
+            }
 			pipex->i = 0;
 			while(pipex->paths && pipex->paths[pipex->i])
 			{
@@ -665,7 +720,16 @@ void shell_with_pipes(t_Command_Table3 *table,char **env,t_pipex *pipex,envp **e
 				}
 				pipex->i++;
 			}
-			ft_error1("minishell: command not found: ", table->args[0]);
+            if(table->args)
+            {
+                if(ft_strserarch(table->args[0], '/') == 1)
+                {
+                    ft_error1("minishell: No such file or directory: ", table->args[0]);
+                }
+                else
+                ft_error1("minishell: command not found: ", table->args[0]);
+            }
+			
 			
 			//exit(0);
 		}

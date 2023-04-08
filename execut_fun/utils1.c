@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 11:26:19 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/06 14:53:22 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/08 17:37:39 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	size_t	i;
 
+    if(s1 == NULL || s2 == NULL)
+        return (0);
 	i = 0;
 	while ((i < n) && (s1[i] != '\0' || s2[i] != '\0'))
 	{

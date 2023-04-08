@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/07 17:40:11 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/08 17:43:35 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -836,6 +836,7 @@ char	*ft_strdup3(const char *s1)
 
 t_Command_Table3	*ft_all(envp *env)
 {
+    int g_fork = 0;
 	char				*new;
 	char				*new2;
 	char				**split;
@@ -876,9 +877,20 @@ t_Command_Table3	*ft_all(envp *env)
 				if (split[i + 1])
 				{
 					new = ft_strdup3(split[i + 1]);
-					new2 = heredocstring(new);
-					free(new);
-					free(new2);
+                    g_fork = fork();
+                    if (g_fork == 0)
+                    {
+                        signal(SIGINT, SIG_DFL);
+                        new2 = heredocstring(new);
+                        free(new);
+                        free(new2);
+                        exit(258);
+                    }
+                    else
+                        waitpid(g_fork, NULL, 0);
+					// new2 = heredocstring(new);
+					 free(new);
+					// free(new2);
 				}
 			}
 			i++;

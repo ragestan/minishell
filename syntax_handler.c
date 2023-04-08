@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 17:46:12 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/07 17:27:40 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/07 20:15:57 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,12 +143,13 @@ int	ft_check_syntax_4(char *new, int i)
 int	ft_check_syntax_5(char *new,int i)
 {
 	int j;
+
 	while (new[i])
 	{
 		j = i;
 		if (new[i] == '|')
-			i++;
-		{
+		{	
+		    i++;
 			while (new[i] && (new[i] == ' ' || new[i] == '\t' || new[i] == '\n' || new[i] == 12))
 				i++;
 			if (new[i] == '\0' || new[i] == '|')
