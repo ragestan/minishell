@@ -3,58 +3,106 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 14:52:26 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/07 17:37:49 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/09 21:16:21 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t	ft_strlen(const char *c, int k)
+size_t    ft_strlen(const char *c, int k)
 {
-	size_t	i;
-	size_t	j;
+    size_t    i;
+    size_t    j;
 
-	i = k;
-	j = 0;
-	while (c[i] && (c[i] == ' ' || c[i] == '\t' || c[i] == 12))
-		i++;
-	while (c[i] != '\0' && c[i] != ' ' && c[i] != '\t' && c[i] != 12)
-	{
-		j++;
-		i++;
-	}
-	return (j);
+    i = k;
+    j = 0;
+    while (c[i] && (c[i] == ' ' || c[i] == '\t' || c[i] == 12))
+        i++;
+    while (c[i] != '\0' && c[i] != ' ' && c[i] != '\t' && c[i] != 12)
+    {
+        if (c[i] == '\"')
+        {
+            i++;
+            j++;
+            while(c[i] && c[i] != '\"')
+            {
+                i++;
+                j++;
+            }
+            if(c[i])
+            {
+                i++;
+                j++;
+            }
+        }
+        else if (c[i] == '\'')
+        {
+            i++;
+            j++;
+            while(c[i] && c[i] != '\'')
+            {
+                i++;
+                j++;
+            }
+            if(c[i])
+            {
+                i++;
+                j++;    
+            }
+        }
+        else
+        {
+            j++;
+            i++;
+        }
+    }
+    return (j);
 }
 
-char	*ft_strdup(const char *src, int *k)
+char    *ft_strdup(const char *src, int *k)
 {
-	int		i;
-	int		l;
-	char	*dest;
-	char	*j;
+    int        i;
+    int        l;
+    char    *dest;
+    char    *j;
 
-	i = *k;
-	if (src == NULL)
-		return (NULL);
-	l = 0;
-	j = ((dest = (char *)malloc(ft_strlen((char *)src, *k) * sizeof(const char)
-					+ 1)));
-	if (!j)
-		return (0);
-	while (src[i] && (src[i] == ' ' || src[i] == '\t' || src[i] == 12))
-		i++;
-	while (src[i] && src[i] != ' ' && src[i] != '\t' && src[i] != 12)
-	{
-		dest[l] = src[i];
-		i++;
-		l++;
-	}
-	dest[l] = '\0';
-	*k = i;
-	return (dest);
+    i = *k;
+    if (src == NULL)
+        return (NULL);
+    l = 0;
+    j = ((dest = (char *)malloc(ft_strlen((char *)src, *k) * sizeof(const char)
+                    + 1)));
+    if (!j)
+        return (0);
+    while (src[i] && (src[i] == ' ' || src[i] == '\t' || src[i] == 12))
+        i++;
+    while (src[i] && src[i] != ' ' && src[i] != '\t' && src[i] != 12)
+    {
+        if (src[i] == '\"')
+        {
+            dest[l++] = src[i++];
+            while(src[i] && src[i] != '\"')
+                dest[l++] = src[i++];
+            if(src[i])
+                dest[l++] = src[i++];
+        }
+        else if (src[i] == '\'')
+        {
+            dest[l++] = src[i++];
+            while(src[i] && src[i] != '\'')
+                dest[l++] = src[i++];
+            if(src[i])
+                dest[l++] = src[i++];
+        }
+        else
+            dest[l++] = src[i++];
+    }
+    dest[l] = '\0';
+    *k = i;
+    return (dest);
 }
 
 void	ft_lst_norm(int *i, t_Command_Table2 *w)
@@ -264,6 +312,7 @@ int	last_infile(t_Command_Table *table)
 			fd = open(table->arg, O_RDONLY);
 			if (fd == -1)
 			{
+                g_globale.exit_child = 1;
 				write(2, "minishell: ", 11);
 				perror(table->arg);
 				return (-1);
@@ -300,7 +349,10 @@ int	last_outfile(t_Command_Table *table, int fd, int i)
 		{
 			i = open(table->arg, O_RDONLY);
 			if (i == -1)
+            {
+                g_globale.exit_child = 1;
 				return (-1);
+            }
 			close(i);
 		}
 		if (table->index == 4)
@@ -308,7 +360,10 @@ int	last_outfile(t_Command_Table *table, int fd, int i)
 		if (table->index == 1)
 			fd = last_outfile_norm(table, fd);
 		if (fd == -1)
-				return (write(2, "minishell: ", 11), perror(table->arg), -1);
+        {
+            g_globale.exit_child = 1;
+			return (write(2, "minishell: ", 11), perror(table->arg), -1);
+        }
 		table = table->next;
 	}
 	return (fd);

@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 11:27:59 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/05 20:12:36 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/09 17:19:48 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,6 @@ char *ft_strjoin3(char *s1, char *s2)
 
     i = 0;
     j = 0;
-    // if (!s1 || !s2)
-    // 	return (0);
     if(s2 == NULL)
     {
         s2_len = 0;
@@ -94,8 +92,6 @@ char *ft_strjoin3(char *s1, char *s2)
         s1_len = ft_strlen3(s1);
         s2_len = ft_strlen3(s2);
     }
-    // s1_len = ft_strlen3(s1);
-    // s2_len = ft_strlen3(s2);
     p = malloc(s2_len + s1_len + 1);
     if (!p)
         return (NULL);
@@ -130,6 +126,7 @@ void updatepwd(envp **env,char *str)
       }
       
 }
+
 void updateoldpwd(envp **env,char *str)
 {
       envp *st;
@@ -150,104 +147,173 @@ void updateoldpwd(envp **env,char *str)
       }
       
 }
-void	ft_cd(envp **env, char *str)
+void ft_cd_help1(envp **env, t_cdd *cdd)
 {
-	char	*ptr = NULL;
-    char    *ptr1;
-    char    *oldpwd;
-    char    *pwd = NULL;
-    int value;
-	
-	
-	oldpwd = getcwd(NULL, 1);
-    if(oldpwd == NULL)
-    {
-        oldpwd = ft_getenv(*env,"PWD");
-    }
-	if (str == NULL || ft_strcmp(str,"~") == 0)
-	{
-		ptr1 = ft_getenv(*env, "HOME");
-        value = chdir(ptr1);
-		if (value < 0)
+    	cdd->ptr1 = ft_getenv(*env, "HOME");
+        cdd->value = chdir(cdd->ptr1);
+		if (cdd->value < 0)
 		{
-			perror("cd");
+			write(2, "cd: HOME not set\n", 18);
              g_globale.exit_child = 1;
-			//free(ptr);
-            //free(ptr1);
-			//exit(1);
+             free(cdd->oldpwd);
+                free(cdd->ptr1);
 		}
-        else if (value == 0)
+        else if (cdd->value == 0)
         {
-            pwd = getcwd(NULL, 1);
-            updatepwd(env,pwd);
-            updateoldpwd(env,oldpwd);
-            free(oldpwd);
-            free(ptr1);
-            free(pwd);
+            cdd->pwd = getcwd(NULL, 1);
+            updatepwd(env,cdd->pwd);
+            updateoldpwd(env,cdd->oldpwd);
+            free(cdd->oldpwd);
+            free(cdd->ptr1);
+            free(cdd->pwd);
             g_globale.exit_child = 0;
         }
-	}
-	else if(ft_strcmp(str,"-") == 0)
-	{
-	    ptr = ft_getenv(*env,"OLDPWD");
-        if(ptr == NULL)
+}
+void ft_cd_help2(envp **env, t_cdd *cdd)
+{
+     cdd->ptr = ft_getenv(*env,"OLDPWD");
+        if(cdd->ptr == NULL)
         {
-            printf("OLDPWD not set\n");
-            //free(ptr);
-            free(oldpwd);
+            printf("cd :OLDPWD not set\n");
+            free(cdd->oldpwd);
             g_globale.exit_child = 1;
             return;
         }
-        value = chdir(ptr);
-        if (value < 0)
+        cdd->value = chdir(cdd->ptr);
+        if (cdd->value < 0)
         {
             perror("cd");
             g_globale.exit_child = 1;
-            //free(ptr);
-            //free(ptr1);
-            //exit(1);
+            free(cdd->oldpwd);
+            free(cdd->ptr);
         }
-        else if (value == 0)
+        else if (cdd->value == 0)
         {
-            pwd = getcwd(NULL, 1);
-            updatepwd(env,pwd);
-            updateoldpwd(env,oldpwd);
-            printf("%s\n",ptr);
-            free(oldpwd);
-            free(ptr);
-            free(pwd);
+            cdd->pwd = getcwd(NULL, 1);
+            updatepwd(env,cdd->pwd);
+            updateoldpwd(env,cdd->oldpwd);
+            printf("%s\n",cdd->ptr);
+            free(cdd->oldpwd);
+            free(cdd->ptr);
+            free(cdd->pwd);
             g_globale.exit_child = 0;
-            
         }
+}
+
+void ft_cd_help3(envp **env , t_cdd *cdd ,char *str)
+{
+       cdd->ptr = ft_strdupZ(str);
+        cdd->value = chdir(cdd->ptr);
+        if (cdd->value < 0)
+	    {
+		write(2,"cd: HOME not set\n",18);
+        g_globale.exit_child = 1;
+        free(cdd->oldpwd);
+        free(cdd->ptr);
+        
+        
+	    }
+        else if (cdd->value == 0)
+        {
+            
+            cdd->pwd = getcwd(NULL, 1);
+            updatepwd(env,cdd->pwd);
+            updateoldpwd(env,cdd->oldpwd);
+            free(cdd->oldpwd);
+            free(cdd->ptr);
+            free(cdd->pwd);
+            g_globale.exit_child = 0;
+        }
+}
+
+void	ft_cd(envp **env, char *str)
+{
+	// char	*ptr = NULL;
+    // char    *ptr1;
+    // char    *oldpwd;
+    // char    *pwd = NULL;
+    // int value;
+    t_cdd cdd;
+    cdd.ptr = NULL;
+    cdd.ptr1 = NULL;
+    cdd.pwd = NULL;
+	
+	
+	cdd.oldpwd = getcwd(NULL, 1);
+    if(cdd.oldpwd == NULL)
+        cdd.oldpwd = ft_getenv(*env,"PWD");
+	if (str == NULL || ft_strcmp(str,"~") == 0)
+	{
+		// cdd.ptr1 = ft_getenv(*env, "HOME");
+        // cdd.value = chdir(cdd.ptr1);
+		// if (cdd.value < 0)
+		// {
+		// 	perror("cd");
+        //      g_globale.exit_child = 1;
+		// }
+        // else if (cdd.value == 0)
+        // {
+        //     cdd.pwd = getcwd(NULL, 1);
+        //     updatepwd(env,cdd.pwd);
+        //     updateoldpwd(env,cdd.oldpwd);
+        //     free(cdd.oldpwd);
+        //     free(cdd.ptr1);
+        //     free(cdd.pwd);
+        //     g_globale.exit_child = 0;
+        // }
+        ft_cd_help1(env,&cdd);
+	}
+	else if(ft_strcmp(str,"-") == 0)
+	{
+	//    cdd.ptr = ft_getenv(*env,"OLDPWD");
+    //     if(cdd.ptr == NULL)
+    //     {
+    //         printf("OLDPWD not set\n");
+    //         free(cdd.oldpwd);
+    //         g_globale.exit_child = 1;
+    //         return;
+    //     }
+    //     cdd.value = chdir(cdd.ptr);
+    //     if (cdd.value < 0)
+    //     {
+    //         perror("cd");
+    //         g_globale.exit_child = 1;
+    //     }
+    //     else if (cdd.value == 0)
+    //     {
+    //         cdd.pwd = getcwd(NULL, 1);
+    //         updatepwd(env,cdd.pwd);
+    //         updateoldpwd(env,cdd.oldpwd);
+    //         printf("%s\n",cdd.ptr);
+    //         free(cdd.oldpwd);
+    //         free(cdd.ptr);
+    //         free(cdd.pwd);
+    //         g_globale.exit_child = 0;
+    //     }
+        ft_cd_help2(env,&cdd);
 	}
     else
     {
-        ptr = ft_strdupZ(str);
-        value = chdir(ptr);
-        if (value < 0)
-	    {
-		perror("cd");
-        g_globale.exit_child = 1;
-		//free(ptr);
-        //free(ptr1);
-		//exit(1);
-	    }
-        else if (value == 0)
-        {
+        // cdd.ptr = ft_strdupZ(str);
+        // cdd.value = chdir(cdd.ptr);
+        // if (cdd.value < 0)
+	    // {
+		// perror("cd");
+        // g_globale.exit_child = 1;
+	    // }
+        // else if (cdd.value == 0)
+        // {
             
-            pwd = getcwd(NULL, 1);
-            updatepwd(env,pwd);
-            updateoldpwd(env,oldpwd);
-            free(oldpwd);
-            free(ptr);
-            free(pwd);
-            g_globale.exit_child = 0;
-        }
-        
+        //     cdd.pwd = getcwd(NULL, 1);
+        //     updatepwd(env,cdd.pwd);
+        //     updateoldpwd(env,cdd.oldpwd);
+        //     free(cdd.oldpwd);
+        //     free(cdd.ptr);
+        //     free(cdd.pwd);
+        //     g_globale.exit_child = 0;
+        // }
+        ft_cd_help3(env,&cdd,str);
     }
-	
-	// if (k > 0)
-	// 	free(ptr);
 }
 
 // int main(int argc,char **argv)

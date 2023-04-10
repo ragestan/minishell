@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/09 01:22:41 by zbentale          #+#    #+#             */
+/*   Updated: 2023/04/09 16:51:16 by zbentale         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	ft_putstr_fd(char *s, int fd)
@@ -6,47 +18,78 @@ void	ft_putstr_fd(char *s, int fd)
 
 	i = 0;
 	if (!s)
-	{
 		return ;
-	}
 	while (s[i] != '\0')
 	{
 		write(fd, &s[i], 1);
 		i++;
 	}
 }
- 
+int	ft_updateenv_helper(char *str, envp *st)
+{
+	if (ft_strserarch(str, '=') == 1)
+	{
+		if (st->free == 1)
+			free(st->str);
+		st->str = ft_strdupZ(str);
+		st->free = 1;
+		if (ft_strserarch(str, '=') == 1)
+			st->option = 1;
+		return (1);
+	}
+	else
+		return (3);
+}
+int	ft_updateenv_helper1(char *str, envp *st)
+{
+	char	*ptr;
+
+	ptr = NULL;
+	if (ft_strserarch(st->str, '=') == 0)
+	{
+		ptr = ft_strplusequal(str, 1);
+		if (ft_strserarch(ptr, '=') == 1)
+			st->option = 1;
+	}
+	else
+		ptr = ft_strplusequal(str, 0);
+	st->str = ft_strjoin(st->str, ptr, st->free);
+	st->free = 1;
+	return (1);
+}
+
 size_t	ft_strlen3(const char *s)
 {
 	int	i;
 
 	i = 0;
 	while (s[i] != '\0')
-	{
 		i++;
-	}
 	return (i);
 }
 
-int ft_strserarch(char *str,char c)
+int	ft_strserarch(char *str, char c)
 {
-    int i = 0;
-    while(str[i] != '\0')
-    {
-        if(str[i] == c)
-        return 1;
-        i++;
-    }
-    return 0;
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
 }
+
 envp	*sort_list(envp *lst, int (*cmp)(char *, char *))
 {
 	char	*swap;
-    int swapint;
+	int		swapint;
 	envp	*tmp;
 
 	tmp = lst;
-	while(lst->next != NULL)
+	while (lst->next != NULL)
 	{
 		if (((*cmp)(lst->str, lst->next->str)) >= 0)
 		{
@@ -62,121 +105,90 @@ envp	*sort_list(envp *lst, int (*cmp)(char *, char *))
 			lst = lst->next;
 	}
 	lst = tmp;
-    //printnode(lst);
+	//printnode(lst);
 	return (lst);
 }
-int	ft_strcmpedit( char *s1,  char *s2)
+
+int	ft_strcmpedit(char *s1, char *s2)
 {
 	size_t	i;
 
 	i = 0;
-    //printf("s1 : %s s2: %s \n ",s1,s2);
-	while ((s1[i] != '='  || s2[i] != '=' )&& (s1[i] != '\0' || s2[i] != '\0')&&(s1[i] != '=' || s2[i] != '\0')&&(s1[i] != '\0' || s2[i] != '='))
+	//printf("s1 : %s s2: %s \n ",s1,s2);
+	while ((s1[i] != '=' || s2[i] != '=') && (s1[i] != '\0' || s2[i] != '\0')
+		&& (s1[i] != '=' || s2[i] != '\0') && (s1[i] != '\0' || s2[i] != '='))
 	{
 		if (s1[i] != s2[i])
 		{
-			return ((unsigned char )s1[i] - (unsigned char )s2[i]);
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 		}
 		i++;
 	}
-	return  0;
+	return (0);
 }
-char *ft_strplusequal(char *str,int k)
+
+char	*ft_strplusequal(char *str, int k)
 {
-    int i =0;
-    int j = 0;
-    int size = 0;
-    while(str[i] != '=')
-        i++;
-    size = ft_strlen3(str) - i;
-    if(k == 1)
-    i--;
-    else
-    size--;
-    
-    char *str2 = malloc(sizeof(char) * size + 1);
-    i++;
-    while(str[i] != '\0')
-    {
-        str2[j] = str[i];
-        i++;
-        j++;
-    }
-    str2[j] = '\0';
-    return str2;
+	int		i;
+	int		j;
+	int		size;
+	char	*str2;
+
+	i = 0;
+	j = 0;
+	size = 0;
+	while (str[i] != '=')
+		i++;
+	size = ft_strlen3(str) - i;
+	if (k == 1)
+		i--;
+	else
+		size--;
+	str2 = malloc(sizeof(char) * size + 1);
+	i++;
+	while (str[i] != '\0')
+	{
+		str2[j] = str[i];
+		i++;
+		j++;
+	}
+	str2[j] = '\0';
+	return (str2);
 }
-int updateenv(envp *env,char *str,int b)
+
+int	updateenv(envp *env, char *str, int b)
 {
-    envp *st;
-    st = env;
-    char *ptr = NULL;
-    
-    while(st)
-    {
-        // printf("tst : %s\n",st->str);
-        if(ft_strcmpedit(str,st->str) == 0 && b == 0)
-        {
-           // printf("tst : %s |%s\n",st->str,str);
-            //free(st->str);
-            if(ft_strserarch(str,'=') == 1)
-            {
-                
-                if(st->free == 1)
-                {
-                    printf("------------------------------------->free : %s\n",st->str);
-                    free(st->str);
-                }
-                    
-                //free(st->str);
-                st->str = ft_strdupZ(str);
-                st->free = 1;
-                //free(str);
-              if(ft_strserarch(str,'=') == 1)
-              st->option = 1;
-              //free(st->str);
-              return 1;
-            }
-            else
-            return 3;
-            
-            
-        }
-        else if(ft_strcmpedit(str,st->str) == 0 && b == 1)
-        {
-            //printf("-----------%s\n", st->str);
-            if(ft_strserarch(st->str,'=') == 0)
-            {
-               // printf("----------------------meee>\n");
-                ptr = ft_strplusequal(str,1);
-                if(ft_strserarch(ptr,'=') == 1)
-              st->option = 1;
-            }
-            else
-                ptr = ft_strplusequal(str,0);
-            st->str = ft_strjoin(st->str,ptr,st->free);
-            st->free = 1;
-            return 1;
-        }
-        
-        st = st->next;
-    }
-    return 0;
+	envp	*st;
+	char	*ptr;
+
+	st = env;
+	ptr = NULL;
+	while (st)
+	{
+		if (ft_strcmpedit(str, st->str) == 0 && b == 0)
+			return (ft_updateenv_helper(str, st));
+		else if (ft_strcmpedit(str, st->str) == 0 && b == 1)
+			return (ft_updateenv_helper1(str, st));
+		st = st->next;
+	}
+	return (0);
 }
-envp	*ft_lstnew(char *content,int option)
+
+envp	*ft_lstnew(char *content, int option)
 {
 	envp	*new;
 
 	new = (envp *)malloc(sizeof(envp));
 	if (new == NULL)
 		return (NULL);
-        
 	new->str = ft_strdupZ(content);
-    new->option = option;
-    //w 3ndak 3la 7aga
-    new->free = 1;
+	new->option = option;
+	new->free = 1;
+	new->prinlast = 1;
 	new->next = NULL;
 	return (new);
 }
+
 envp	*ft_lstlastZ(envp *lst)
 {
 	while (lst && lst->next != NULL)
@@ -197,7 +209,7 @@ void	ft_lstadd_back(envp **lst, envp *new)
 	}
 }
 
-int	ft_strcmp( char *s1,  char *s2)
+int	ft_strcmp(char *s1, char *s2)
 {
 	size_t	i;
 
@@ -206,7 +218,7 @@ int	ft_strcmp( char *s1,  char *s2)
 	{
 		if (s1[i] != s2[i])
 		{
-			return ((unsigned char )s1[i] - (unsigned char )s2[i]);
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 		}
 		i++;
 	}
@@ -216,54 +228,83 @@ int	ft_strcmp( char *s1,  char *s2)
 void	ft_putstredit(char *s)
 {
 	int	i;
-    int j = 0;
+	int	j;
+
+	j = 0;
 	i = 0;
-	
 	while (s[i] != '\0')
 	{
-        
 		write(1, &s[i], 1);
-        if(s[i] == '=' && j == 0)
-        {
-            write(1, "\"", 1);
-            j = 1;
-        }
+		if (s[i] == '=' && j == 0)
+		{
+			write(1, "\"", 1);
+			j = 1;
+		}
 		i++;
 	}
-    write(1, "\"", 1);
+	write(1, "\"", 1);
 }
-void printnodeExport(envp *stp)
+
+void	printnodeExport(envp *stp)
 {
-    envp *st;
-    st = stp;
-    while(st)
-    {
-        ft_putstr_fd("declare -x ",1);
-        if(st->option == 1)
-         ft_putstredit(st->str);
-         else
-         {
-                ft_putstr_fd(st->str,1);
-         }
-         
-         ft_putstr_fd("  | ",1);
-        ft_putnbr_fd(st->option,1);
-        printf("\n");
-        // printf("%s\n",st->str);
-        st = st->next;
-    }  
+	envp	*st;
+
+	st = stp;
+	while (st)
+	{
+		if (st->prinlast == 1)
+		{
+			ft_putstr_fd("declare -x ", 1);
+			if (st->option == 1)
+				ft_putstredit(st->str);
+			else
+				ft_putstr_fd(st->str, 1);
+			printf("\n");
+		}
+		st = st->next;
+	}
 }
-void printnodeenv(envp *str)
+
+void	printnodealpha(envp *str)
 {
-    envp *st;
-    st = str;
-    while(st)
-    {
-        if(st->option == 1)
-        printf("%s\n",st->str);
-        st = st->next;
-    }  
-    //print the last lint in the original env
+	envp	*st;
+	int		i;
+
+	st = str;
+	i = 32;
+	while (i++ <= 126)
+	{
+		while (st)
+		{
+			if (st->str[0] == i && st->prinlast == 0)
+			{
+				ft_putstr_fd("declare -x ", 1);
+				if (st->option == 1)
+					ft_putstredit(st->str);
+				else
+					ft_putstr_fd(st->str, 1);
+				printf("\n");
+				st = st->next;
+			}
+			else
+				st = st->next;
+		}
+		st = str;
+	}
+	printnodeExport(str);
+}
+
+void	printnodeenv(envp *str)
+{
+	envp	*st;
+
+	st = str;
+	while (st)
+	{
+		if (st->option == 1)
+			printf("%s\n", st->str);
+		st = st->next;
+	}
 }
 
 void	make_node(envp **st, char *str)
@@ -274,82 +315,56 @@ void	make_node(envp **st, char *str)
 	if (!head)
 		return ;
 	head->str = str;
-    head->option = 1;
+	head->option = 1;
+	head->prinlast = 0;
 	head->next = *st;
 	*st = head;
 }
-int valideinput(char *str)
+
+int	valideinput(char *str)
 {
-    int i = 0;
-    if(ft_isdigit(str[i]) == 1 || ft_isalpha(str[i]) == 0)
-    {
-        return 1; 
-    }
-        
-    i++;
-    // if(ft_strchr(str,'=') == 0)
-    // {
-    //     return 1;
-    // }
-    
-    while(str[i] != '=' && str[i])
-    {
-        if(ft_isalnum(str[i]) == 1 || str[i] == '=')
-        {
-            i++;
-        }
-        else if(str[i] == '+')
-        {
-            if(str[i+1] == '=')
-             i++;
-             else
-             return 1;
-        }
-        else 
-        {
-            printf("%c\n",str[i]);
-            return  1;
-        }
-        
-    }
-    return 0;
+	int	i;
+
+	i = 0;
+	if ((ft_isdigit(str[i]) == 1 || ft_isalpha(str[i]) == 0 ) && str[i] != '_')
+		return (1);
+	i++;
+	while (str[i] != '=' && str[i])
+	{
+		if (ft_isalnum(str[i]) == 1 || str[i] == '=' || str[i] == '_')
+			i++;
+		else if (str[i] == '+')
+		{
+			if (str[i + 1] == '=')
+				i++;
+			else
+				return (1);
+		}
+		else
+			return (1);
+	}
+	return (0);
 }
+
 int	ft_strnstredit(const char *str)
 {
-	// size_t	i;
-	// size_t	j;
+	int	i;
 
-	// i = 0;
-	// if (str == NULL)
-	// 	return (0);
-	// if (to_find[i] == '\0')
-	// 	return (0);
-	// while (str[i] != '\0')
-	// {
-	// 	j = 0;
-	// 	while (str[i + j] == to_find[j] && str[i + j] != '\0')
-	// 	{
-	// 		if (to_find[j + 1] == '\0')
-	// 			return (1);
-	// 		j++;
-	// 	}
-	// 	i++;
-	// }
-	// return (0);
-    int i = 0;
-    while(str[i])
-    {
-        if(str[i] == '=')
-        {
-            if(str[i-1] == '+')
-            return 1;
-            else
-            return 0;
-        }
-        i++;
-    }
-    return 0;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '=')
+		{
+			if (str[i - 1] == '+')
+				return (1);
+			else
+				return (0);
+		}
+		i++;
+	}
+	return (0);
 }
+
 char	*ft_strdupedit(const char *s1)
 {
 	char	*p;
@@ -358,188 +373,75 @@ char	*ft_strdupedit(const char *s1)
 	size_t	len;
 
 	i = 0;
-    j = 0;
+	j = 0;
 	len = ft_strlen3(s1) - 1;
 	p = malloc(sizeof(char) * (len + 1));
 	if (p == 0)
 		return (NULL);
 	while (s1[j] != '\0')
 	{
-        if(s1[i] == '+' && s1[i+1] == '=')
-            j++;
-            
+		if (s1[i] == '+' && s1[i + 1] == '=')
+			j++;
 		p[i] = s1[j];
-        j++;
+		j++;
 		i++;
 	}
 	p[i] = '\0';
 	return (p);
 }
-void export(envp **env1 ,char *str)
+
+void	export(envp **env1, char *str)
 {
-    
-    static int x = 0;
-    char *stredit  = NULL;
-    int b = 0;
-    // static int i = 0;
-    // if(i == 0)
-    // {
-    //    sort_list(*env1,ft_strcmp);
-    //     i++;
-    // }
-    
-    if(str == NULL)
-    {
-        printnodeExport(*env1);
-        g_globale.exit_child = 0;
-    }
-    else
-    {
-        
-        x = valideinput(str);
-        //updt  export data
-        if(x == 1)//add all the error char
-            {
-               printf("export: `%s': not a valid identifier\n",str);
-               g_globale.exit_child = 1;
-            }
+	static int	x;
+	char		*stredit;
+	int			b;
 
-             if ((ft_strserarch(str,'=') == 1) &&  (ft_strnstredit(str) == 0) &&  x == 0)
-            {
-               
-                    if(updateenv(*env1,str,0) == 1)
-                     {
-                         printf("update :%s\n",str);
-                         //updt  export data
-                     }
-                    else
-                    {
-                        printf("babas\n");
-                        ft_lstadd_back(env1,ft_lstnew(str,1));
-                    
-                    }
-                   
-                            
-            }
-            else if ((ft_strserarch(str,'=') == 1) && (ft_strnstredit(str) == 1) && x == 0)
-            {
-                 
-                stredit = ft_strdupedit(str);
-               
-                      if(updateenv(*env1,stredit,1) == 1)
-                     { 
-                       
-                        free(stredit);
-                         printf("update2 :%s\n",str);
-                         //updt  export data
-                     }
-                    else
-                    {
-                        
-                        ft_lstadd_back(env1,ft_lstnew(stredit,1));
-                        free(stredit);
-                    }
-                    
-                   
-            }
-            
-            else if ((ft_strserarch(str,'=') == 0) && x == 0)
-            { 
-                printf("str :%s\n",str);
-                 b = updateenv(*env1,str,0);
-                if(b == 1)
-                     {
-                         printf("update :%s\n",str);
-                         //updt  export data
-                    }
-                else if (b == 0)
-                {
-                    printf("aaaaaa\n");
-                    ft_lstadd_back(env1,ft_lstnew(str,0));
-                }
-                else if (b == 3)
-                {
-                    printf("jiji\n");
-                }
-                
-                
-            }
-
-    }
+	x = 0;
+	stredit = NULL;
+	b = 0;
+	if (str == NULL)
+	{
+		//printnodeExport(*env1);
+		printnodealpha(*env1);
+		g_globale.exit_child = 0;
+	}
+	else
+	{
+		x = valideinput(str);
+		if (x == 1)
+		{
+			printf("export: `%s': not a valid identifier\n", str);
+			g_globale.exit_child = 1;
+		}
+		if ((ft_strserarch(str, '=') == 1) && (ft_strnstredit(str) == 0)
+			&& x == 0)
+		{
+			if (updateenv(*env1, str, 0) == 1)
+				;
+			else
+				ft_lstadd_back(env1, ft_lstnew(str, 1));
+		}
+		else if ((ft_strserarch(str, '=') == 1) && (ft_strnstredit(str) == 1)
+				&& x == 0)
+		{
+			stredit = ft_strdupedit(str);
+			if (updateenv(*env1, stredit, 1) == 1)
+				free(stredit);
+			else
+			{
+				ft_lstadd_back(env1, ft_lstnew(stredit, 1));
+				free(stredit);
+			}
+		}
+		else if ((ft_strserarch(str, '=') == 0) && x == 0)
+		{
+			b = updateenv(*env1, str, 0);
+			if (b == 1)
+				;
+			else if (b == 0)
+				ft_lstadd_back(env1, ft_lstnew(str, 0));
+			else if (b == 3)
+				;
+		}
+	}
 }
-// int main(int argc,char **argv ,char **env)
-// {
-//     (void)argc;
-//     (void)argv;
-    
-//      printf("/-----------------------------\n");
-//     //add OLDPWD
-//     int i = 0;
-//     //int j = 1;
-//     //int error = 0;
-// 	envp *env1 = NULL;
-// 	while (env[i] != '\0')
-// 		i++;
-// 	i -= 2;
-// 	while (i >= 0)
-// 	{
-// 		make_node(&env1, env[i]);
-// 		i--;
-// 	}
-// //    // export(&env1,"OLDPWD");
-// //     //sort_list(env1,ft_strcmp);
-// //     //envv(env1);
-// //     // export(&env1,"alom");
-// //     //export(&env1,"testb=zaka"); 
-// //     // export(&env1,"rrr");
-// //     //  printf("/-----------------------------\n");
-// //     // export(&env1,"test=mbarki");
-// //     //  printf("/-----------------------------\n");
-    
-    
-// //     // printf("%d\n",ft_strcmpedit("alom","alom=poink"));
-// //     // export(&env1,"gg=zak");
-// //     //  export(&env1,"alom=zaka");
-// //     //  export(&env1,"alom=zakba");
-// //     // export(&env1,"alom+=bb");
-//      export(&env1,NULL);
-//  export(&env1,"gg=lmkj");
-//  export(&env1,"gg=lmkj");
-//  export(&env1,"gg=lmkj");
-//      printf("/-----------------------------\n");
-// //     pathfinder(&pipex,env1);
-// //     printf("%s\n",pipex.paths[0]);
-// //     //  export(&env1,"gg+=www");
-// //     //  export(&env1,"gg+=bbb");
-// //     //   export(&env1,"alom+=zakbac");
-// //     //  export(&env1,"alom+=zakbag");
-// //     //  export(&env1,"alom+=zzz");
-// //     //  export(&env1,"alom+=zzz");
-// //     //  export(&env1,"alom+=zzz");
-// //     //ft_cd(&env1,"kr[ohk]");
-// //     //unset(&env1,"Apple_PubSub_Socket_Render");
-// export(&env1,NULL);
-// //     //printf("/-----------------------------\n");
-// //     //export(&env1,NULL,0);
-// //     //ft_cd(&env1,NULL);
-// //     // ft_pwd();
-// //      //printf("/-----------------------------\n");
-// //     //export(&env1,NULL,0);
-// //      //ft_cd(&env1,"/bin");
-// //      //printf("/-----------------------------\n");
-// //     //export(&env1,NULL,0);
-// //      //printf("/-----------------------------\n");
-// //      //ft_cd(&env1,"/home");
-// //      //printf("/3\n");
-// //      //export(&env1,NULL,0);
-// //      //ft_cd(&env1,"-");
-// //     //ft_pwd();
-// //      //printf("/-----------------------------\n");
-// //     //echo("-nnnnnnnnnnnn","$HOME");
-// //      //export(&env1,NULL);
-// //     //system("leaks minishell");
-// //     // printnodeenv(env1);
-// }
-//update value of export and if its valid make the option 1
-//if you want to update the value of a valide varibale dont update it;
-//test+= is not easy to do you should join what in plus with the value of the variable

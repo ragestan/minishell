@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/08 17:43:35 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/09 21:14:13 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,6 +226,8 @@ void	ft_free(char **str)
 	int	i;
 
 	i = 0;
+    if (str == NULL)
+        return ;
 	while (str[i])
 	{
 		if (str[i] != NULL)
@@ -588,6 +590,7 @@ char	*ft_en_cote(char *arg, char *new, t_int *w)
 
 char	*ft_en_norm(char *arg, char *new, char *new2, t_int *w)
 {
+    w->k = 0;
 	w->z = ft_is_ad(arg + w->i + 1);
 	new2 = ft_itoa(g_globale.exit_child);
 	while (new2[w->k])
@@ -602,11 +605,6 @@ char	*ft_en_norm2(envp *tmp, char *arg, char *new, t_int *w)
 {
 	while (tmp)
 	{
-		if (arg[w->i + 1] == '?')
-		{
-			new = ft_en_norm(arg, new, w->new2, w);
-			break ;
-		}
 		if (ft_strcmpedit2(arg + w->i + 1, tmp->str, ft_is_ad(arg + w->i
 					+ 1)) == 0)
 		{
@@ -636,7 +634,9 @@ char	*ft_en_norm3(char *arg, char *new, t_int *w)
 char	*ft_en_norm4(char *arg, char *new, envp *tmp, t_int *w)
 {
 	new = ft_en_norm2(tmp, arg, new, w);
-	if (arg[w->i] == '$' && arg[w->i + 1] == '\0')
+    if(arg[w->i] == '$' && arg[w->i + 1] == '?')
+        new = ft_en_norm(arg, new, w->new2, w);
+	else if (arg[w->i] == '$' && arg[w->i + 1] == '\0')
 		new[w->j++] = arg[w->i++];
 	else if (arg[w->i] == '$' && arg[w->i + 1] == '$')
 		w->i = w->i + 2;

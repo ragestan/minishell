@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/08 16:42:07 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/09 16:53:39 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct NODE
 	char					*str;
 	int						option;
 	int						free;
+    int                     prinlast;
 	struct NODE				*next;
 }							envp;
 typedef struct pipex
@@ -73,13 +74,15 @@ typedef struct pipex
 	char					**paths;
 	int						i;
 	char					*save;
-	//int		fd[2];
-	//int		r;
-	//int		k;
-	//int		file1;
-	//int		file2;
 }							t_pipex;
-
+typedef struct cdd
+{
+    char *ptr;
+    char *ptr1;
+    char *oldpwd;
+    char *pwd;
+    int value;
+}                        t_cdd;
 typedef struct a_globale
 {
 	envp					*env1;
@@ -89,6 +92,7 @@ typedef struct a_globale
 	int						command_count;
 
 }							t_globale;
+
 t_globale					g_globale;
 
 void						rl_replace_line(const char *text, int clear_undo);
@@ -136,6 +140,11 @@ char						*ft_getenv(envp *env, char *str);
 void						ft_exit(int exit_code);
 int							ft_atoi(const char *str);
 int							ft_isdigit1(char *str);
+int	                        ft_test(char **str);
+int 	                    ft_collect_help(char **str,int i);
+char	                    *ft_collect(char **str,int i);
+void	                    ft_error1(char *str, char *st);
+int	                        valideinput(char *str);
 //------------------------------------zbentalh---------------------------------------
 void	ft_lstadd_back1(t_Command_Table **lst,
 						t_Command_Table *new);
