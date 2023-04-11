@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/09 21:14:13 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/11 15:51:51 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -420,11 +420,6 @@ void	ft_env_norm2(envp *tmp, char *arg, char *new, t_int *w)
 {
 	while (tmp)
 	{
-		if (arg[w->i + 1] == '?')
-		{
-			ft_env_norm(arg, new, w);
-			break ;
-		}
 		if (ft_strcmpedit2(arg + w->i + 1, tmp->str, ft_is_ad(arg + w->i
 					+ 1)) == 0)
 		{
@@ -436,6 +431,7 @@ void	ft_env_norm2(envp *tmp, char *arg, char *new, t_int *w)
 			w->k = 0;
 			while (arg[w->i] && w->k < w->z)
 				ft_plusi(&w->k, &w->i);
+			w->k = 0;
 			break ;
 		}
 		tmp = tmp->next;
@@ -462,6 +458,8 @@ void	ft_env_norm5(char *arg, char *new, envp *tmp, t_int *w)
 	w->k = 0;
 	w->z = 0;
 	ft_env_norm2(tmp, arg, new, w);
+	if (arg[w->i] == '$' & arg[w->i + 1] == '?')
+		ft_env_norm(arg, new, w);
 	if (arg[w->i] == '$' && arg[w->i + 1] == '\0')
 		ft_plusi(&w->i, &w->j);
 	else if (arg[w->i] == '$' && arg[w->i + 1] == '$')
@@ -711,7 +709,7 @@ t_Command_Table	*ft_var(t_Command_Table *table, envp *env)
 
 size_t	ft_strlencote(const char *c, size_t i, size_t j)
 {
-	while (c[i] != '\0' && c[i] != ' ' && c[i] != '\t' && c[i] != 12)
+	while (c[i] != '\0')
 	{
 		if (c[i] == '\"')
 		{
@@ -738,7 +736,7 @@ size_t	ft_strlencote(const char *c, size_t i, size_t j)
 
 char	*ft_cote2_norm(char *dest, char *src, int *i, int *l)
 {
-	while (src[*i] && src[*i] != ' ' && src[*i] != '\t' && src[*i] != 12)
+	while (src[*i])
 	{
 		if (src[*i] == '\"' && src[*i + 1])
 		{
