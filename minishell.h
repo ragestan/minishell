@@ -6,12 +6,13 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/09 16:53:39 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/10 23:19:29 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# include <dirent.h>
 # include <fcntl.h>
 # include <limits.h>
 # include <readline/history.h>
@@ -22,7 +23,6 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
-# include <dirent.h>
 
 typedef struct a_Cammand_Table3
 {
@@ -39,6 +39,7 @@ typedef struct a_Command_Table
 	int						index;
 	char					*arg;
 	struct a_Command_Table	*next;
+
 }							t_Command_Table;
 
 typedef struct a_Command_Table2
@@ -65,7 +66,7 @@ typedef struct NODE
 	char					*str;
 	int						option;
 	int						free;
-    int                     prinlast;
+	int						prinlast;
 	struct NODE				*next;
 }							envp;
 typedef struct pipex
@@ -77,12 +78,12 @@ typedef struct pipex
 }							t_pipex;
 typedef struct cdd
 {
-    char *ptr;
-    char *ptr1;
-    char *oldpwd;
-    char *pwd;
-    int value;
-}                        t_cdd;
+	char					*ptr;
+	char					*ptr1;
+	char					*oldpwd;
+	char					*pwd;
+	int						value;
+}							t_cdd;
 typedef struct a_globale
 {
 	envp					*env1;
@@ -140,11 +141,11 @@ char						*ft_getenv(envp *env, char *str);
 void						ft_exit(int exit_code);
 int							ft_atoi(const char *str);
 int							ft_isdigit1(char *str);
-int	                        ft_test(char **str);
-int 	                    ft_collect_help(char **str,int i);
-char	                    *ft_collect(char **str,int i);
-void	                    ft_error1(char *str, char *st);
-int	                        valideinput(char *str);
+int							ft_test(char **str);
+int							ft_collect_help(char **str, int i);
+char						*ft_collect(char **str, int i);
+void						ft_error1(char *str, char *st);
+int							valideinput(char *str);
 //------------------------------------zbentalh---------------------------------------
 void	ft_lstadd_back1(t_Command_Table **lst,
 						t_Command_Table *new);
@@ -166,3 +167,5 @@ char						*ft_en(char *arg, envp *env, int g);
 int							check_all(char *new);
 int							ft_check_syntax_2_cnt(char *new, int i, int j);
 #endif
+
+
