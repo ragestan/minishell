@@ -6,7 +6,7 @@
 /*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:10:09 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/03/07 18:48:09 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/12 13:12:36 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static char	*ft_word(char const *str, char charset)
 	return (word);
 }
 
-static size_t	ft_count(char const *str, char c)
+static size_t	ft_counti(char const *str, char c)
 {
 	size_t	i;
 	size_t	count;
@@ -69,7 +69,7 @@ char	**ft_split(char const *s, char c)
 
 	i = 0;
 	j = 0;
-	string = (char **)malloc(sizeof(char *) * (ft_count(s, c) + 1));
+	string = (char **)malloc(sizeof(char *) * (ft_counti(s, c) + 1));
 	if (!string)
 		return (0);
 	while (s[j])
