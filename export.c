@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 01:22:41 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/12 01:37:54 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/12 22:02:16 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	ft_putstr_fd(char *s, int fd)
 		i++;
 	}
 }
+
 int	ft_updateenv_helper(char *str, envp *st)
 {
 	if (ft_strserarch(str, '=') == 1)
@@ -40,6 +41,7 @@ int	ft_updateenv_helper(char *str, envp *st)
 	else
 		return (3);
 }
+
 int	ft_updateenv_helper1(char *str, envp *st)
 {
 	char	*ptr;
@@ -63,8 +65,8 @@ size_t	ft_strlen3(const char *s)
 	int	i;
 
 	i = 0;
-    if (!s)
-        return (0);
+	if (!s)
+		return (0);
 	while (s[i] != '\0')
 		i++;
 	return (i);
@@ -107,7 +109,6 @@ envp	*sort_list(envp *lst, int (*cmp)(char *, char *))
 			lst = lst->next;
 	}
 	lst = tmp;
-	//printnode(lst);
 	return (lst);
 }
 
@@ -116,7 +117,6 @@ int	ft_strcmpedit(char *s1, char *s2)
 	size_t	i;
 
 	i = 0;
-	//printf("s1 : %s s2: %s \n ",s1,s2);
 	while ((s1[i] != '=' || s2[i] != '=') && (s1[i] != '\0' || s2[i] != '\0')
 		&& (s1[i] != '=' || s2[i] != '\0') && (s1[i] != '\0' || s2[i] != '='))
 	{
@@ -328,7 +328,7 @@ int	valideinput(char *str)
 	int	i;
 
 	i = 0;
-	if ((ft_isdigit(str[i]) == 1 || ft_isalpha(str[i]) == 0 ) && str[i] != '_')
+	if ((ft_isdigit(str[i]) == 1 || ft_isalpha(str[i]) == 0) && str[i] != '_')
 		return (1);
 	i++;
 	while (str[i] != '=' && str[i])
@@ -392,58 +392,59 @@ char	*ft_strdupedit(const char *s1)
 	return (p);
 }
 
+void	ft_writeme1(char *str)
+{
+	ft_putstr_fd("export: `", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+	g_globale.exit_child = 1;
+}
+
+void	ft_writeme2(envp **env1)
+{
+	printnodealpha(*env1);
+	g_globale.exit_child = 0;
+}
+
+void	ft_export_help(char *str, envp **env1, int x, char *stredit)
+{
+	if ((ft_strserarch(str, '=') == 1) && (ft_strnstredit(str) == 0) && x == 0)
+	{
+		if (updateenv(*env1, str, 0) == 1)
+			;
+		else
+			ft_lstadd_back(env1, ft_lstnew(str, 1));
+	}
+	else if ((ft_strserarch(str, '=') == 1) && (ft_strnstredit(str) == 1)
+			&& x == 0)
+	{
+		stredit = ft_strdupedit(str);
+		if (updateenv(*env1, stredit, 1) == 1)
+			free(stredit);
+		else
+			(ft_lstadd_back(env1, ft_lstnew(stredit, 1)), free(stredit));
+	}
+	else if ((ft_strserarch(str, '=') == 0) && x == 0)
+	{
+		if (updateenv(*env1, str, 0) == 0)
+			ft_lstadd_back(env1, ft_lstnew(str, 0));
+	}
+}
+
 void	export(envp **env1, char *str)
 {
 	static int	x;
 	char		*stredit;
-	int			b;
 
 	x = 0;
 	stredit = NULL;
-	b = 0;
 	if (str == NULL)
-	{
-		//printnodeExport(*env1);
-		printnodealpha(*env1);
-		g_globale.exit_child = 0;
-	}
+		ft_writeme2(env1);
 	else
 	{
 		x = valideinput(str);
 		if (x == 1)
-		{
-			printf("export: `%s': not a valid identifier\n", str);
-			g_globale.exit_child = 1;
-		}
-		if ((ft_strserarch(str, '=') == 1) && (ft_strnstredit(str) == 0)
-			&& x == 0)
-		{
-			if (updateenv(*env1, str, 0) == 1)
-				;
-			else
-				ft_lstadd_back(env1, ft_lstnew(str, 1));
-		}
-		else if ((ft_strserarch(str, '=') == 1) && (ft_strnstredit(str) == 1)
-				&& x == 0)
-		{
-			stredit = ft_strdupedit(str);
-			if (updateenv(*env1, stredit, 1) == 1)
-				free(stredit);
-			else
-			{
-				ft_lstadd_back(env1, ft_lstnew(stredit, 1));
-				free(stredit);
-			}
-		}
-		else if ((ft_strserarch(str, '=') == 0) && x == 0)
-		{
-			b = updateenv(*env1, str, 0);
-			if (b == 1)
-				;
-			else if (b == 0)
-				ft_lstadd_back(env1, ft_lstnew(str, 0));
-			else if (b == 3)
-				;
-		}
+			ft_writeme1(str);
+		ft_export_help(str, env1, x, stredit);
 	}
 }

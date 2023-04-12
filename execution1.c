@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 11:12:37 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/12 02:49:49 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/12 22:12:55 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -812,5 +812,4 @@ void	shell_with_pipes(t_Command_Table3 *table, char **env, t_pipex *pipex,
 		free(g_globale.pid);
         
 	}
-
 }

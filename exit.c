@@ -6,15 +6,15 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:01:47 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/06 14:14:09 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/12 22:02:28 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void ft_exit(int exit_code)
+void	ft_exit(int exit_code)
 {
-    if(exit_code > 255)
-        exit_code = exit_code % 256;
-    exit(exit_code);
+	if (exit_code > 255)
+		exit_code = exit_code % 256;
+	exit(exit_code);
 }
