@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/11 15:51:51 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/12 02:57:25 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,11 +273,26 @@ void	sigint_handler(int sig)
 	}
 }
 
+void    herquite(int sig)
+{
+    (void)sig;
+     rl_on_new_line();
+    //rl_redisplay();
+    return ;
+}
+
 void	sigquit_handler(int sig)
 {
 	(void)sig;
-	rl_on_new_line();
-	rl_redisplay();
+    if (g_globale.idheredok != 0)
+    {
+        kill(g_globale.idheredok, SIGQUIT);
+    }
+    else
+    {
+	    rl_on_new_line();
+	    rl_redisplay();
+    }
 	return ;
 }
 

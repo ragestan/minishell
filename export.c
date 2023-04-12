@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 01:22:41 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/09 16:51:16 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/12 01:37:54 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ size_t	ft_strlen3(const char *s)
 	int	i;
 
 	i = 0;
+    if (!s)
+        return (0);
 	while (s[i] != '\0')
 		i++;
 	return (i);

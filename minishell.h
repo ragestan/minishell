@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/10 23:19:29 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/12 02:47:36 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,8 @@ int							ft_collect_help(char **str, int i);
 char						*ft_collect(char **str, int i);
 void						ft_error1(char *str, char *st);
 int							valideinput(char *str);
+void	sigquit_handler(int sig);
+void    herquite(int sig);
 //------------------------------------zbentalh---------------------------------------
 void	ft_lstadd_back1(t_Command_Table **lst,
 						t_Command_Table *new);
