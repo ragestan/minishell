@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/12 21:37:41 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/13 02:29:27 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct pipex
 	char					**paths;
 	int						i;
 	char					*save;
+	int 					dkhlni;
 }							t_pipex;
 typedef struct cdd
 {
@@ -85,6 +86,25 @@ typedef struct cdd
 	char					*pwd;
 	int						value;
 }							t_cdd;
+typedef struct X
+{
+	DIR *dir;
+	int i;
+	int b;
+	int num_pipes;
+	char *str;
+	int pipa[2];
+	int **pipes;
+}			t_x;
+
+typedef struct Y
+{
+	char *str;
+	int mm;
+	int lb;
+	int lj;
+}		t_y;
+
 typedef struct a_globale
 {
 	envp					*env1;
