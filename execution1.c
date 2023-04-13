@@ -6,7 +6,7 @@
 /*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 11:12:37 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/13 02:47:02 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/13 17:55:10 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,18 +147,21 @@ void ft_exiit(char **args)
 	exit(g_globale.exit_child);
 }
 
-void	ft_execut_now(t_pipex *pipex,t_Command_Table3 *table, char **env)
+int	ft_execut_now(t_pipex *pipex,t_Command_Table3 *table, char **env)
 {
 	pipex->paths[pipex->i] = ft_strjoin2(pipex->paths[pipex->i],"/");
 	pipex->paths[pipex->i] = ft_strjoin2(pipex->paths[pipex->i],
 		table->args[0]);
 	if (access(pipex->paths[pipex->i], F_OK) == 0)
 	{
+		if (table->args[0][0] == '\0')
+			return (0);
 		if (execve(pipex->paths[pipex->i], table->args, env) == -1)
 			(perror("execve error"),exit(126));
 	}
 	pipex->i++;
 	free(pipex->paths[pipex->i - 1]);
+	return (1);
 }
 
 void 	ft_norm(char *arg)
@@ -231,7 +234,10 @@ void	child_unocmd(t_Command_Table3 *table,char **env,t_pipex *pipex,int *pipa)
 		(write(2, "minishell: ", 11),perror(table->args[0]),exit(127));
 	pipex->i = 0;
 	while (pipex->paths && pipex->paths[pipex->i])
-		ft_execut_now(pipex,table,env);
+	{	
+		if (ft_execut_now(pipex,table,env) == 0)
+			break;
+	}
 	if (table->args)
 		ft_norm(table->args[0]);
 } 
@@ -333,6 +339,7 @@ t_y	*ft_init_Y()
 
 void	ft_here_open(t_Command_Table3 *table,int aka,int pixa[aka][2],t_y *y)
 {  
+	
 	(signal(SIGQUIT, herquite),signal(SIGINT, SIG_DFL));
         while (table)
         {    
@@ -379,70 +386,24 @@ void	ft_idk(t_Command_Table3 *table,int aka,int pixa[aka][2],int *b)
 		free(y);
 	}
 }
-void	shell_with_pipes(t_Command_Table3 *table, char **env, t_pipex *pipex,
-		envp **envp1)
+
+void	ft_close_pipe(int num_pipes,int pipes[num_pipes][2],int i)
 {
-	DIR *dir;
-	pipex->paths = NULL;
-	pathfinder(pipex, *envp1);
-	int num_pipes;
-	 num_pipes = count(table) - 1;
-	 int pipes[num_pipes][2];
-    // int pipa[2];
-     int i = 0;
-	int j = 0;
-	 int r = 0;
-	// int b = 0;
-     //char *str = NULL;
-	// dir =NULL;
-	g_globale.pid = malloc(sizeof(int) * count(table));
-	g_globale.command_count = count(table);
-	ft_creat_pipe(num_pipes,pipes);
-	if (num_pipes == 0)
-		ft_onecmd(table,pipex,envp1,env);
-
-// --------------------------------------------------------------------
-// 	multiple pipes
-	else
+	int l = 0;
+					
+	dup2(pipes[i][1], 1);
+	while (l < num_pipes)
 	{
-		int k = count(table);
-		int b = 0;
-		int aka = 0;
-        t_Command_Table3 *table4 = table;
-        int mm = 0;  //for heredoc
-		aka = count_pi_herdo(table);
-        int pixa[aka][2];
-        if(aka != 0)
-                (open_pipe_nounocmd(aka,pixa),ft_idk(table4,aka,pixa,&b));
-		i = 0;
-       mm = 0;
-		while (!b && i < k)
-		{
-			r = 1;
-			g_globale.pid[i] = fork();
+		close(pipes[l][0]);
+		close(pipes[l][1]);
+		l++;
+	}
+}
 
-			if (g_globale.pid[i] < 0)
-			{
-				perror("fork error");
-				exit(-1);
-			}
-			else if (g_globale.pid[i] == 0)
-			{
-				signal(SIGINT, SIG_DFL);
-				if (i == 0)
-				{
-					int l = 0;
-					dup2(pipes[i][1], 1);
-					while (l < num_pipes)
-					{
-						close(pipes[l][0]);
-						close(pipes[l][1]);
-						l++;
-					}
-				}
-				else if (i == num_pipes)
-				{
-					dup2(pipes[i - 1][0], 0);
+void	ft_close_pipe2(int num_pipes,int pipes[num_pipes][2],int i)
+{
+	int j;
+	dup2(pipes[i - 1][0], 0);
 					j = 0;
 					while (j < num_pipes)
 					{
@@ -450,10 +411,13 @@ void	shell_with_pipes(t_Command_Table3 *table, char **env, t_pipex *pipex,
 						close(pipes[j][1]);
 						j++;
 					}
-				}
-				else if (i != 0)
-				{
-					dup2(pipes[i - 1][0], STDIN_FILENO);
+}
+
+void	ft_close_pipe3(int num_pipes,int pipes[num_pipes][2],int i)
+{
+	int j;
+	
+	dup2(pipes[i - 1][0], STDIN_FILENO);
 					dup2(pipes[i][1], STDOUT_FILENO);
 					j = 0;
 					while (j < num_pipes)
@@ -462,179 +426,171 @@ void	shell_with_pipes(t_Command_Table3 *table, char **env, t_pipex *pipex,
 						close(pipes[j][1]);
 						j++;
 					}
-                    
-				}
-                    if ( table->args[0] != NULL &&  ft_strncmp(table->args[0], ".", 2) == 0)
-                    {
-                    write(2,"minishell: .: filename argument required\n.; .: usage: . filename [arguments]\n", 78);
-					g_globale.exit_child = 2;
-					exit(g_globale.exit_child);
-                     }
-				if ((dir = opendir(table->args[0])) != NULL)
-				{
-					closedir(dir);
-					write(2, "minishell: is a directory : ", 28);
-					write(2, table->args[0], ft_strlen3(table->args[0]));
-					write(2, "\n", 1);
-					g_globale.exit_child = 126;
-					exit(g_globale.exit_child);
-				}
-				if (table->outfile != -2 && table->outfile != -1)
-					 dup2(table->outfile, STDOUT_FILENO);
-				if (table->infile != -2 && table->infile != -1)
-                     dup2(table->infile, STDIN_FILENO);				
-				if (table->heredoc[0] != NULL && ft_strcmp(table->in_or_here, "heredoc") == 0)
-				{
-					if(dup2(pixa[mm][0], STDIN_FILENO) == -1)
-                       (perror("dup2 error"), exit(-1));
-                    int la = 0;
-                    while (la < aka)
-                    {
-                        close(pixa[la][0]);
-                        close(pixa[la][1]);
-                        la++;
-                    } 
-                    mm++;
-				}
-                else if (table->heredoc[0] != NULL )
-                {
-                    int la = 0;
+}
+void	the_point_case_in_multi_pipe(void)
+{
+	write(2,"minishell: .: filename argument required\n.; .: usage: . filename [arguments]\n", 78);
+	g_globale.exit_child = 2;
+	exit(g_globale.exit_child);
+}
+
+void	if_dir_in_multi_pipe(DIR *dir, t_Command_Table3 *table)
+{
+	closedir(dir);
+	write(2, "minishell: is a directory : ", 28);
+	write(2, table->args[0], ft_strlen3(table->args[0]));
+	write(2, "\n", 1);
+	g_globale.exit_child = 126;
+	exit(g_globale.exit_child);
+}
+
+void	reading_from_heredoc(int aka,int pixa[aka][2],int *mm)
+{
+	int la = 0;
+	int ss = *mm;
+	if(dup2(pixa[ss][0], STDIN_FILENO) == -1)
+    	(perror("dup2 error "), exit(-1));
+    while (la < aka)
+    {
+        close(pixa[la][0]);
+        close(pixa[la][1]);
+        la++;
+    } 
+    (*mm)++;
+}
+
+void	not_reading_from_heredoc(int aka,int pixa[aka][2],int *mm)
+{
+	  int la = 0;
                     while (la < aka)
                     {
                         close(pixa[la][0]);
                         close(pixa[la][1]);
                         la++;
                     }
-                    mm++;
-                }
-				if (ft_strncmp(table->args[0], "cd", 3) == 0)
-					(ft_cd(envp1, table->args[1]),exit(0));	
-				else if (ft_strncmp(table->args[0], "env", 4) == 0)
-					(printf("env\n"),envv(*envp1),exit(0));
-				else if (ft_strncmp(table->args[0], "unset", 6) == 0)
-				{
-					int i = 1;
-					printf("unset\n");
+                    (*mm)++;
+}
+
+void  unset_in_multi_pipe(t_Command_Table3 *table, envp **envp1)
+{
+	int i = 1;
+	g_globale.exit_child = 0;
 					while (table->args[i])
 					{
 						unset(envp1, table->args[i]);
 						i++;
 					}
 					exit(0);
-				}
-				else if (ft_strncmp(table->args[0], "export", 7) == 0)
-				{
-					g_globale.exit_child = 0;
-					int i = 1;
-					if (table->args[1] == NULL)
-						(export(envp1, NULL),exit(0));						
-					else
-					{
-						while (table->args[i])
-						{
-							export(envp1, table->args[i]);
-							i++;
-						}
-					}
-					exit(0);
-				}
-				else if (ft_strncmp(table->args[0], "echo", 5) == 0)
-				{
-					if (ft_test(table->args) == 1)
-						echo(table->args[1], ft_collect(table->args, 2));
-					else
-						echo(NULL, ft_collect(table->args, 1));
-					exit(0);
-				}
-				else if (ft_strncmp(table->args[0], "pwd", 4) == 0)
-					(ft_pwd(),exit(0));								
-				else if (ft_strncmp(table->args[0], "exit", 5) == 0)
-				{
-					if (table->args[1] != NULL)
-					{
-						if (table->args[2] != NULL)
-						{
-							printf("minishell: exit: too many arguments\n");
-							g_globale.exit_child = 1;
-							exit(1);
-						}
-						if (ft_isdigit1(table->args[1]) == 0)
-							g_globale.exit_child = ft_atoi(table->args[1]);
-						else
-						{
-							printf("minishell: exit: %s: numeric argument required\n",
-									table->args[1]);
-							g_globale.exit_child = 255;
-							exit(g_globale.exit_child);
-						}
-					}
-					exit(g_globale.exit_child);
-				}
-				if ((table->args[0][0] == '.' || table->args[0][0] == '/')
-					&& access(table->args[0], F_OK) == 0)
-				{
-					if (execve(table->args[0], table->args, env) == -1)
-						(perror("execve error"),exit(126));
-				}
-				else if (table->args[0][0] == '.' || table->args[0][0] == '/')
-				{
-					write(2, "minishell: ", 11);
-					perror(table->args[0]);
-					g_globale.exit_child = 127;
-					exit(g_globale.exit_child);
-				}
-				pipex->i = 0;
-				while (pipex->paths && pipex->paths[pipex->i])
-				{
-					pipex->paths[pipex->i] = ft_strjoin2(pipex->paths[pipex->i],
-							"/");
-					pipex->paths[pipex->i] = ft_strjoin2(pipex->paths[pipex->i],
-							table->args[0]);
-					if (access(pipex->paths[pipex->i], F_OK) == 0)
-					{
-						if (execve(pipex->paths[pipex->i], table->args, env) ==
-							-1)
-							(perror("execve error"),exit(126));
-					}
-					pipex->i++;
-				}
-				if (table->args)
-				{
-					if (ft_strserarch(table->args[0], '/') == 1)
-						ft_error1("minishell: No such file or directory: ",
-								table->args[0]);
-					else
-						ft_error1("minishell: command not found: ",
-								table->args[0]);
-                }
-			}
-			else
-			{
-                if (table->heredoc[0] != NULL)
-				{
-                    (close(pixa[mm][0]),close(pixa[mm][1]));
-                    mm++;
-				}
-				if (i == 0)
-					close(pipes[i][1]);	
-				else if (i == num_pipes)
-					(close(pipes[i - 1][0]),close(pipes[i - 1][1]));
-				else
-					(close(pipes[i][1]),close(pipes[i - 1][0]),close(pipes[i - 1][1]));
-				(close(table->outfile),close(table->infile));
-				table = table->next;
-				i++;
-			}
-		}
-        int xx = 0;
-       while( xx < aka)
-       {
-           (close(pixa[xx][0]),close(pixa[xx][1]));
-           xx++;
-       }
-		if (r)
+}
+
+void	export_in_multipipe(t_Command_Table3 *table, envp **envp1)
+{
+	g_globale.exit_child = 0;
+	int i = 1;
+	if (table->args[1] == NULL)
+		(export(envp1, NULL),exit(0));						
+	else
+	{
+		while (table->args[i])
 		{
-			int status;
+			export(envp1, table->args[i]);
+			i++;
+		}
+	}
+	exit(0);
+}
+
+void	echo_in_multipipe(t_Command_Table3 *table)
+{
+	if (ft_test(table->args) == 1)
+		echo(table->args[1], ft_collect(table->args, 2));
+	else
+		echo(NULL, ft_collect(table->args, 1));
+	exit(0);
+}
+
+void	exit_in_multipipe(t_Command_Table3 *table)
+{
+	if (table->args[1] != NULL)
+	{
+		if (table->args[2] != NULL)
+		{
+			printf("minishell: exit: too many arguments\n");
+			g_globale.exit_child = 1;
+			exit(1);
+		}
+		if (ft_isdigit1(table->args[1]) == 0)
+			g_globale.exit_child = ft_atoi(table->args[1]);
+		else
+		{
+			printf("minishell: exit: %s: numeric argument required\n",
+				table->args[1]);
+			g_globale.exit_child = 255;
+			exit(g_globale.exit_child);
+		}
+	}
+	exit(g_globale.exit_child);
+}
+
+void	dir_in_multipipe(t_Command_Table3 *table,char **env)
+{
+	if (execve(table->args[0], table->args, env) == -1)
+		(perror("execve error"),exit(126));
+}
+
+void	dir_in_multipipe2(t_Command_Table3 *table)
+{
+	write(2, "minishell: ", 11);
+	perror(table->args[0]);
+	g_globale.exit_child = 127;
+	exit(g_globale.exit_child);
+}
+
+void execute_in_multpipe(t_pipex *pipex, t_Command_Table3 *table, char **env)
+{
+	pipex->i = 0;
+	while (pipex->paths && pipex->paths[pipex->i])
+	{
+		pipex->paths[pipex->i] = ft_strjoin2(pipex->paths[pipex->i],"/");
+		pipex->paths[pipex->i] = ft_strjoin2(pipex->paths[pipex->i],table->args[0]);
+		if (access(pipex->paths[pipex->i], F_OK) == 0)
+		{
+			if(table->args[0][0] == 0)
+				break;
+			if (execve(pipex->paths[pipex->i], table->args, env) == -1)
+				(perror("execve error"),exit(126));
+		}
+		pipex->i++;
+	}
+}
+
+void	cmd_not_found(t_Command_Table3	*table)
+{
+	if (ft_strserarch(table->args[0], '/') == 1)
+		ft_error1("minishell: No such file or directory: ", table->args[0]);
+	else
+		ft_error1("minishell: command not found: ", table->args[0]);
+}
+
+void	closing_pipes(int aka,int pixa[aka][2],int *mm)
+{
+    (close(pixa[*mm][0]),close(pixa[*mm][1]));
+    (*mm)++;
+}
+
+void	closing_more_pipes(int aka,int pixa[aka][2])
+{
+	int xx = 0;
+    while( xx < aka)
+    {
+        (close(pixa[xx][0]),close(pixa[xx][1]));
+        xx++;
+    }
+}
+
+void	waiting_for_child(int num_pipes,int pipes[num_pipes][2])
+{
+	int status;
 			waitpid(g_globale.pid[num_pipes], &status, 0);
 			int j = 0;
 			while (j < num_pipes)
@@ -649,8 +605,110 @@ void	shell_with_pipes(t_Command_Table3 *table, char **env, t_pipex *pipex,
 				g_globale.exit_child = 128 + WTERMSIG(status);
 			else if (WIFEXITED(status))
 				g_globale.exit_child = WEXITSTATUS(status);
+}
+
+void	c_more_pipes(t_Command_Table3 *table,int num_pipes,int pipes[num_pipes][2],int i)
+{
+	if (i == 0)
+		close(pipes[i][1]);	
+	else if (i == num_pipes)
+			(close(pipes[i - 1][0]),close(pipes[i - 1][1]));
+	else
+		(close(pipes[i][1]),close(pipes[i - 1][0]),close(pipes[i - 1][1]));
+	(close(table->outfile),close(table->infile));
+}
+
+void	shell_with_pipes(t_Command_Table3 *table, char **env, t_pipex *pipex,
+		envp **envp1)
+{
+	DIR *dir;
+	pipex->paths = NULL;
+	pathfinder(pipex, *envp1);
+	int num_pipes;
+	num_pipes = count(table) - 1;
+	int pipes[num_pipes][2];
+    int i = 0;
+	int r = 0;
+	int k = count(table);
+	int b = 0;
+	int aka;
+    t_Command_Table3 *table4 = table;
+    int mm = 0;  //for heredoc
+	aka = count_pi_herdo(table);
+	int pixa[aka][2];
+	g_globale.pid = malloc(sizeof(int) * count(table));
+	g_globale.command_count = count(table);
+	ft_creat_pipe(num_pipes,pipes);
+	if (num_pipes == 0)
+		ft_onecmd(table,pipex,envp1,env);
+	else
+	{
+        if(aka != 0)
+                (open_pipe_nounocmd(aka,pixa),ft_idk(table4,aka,pixa,&b));
+		i = 0;
+       mm = 0;
+		while (!b && i < k)
+		{
+			r = 1;
+			g_globale.pid[i] = fork();
+			if (g_globale.pid[i] < 0)
+				(perror("fork error"),exit(-1));
+			else if (g_globale.pid[i] == 0)
+			{
+				signal(SIGINT, SIG_DFL);
+				if (i == 0)
+					ft_close_pipe(num_pipes,pipes,i);
+				else if (i == num_pipes)
+					ft_close_pipe2(num_pipes,pipes,i);
+				else if (i != 0)
+					ft_close_pipe3(num_pipes,pipes,i);
+                if ( table->args[0] != NULL &&  ft_strncmp(table->args[0], ".", 2) == 0)
+                	the_point_case_in_multi_pipe();
+				if ((dir = opendir(table->args[0])) != NULL)
+					if_dir_in_multi_pipe(dir, table);
+				if (table->outfile != -2 && table->outfile != -1)
+					 dup2(table->outfile, STDOUT_FILENO);
+				if (table->infile != -2 && table->infile != -1)
+                     dup2(table->infile, STDIN_FILENO);				
+				if (table->heredoc[0] != NULL && ft_strcmp(table->in_or_here, "heredoc") == 0)
+					reading_from_heredoc(aka,pixa,&mm);
+                else if (table->heredoc[0] != NULL )
+                    not_reading_from_heredoc(aka,pixa,&mm); 
+				if (ft_strncmp(table->args[0], "cd", 3) == 0)
+					(ft_cd(envp1, table->args[1]),exit(0));	
+				else if (ft_strncmp(table->args[0], "env", 4) == 0)
+					(printf("env\n"),envv(*envp1),exit(0));
+				else if (ft_strncmp(table->args[0], "unset", 6) == 0)
+					unset_in_multi_pipe(table, envp1);
+				else if (ft_strncmp(table->args[0], "export", 7) == 0)
+					export_in_multipipe(table, envp1);
+				else if (ft_strncmp(table->args[0], "echo", 5) == 0)
+					echo_in_multipipe(table); //need exit status i think;
+				else if (ft_strncmp(table->args[0], "pwd", 4) == 0)
+					(ft_pwd(),exit(0));								
+				else if (ft_strncmp(table->args[0], "exit", 5) == 0)
+					exit_in_multipipe(table);
+				if ((table->args[0][0] == '.' || table->args[0][0] == '/')
+					&& access(table->args[0], F_OK) == 0)
+					dir_in_multipipe(table,env);
+				else if (table->args[0][0] == '.' || table->args[0][0] == '/')
+					dir_in_multipipe2(table);
+				execute_in_multpipe(pipex, table,env);
+				if (table->args)
+					cmd_not_found(table);
+			}
+			else
+			{
+                if (table->heredoc[0] != NULL)
+					closing_pipes(aka,pixa,&mm);
+				c_more_pipes(table,num_pipes,pipes,i);
+				table = table->next;
+				i++;
+			}
 		}
+        closing_more_pipes(aka,pixa);
+		if (r)
+			waiting_for_child(num_pipes,pipes);
 		free(g_globale.pid);
-        
 	}
 }
