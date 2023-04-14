@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 05:52:42 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 05:57:41 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 17:41:32 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	sigint_handler(int sig)
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
+	g_globale.exit_child = 1;
 	while (i < g_globale.command_count)
 	{
 		if (g_globale.pid[i] != 0)

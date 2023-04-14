@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution10.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 05:43:23 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 15:33:55 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:58:43 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ void	norm_work_exec(t_z *z, t_Command_Table3 *table)
 void	norm_builtin(t_envp **envp1, t_Command_Table3 *table)
 {
 	if (ft_strncmp(table->args[0], "cd", 3) == 0)
-		(ft_cd(envp1, table->args[1]), exit(0));
+		(ft_cd(envp1, table->args[1]), exit(g_globale.exit_child));
 	else if (ft_strncmp(table->args[0], "env", 4) == 0)
-		(printf("env\n"), envv(*envp1), exit(0));
+		(envv(*envp1), exit(0));
 	else if (ft_strncmp(table->args[0], "unset", 6) == 0)
 		unset_in_multi_pipe(table, envp1);
 	else if (ft_strncmp(table->args[0], "export", 7) == 0)

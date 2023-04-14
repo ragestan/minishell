@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution7.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 05:43:05 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 15:33:44 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/14 16:16:03 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,19 @@ void	not_reading_from_heredoc(int aka, int **pixa, int *mm)
 void	unset_in_multi_pipe(t_Command_Table3 *table, t_envp **envp1)
 {
 	int	i;
+	int	j;
 
 	i = 1;
+	j = 0;
 	g_globale.exit_child = 0;
 	while (table->args[i])
 	{
-		unset(envp1, table->args[i]);
+		j = unset(envp1, table->args[i]);
+		if (j == 1)
+			g_globale.exit_child = 1;
 		i++;
 	}
-	exit(0);
+	exit(g_globale.exit_child);
 }
 
 void	export_in_multipipe(t_Command_Table3 *table, t_envp **envp1)
@@ -84,5 +88,5 @@ void	export_in_multipipe(t_Command_Table3 *table, t_envp **envp1)
 			i++;
 		}
 	}
-	exit(0);
+	exit(g_globale.exit_child);
 }

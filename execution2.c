@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 05:39:52 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 15:33:12 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/14 20:25:03 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_creat_pipe(int num_pipes, int **pipes)
 		if (pipe(pipes[i]) < 0)
 		{
 			i--;
-			perror("pipe 2error");
+			perror("pipe error");
 			while (i >= 0)
 			{
 				close(pipes[i][0]);

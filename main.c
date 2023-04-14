@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/14 15:35:11 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/14 20:06:23 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,18 @@ t_Command_Table3	*ft_all(t_envp *env)
 void	ft_none_env(char **env, t_envp **env1)
 {
 	char	*ptr;
+	char	*ptr2;
 
 	ptr = NULL;
+	ptr2 = NULL;
 	if (env[0] == NULL)
 	{
 		ptr = getcwd(NULL, 0);
-		ft_lstadd_back(env1, ft_lstnew(ptr, 1));
+		ptr2 = ft_strjoin1("PWD=", ptr);
+		ft_lstadd_back(env1, ft_lstnew(ptr2, 1));
 		ft_lstadd_back(env1, ft_lstnew("SHLVL=1", 1));
 		free(ptr);
+		free(ptr2);
 	}
 }
 
