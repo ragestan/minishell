@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/14 01:04:04 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/14 07:04:25 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
-
-
 
 typedef struct a_Cammand_Table3
 {
@@ -66,7 +64,7 @@ typedef struct a_int
 
 typedef struct w
 {
-	char	*new;
+	char *new;
 	char **split;
 	int i;
 	int k;
@@ -74,8 +72,8 @@ typedef struct w
 	t_Command_Table2 z;
 	t_Command_Table3 *last_table;
 	t_Command_Table3 *tmp;
-	struct termios		term;
-	struct termios		oldterm;
+	struct termios term;
+	struct termios oldterm;
 }							t_w;
 //---------------------------------------zbentale--------------------------------
 typedef struct NODE
@@ -174,7 +172,7 @@ int							ft_strncmp(const char *s1, const char *s2,
 size_t						ft_strlen3(const char *s);
 char						*ft_strjoin(char *s1, char *s2, int count);
 void						make_node(envp **st, char *str);
-char						*ft_strdupZ(const char *s1);
+char						*ft_strdup_z(const char *s1);
 void						ft_putchar_fd(char c, int fd);
 void	shell_with_pipes(t_Command_Table3 *table,
 						char **env,
@@ -200,9 +198,100 @@ void						ft_error1(char *str, char *st);
 int							valideinput(char *str);
 void						sigquit_handler(int sig);
 void						herquite(int sig);
-void	ft_lstadd_back(envp **lst, envp *new);
-envp	*ft_lstlastZ(envp *lst);
-envp	*ft_lstnew(char *content, int option);
+void						ft_lstadd_back(envp **lst, envp *new);
+envp						*ft_lstlast_z(envp *lst);
+envp						*ft_lstnew(char *content, int option);
+void						updatepwd(envp **env, char *str);
+void						updateoldpwd(envp **env, char *str);
+int							ft_strnstredit(const char *str);
+char						*ft_strdupedit(const char *s1);
+int							updateenv(envp *env, char *str, int b);
+void						printnodealpha(envp *str);
+void						ft_putstredit(char *s);
+void						printnode_export(envp *stp);
+void						ft_writeme1(char *str);
+void						ft_writeme2(envp **env1);
+int							ft_updateenv_helper(char *str, envp *st);
+int							ft_updateenv_helper1(char *str, envp *st);
+envp						*sort_list(envp *lst, int (*cmp)(char *, char *));
+void						ft_export_help(char *str, envp **env1, int x,
+								char *stredit);
+int							ft_creat_pipe(int num_pipes, int **pipes);
+void						ft_here_null_with_pipe(char *str, int *pipa,
+								char **heredoc, int *b);
+void						the_point_case_yay(void);
+void						the_dir_case(DIR *dir, char *arg);
+void						ft_unset_norm(char **args, envp **envp1, int i,
+								int j);
+void						ft_export_norm(char **args, envp **envp1, int i);
+void						ft_export(char **args);
+void						ft_exiit(char **args);
+int	ft_execut_now(t_pipex *pipex,
+					t_Command_Table3 *table,
+					char **env);
+void						ft_norm(char *arg);
+void						ft_wait_unocmd(int i, t_Command_Table3 *table);
+int							builtin_check(t_Command_Table3 *table, envp **envp1,
+								int *b, DIR *dir);
+void						child_unocmd(t_Command_Table3 *table, char **env,
+								t_pipex *pipex, int *pipa);
+void						ft_free_xx(t_x *x);
+t_x							*ft_init_xx(t_Command_Table3 *table);
+void						ft_onecmd(t_Command_Table3 *table, t_pipex *pipex,
+								envp **envp1, char **env);
+int							count_pi_herdo(t_Command_Table3 *table3);
+void						open_pipe_nounocmd(t_z *z, int aka, int **pixa);
+t_y							*ft_init_yy();
+void						ft_here_open(t_Command_Table3 *table, int aka,
+								int **pixa, t_y *y);
+void						ft_idk(t_Command_Table3 *table, int aka, int **pixa,
+								int *b);
+void						ft_close_pipe(int num_pipes, int **pipes, int i);
+void						ft_close_pipe2(int num_pipes, int **pipes, int i);
+void						ft_close_pipe3(int num_pipes, int **pipes, int i);
+void						the_point_case_in_multi_pipe(void);
+void	if_dir_in_multi_pipe(DIR *dir,
+							t_Command_Table3 *table);
+void						reading_from_heredoc(int aka, int **pixa, int *mm);
+void						not_reading_from_heredoc(int aka, int **pixa,
+								int *mm);
+void	unset_in_multi_pipe(t_Command_Table3 *table,
+							envp **envp1);
+void	export_in_multipipe(t_Command_Table3 *table,
+							envp **envp1);
+void						echo_in_multipipe(t_Command_Table3 *table);
+void						exit_in_multipipe(t_Command_Table3 *table);
+void	dir_in_multipipe(t_Command_Table3 *table,
+						char **env);
+void						dir_in_multipipe2(t_Command_Table3 *table);
+void	execute_in_multpipe(t_pipex *pipex,
+							t_Command_Table3 *table,
+							char **env);
+void						cmd_not_found(t_Command_Table3 *table);
+void						closing_pipes(int **pixa, int *mm);
+void						closing_more_pipes(int aka, int **pixa);
+void						waiting_for_child(int num_pipes, int **pipes);
+void						c_more_pipes(t_Command_Table3 *table, int num_pipes,
+								int **pipes, int i);
+t_z							*ft_init_zz(t_Command_Table3 *table, char **env);
+void						norm_work_exec(t_z *z, t_Command_Table3 *table);
+void						norm_builtin(envp **envp1, t_Command_Table3 *table);
+void	norm_wrok_exec2(t_Command_Table3 *table,
+						t_pipex *pipex,
+						char **env);
+int							norm_last(t_z *z, t_Command_Table3 *table,
+								t_pipex *pipex, envp **envp1);
+void						norm_last2(t_z *z);
+void						free_z(t_z *z);
+t_z							*fork_update_r_value(t_z *z);
+t_z							*norm_close_pipes(t_z *z, t_Command_Table3 *table);
+void						norm_last_realy(t_z *z, t_Command_Table3 *tmp,
+								envp **envp1, t_pipex *pipex);
+void						sigint_handler(int sig);
+void						herquite(int sig);
+void						sigquit_handler(int sig);
+int							count(t_Command_Table3 *table);
+void						ft_none_env(char **env, envp **env1);
 //------------------------------------zbentalh---------------------------------------
 void	ft_lstadd_back1(t_Command_Table **lst,
 						t_Command_Table *new);
@@ -331,4 +420,8 @@ char						**ft_all_nor2_nor2(char **split, char *new);
 void						ft_all_nor2(char **split, char *new, int g_fork,
 								int i);
 void						free_z(t_z *z);
+t_w							*ft_init_w(void);
+t_w							*ft_all_norm_last(t_w *w);
+t_Command_Table3			*ft_all(envp *env);
+void						norm_main(char **env, int argc, envp **env1);
 #endif

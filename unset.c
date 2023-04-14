@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 22:10:37 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 00:05:03 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/14 06:02:11 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_strncmp1(const char *s1, const char *s2)
 		return (1);
 }
 
-void	deleteNode(envp **head, char *str)
+void	delete_node(envp **head, char *str)
 {
 	envp	*temp;
 	envp	*current;
@@ -87,6 +87,6 @@ int	unset(envp **env1, char *str)
 		printf("unset: `%s': not a valid identifier\n", str);
 		return (1);
 	}
-	deleteNode(env1, str);
+	delete_node(env1, str);
 	return (0);
 }

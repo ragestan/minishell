@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing15.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:04:14 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/14 00:55:12 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/14 06:08:49 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,8 @@ t_Command_Table	*ft_all_nor(t_Command_Table *table, envp *env)
 void	ft_all_nor2_nor(void)
 {
 	g_globale.exit_child = 258;
-	write(2,
-			"minishell: syntax error near unexpected token `redirection'\n",
-			61);
+	write(2, "minishell: syntax error near unexpected token `redirection'\n",
+		61);
 }
 
 char	**ft_all_nor2_nor2(char **split, char *new)
@@ -37,13 +36,14 @@ char	**ft_all_nor2_nor2(char **split, char *new)
 
 void	ft_all_nor2(char **split, char *new, int g_fork, int i)
 {
-	char *new2;
+	char	*new2;
 
 	ft_all_nor2_nor();
 	split = ft_all_nor2_nor2(split, new);
 	while (split[i++])
 	{
-		if (split[i - 1][0] == '<' && split[i - 1][1] == '<' && split[i - 1][2] == '\0')
+		if (split[i - 1][0] == '<' && split[i - 1][1] == '<' && split[i
+			- 1][2] == '\0')
 		{
 			if (split[i])
 			{

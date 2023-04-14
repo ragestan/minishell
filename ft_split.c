@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:10:09 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/14 00:02:01 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/14 07:03:57 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ static size_t	ft_counti(char const *str, char c)
 
 char	**ft_split(char const *s, char c)
 {
-	size_t i;
-	size_t j;
-	char **string;
+	size_t	i;
+	size_t	j;
+	char	**string;
 
 	i = 0;
 	j = 0;

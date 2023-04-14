@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing14.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 13:51:32 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/14 00:04:42 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/14 06:01:04 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ char	**arg(char **str, int i, int j)
 	if (i != 1 && i != 2)
 	{
 		arg = malloc(sizeof(char *) * (strdoublelen(str) - i + 2 + 1));
-		arg[0] = ft_strdupZ("echo");
-		arg[1] = ft_strdupZ("-n");
+		arg[0] = ft_strdup_z("echo");
+		arg[1] = ft_strdup_z("-n");
 	}
 	else
 		return (str);
 	while (str[i])
-		arg[j++] = ft_strdupZ(str[i++]);
+		arg[j++] = ft_strdup_z(str[i++]);
 	arg[j] = NULL;
 	return (ft_free(str), arg);
 }

@@ -2,6 +2,15 @@ NAME=minishell
 SRC = main.c\
 		ft_split.c\
 		execution1.c\
+		execution2.c\
+		execution3.c\
+		execution4.c\
+		execution5.c\
+		execution6.c\
+		execution7.c\
+		execution8.c\
+		execution9.c\
+		execution10.c\
 		export.c\
 	  	cd.c\
 	  	unset.c\
@@ -31,6 +40,13 @@ SRC = main.c\
 		 parsing13.c\
 		 parsing14.c\
 		 parsing15.c\
+		 strjoin.c\
+		 export_help.c\
+		 linkd_list_utils.c\
+		 export_help2.c\
+		 export_help3.c\
+		 utils2.c\
+		 child_main.c\
 
 CC = gcc 
 
@@ -41,7 +57,7 @@ OBJ=$(SRC:.c=.o)
 all:	$(NAME)
 
 $(NAME) : $(OBJ)
-	$(CC)   ${CFLAGS} ${OBJ}   -o $(NAME) -lreadline -L /Users/zbentalh/goinfre/homebrew/opt/readline/lib -I /Users/zbentalh/goinfre/homebrew/opt/readline/include
+	$(CC)   ${CFLAGS} ${OBJ}   -o $(NAME) -lreadline -L /Users/zbentale/goinfre/homebrew/opt/readline/lib -I /Users/zbentale/goinfre/homebrew/opt/readline/include
 clean:	
 	$(RM) $(OBJ)
 fclean: clean

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 11:33:17 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 00:01:57 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/14 06:19:26 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	envv(envp *str)
 {
-	envp *st;
+	envp	*st;
+
 	st = str;
 	while (st)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing6.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 12:26:59 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/14 00:03:08 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/14 06:03:37 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,12 @@ void	ft_env_norm5(char *arg, char *new, envp *tmp, t_int *w)
 	else if (arg[w->i] == '$' && arg[w->i + 1] == '$')
 		w->i = w->i + 2;
 	else if ((arg[w->i] == '$' && arg[w->i + 1] == '+') || (arg[w->i] == '$'
-				&& arg[w->i + 1] == '.') || (arg[w->i] == '$' && arg[w->i
+			&& arg[w->i + 1] == '.') || (arg[w->i] == '$' && arg[w->i
 				+ 1] == ','))
 		ft_plus2(&w->i, &w->j);
 	else if (w->z == 0 && arg[w->i] != '$' && arg[w->i + 1] != '\0' && arg[w->i
 			+ 1] != ' ' && arg[w->i + 1] != '\t' && arg[w->i + 1] != '\n'
-			&& arg[w->i + 1] != '$')
+		&& arg[w->i + 1] != '$')
 		ft_env_norm4(arg, w);
 	else if (w->z == 0 && arg[w->i] == '$' && char_is_ad(arg[w->i + 1]) == 0)
 		ft_env_norm3(arg, w);

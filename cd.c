@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 11:27:59 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 00:01:55 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/14 05:59:46 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,97 +32,6 @@ char	*ft_getenv(envp *env, char *str)
 	return (NULL);
 }
 
-char	*ft_strjoin1(char *s1, char *s2)
-{
-	char	*p;
-	int		s1_len;
-	int		s2_len;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	if (!s1 || !s2)
-		return (0);
-	s1_len = ft_strlen3(s1);
-	s2_len = ft_strlen3(s2);
-	p = malloc(s2_len + s1_len + 1);
-	if (!p)
-		return (NULL);
-	while (i < s1_len)
-	{
-		p[i] = s1[i];
-		i++;
-	}
-	while (j < s2_len)
-		p[i++] = s2[j++];
-	p[i] = '\0';
-	return (p);
-}
-
-char	*ft_strjoin3(char *s1, char *s2)
-{
-	char	*p;
-	int		s1_len;
-	int		s2_len;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	s1_len = ft_strlen3(s1);
-	s2_len = ft_strlen3(s2);
-	p = malloc(s2_len + s1_len + 1);
-	if (!p)
-		return (NULL);
-	while (i < s1_len)
-	{
-		p[i] = s1[i];
-		i++;
-	}
-	while (j < s2_len)
-		p[i++] = s2[j++];
-	return (p[i] = '\0', free(s1), p);
-}
-
-void	updatepwd(envp **env, char *str)
-{
-	envp	*st;
-
-	st = *env;
-	while (st)
-	{
-		if (ft_strncmp(st->str, "PWD", 3) == 0)
-		{
-			if (st->free == 1)
-				free(st->str);
-			st->free = 1;
-			st->str = ft_strjoin1("PWD=", str);
-			return ;
-		}
-		st = st->next;
-	}
-}
-
-void	updateoldpwd(envp **env, char *str)
-{
-	envp	*st;
-
-	st = *env;
-	while (st)
-	{
-		if (ft_strncmp(st->str, "OLDPWD", 6) == 0)
-		{
-			if (st->free == 1)
-				free(st->str);
-			st->free = 1;
-			st->str = ft_strjoin1("OLDPWD=", str);
-			st->option = 1;
-			return ;
-		}
-		st = st->next;
-	}
-}
 void	ft_cd_help1(envp **env, t_cdd *cdd)
 {
 	cdd->ptr1 = ft_getenv(*env, "HOME");
@@ -145,6 +54,7 @@ void	ft_cd_help1(envp **env, t_cdd *cdd)
 		g_globale.exit_child = 0;
 	}
 }
+
 void	ft_cd_help2(envp **env, t_cdd *cdd)
 {
 	cdd->ptr = ft_getenv(*env, "OLDPWD");
@@ -176,7 +86,7 @@ void	ft_cd_help2(envp **env, t_cdd *cdd)
 
 void	ft_cd_help3(envp **env, t_cdd *cdd, char *str)
 {
-	cdd->ptr = ft_strdupZ(str);
+	cdd->ptr = ft_strdup_z(str);
 	cdd->value = chdir(cdd->ptr);
 	if (cdd->value < 0)
 	{

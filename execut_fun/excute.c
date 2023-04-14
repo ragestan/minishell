@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   excute.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:46:46 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 00:01:41 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/14 06:01:29 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,34 +103,23 @@ char	*ft_collect(char **str, int i)
 	return (str2);
 }
 
-void	pathfinder(t_pipex *pipex, envp *envp1)
+void	free_z(t_z *z)
 {
-	envp	*tmp;
+	int	i;
 
-	tmp = envp1;
-	while (tmp)
+	i = 0;
+	while (i < z->num_pipes)
 	{
-		if (ft_strncmp(tmp->str, "PATH=", 5) == 0)
-		{
-			pipex->save = tmp->str + 5;
-			break ;
-		}
-		tmp = tmp->next;
+		free(z->pipes[i]);
+		i++;
 	}
-	if (tmp == NULL)
+	i = 0;
+	while (i < z->aka)
 	{
-		pipex->paths = NULL;
-		return ;
+		free(z->pixa[i]);
+		i++;
 	}
-	pipex->paths = ft_split(pipex->save, ':');
-}
-
-void	ft_error1(char *str, char *st)
-{
-	write(2, str, ft_strlen3(str));
-	if (st)
-		write(2, st, ft_strlen3(st));
-	write(2, "\n", 1);
-	g_globale.exit_child = 127;
-	exit(127);
+	free(z->pixa);
+	free(z->pipes);
+	free(z);
 }

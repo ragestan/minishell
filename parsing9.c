@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing9.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 12:42:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/14 00:03:55 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/14 06:06:30 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*ft_en_norm4(char *arg, char *new, envp *tmp, t_int *w)
 	else if (arg[w->i] == '$' && arg[w->i + 1] == '$')
 		w->i = w->i + 2;
 	else if ((arg[w->i] == '$' && arg[w->i + 1] == '+') || (arg[w->i] == '$'
-				&& arg[w->i + 1] == '.') || (arg[w->i] == '$' && arg[w->i
+			&& arg[w->i + 1] == '.') || (arg[w->i] == '$' && arg[w->i
 				+ 1] == ','))
 		new = ft_en_norm3(arg, new, w);
 	else if (w->z == 0 && arg[w->i] != '$' && arg[w->i + 1] != '\0' && arg[w->i
