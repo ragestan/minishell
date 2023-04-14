@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing6.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 12:26:59 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/14 15:42:25 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/14 20:28:14 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	ft_plusi(int *i, int *j)
 void	ft_env_norm5(char *arg, char *new, t_envp *tmp, t_int *w)
 {
 	ft_env_norm2(tmp, arg, new, w);
-	if (arg[w->i] == '$' & arg[w->i + 1] == '?')
+	if (arg[w->i] == '$' && arg[w->i + 1] == '?')
 		ft_env_norm(arg, new, w);
 	if (arg[w->i] == '$' && arg[w->i + 1] == '\0')
 		ft_plusi(&w->i, &w->j);

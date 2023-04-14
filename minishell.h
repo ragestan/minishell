@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/14 17:39:47 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 20:43:15 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,7 @@ void						ft_exiit(char **args);
 int							ft_execut_now(t_pipex *pipex,
 								t_Command_Table3 *table, char **env);
 void						ft_norm(char *arg);
-void						ft_wait_unocmd(int i, t_Command_Table3 *table);
+void						ft_wait_unocmd(t_x *x, t_Command_Table3 *table);
 int							builtin_check(t_Command_Table3 *table,
 								t_envp **envp1, int *b, DIR *dir);
 void						child_unocmd(t_Command_Table3 *table, char **env,

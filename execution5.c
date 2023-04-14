@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution5.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 05:42:50 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 15:33:36 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/14 20:42:24 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	ft_onecmd(t_Command_Table3 *table, t_pipex *pipex, t_envp **envp1,
 	else if (g_globale.pid[x->i] == 0)
 		child_unocmd(table, env, pipex, x->pipa);
 	else
-		ft_wait_unocmd(x->i, table);
+		ft_wait_unocmd(x, table);
 	ft_free_xx(x);
 }
 

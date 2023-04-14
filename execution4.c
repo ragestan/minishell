@@ -3,22 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   execution4.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 05:42:43 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 15:33:27 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/14 20:53:43 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_wait_unocmd(int i, t_Command_Table3 *table)
+void	ft_wait_unocmd(t_x *x, t_Command_Table3 *table)
 {
 	int	status;
 
-	waitpid(g_globale.pid[i], &status, 0);
+	waitpid(g_globale.pid[x->i], &status, 0);
 	close(table->outfile);
 	close(table->infile);
+	close(x->pipa[0]);
 	if (WIFSIGNALED(status))
 		g_globale.exit_child = 128 + WTERMSIG(status);
 	if (WIFEXITED(status))

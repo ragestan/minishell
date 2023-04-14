@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linkd_list_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 02:09:38 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 15:39:59 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/14 20:29:52 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,8 @@ void	make_node(t_envp **st, char *str)
 int	updateenv(t_envp *env, char *str, int b)
 {
 	t_envp	*st;
-	char	*ptr;
 
 	st = env;
-	ptr = NULL;
 	while (st)
 	{
 		if (ft_strcmpedit(str, st->str) == 0 && b == 0)
