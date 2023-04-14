@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 02:09:38 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 20:29:52 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 22:40:32 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	make_node(t_envp **st, char *str)
 	head->str = str;
 	head->option = 1;
 	head->prinlast = 0;
+	head->free = 0;
 	head->next = *st;
 	*st = head;
 }
@@ -69,7 +70,9 @@ int	updateenv(t_envp *env, char *str, int b)
 	while (st)
 	{
 		if (ft_strcmpedit(str, st->str) == 0 && b == 0)
+		{
 			return (ft_updateenv_helper(str, st));
+		}
 		else if (ft_strcmpedit(str, st->str) == 0 && b == 1)
 			return (ft_updateenv_helper1(str, st));
 		st = st->next;

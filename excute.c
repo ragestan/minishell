@@ -6,11 +6,11 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:46:46 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 06:01:29 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 23:30:11 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "./minishell.h"
 
 void	printlinkdlist(t_Command_Table3 *str)
 {

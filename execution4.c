@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 05:42:43 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 22:06:25 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 23:24:02 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_wait_unocmd(t_x **x, t_Command_Table3 *table)
 	waitpid(g_globale.pid[(*x)->i], &status, 0);
 	close(table->outfile);
 	close(table->infile);
-	if(table->heredoc[0] != NULL)
+	if (table->heredoc[0] != NULL)
 	{
 		close((*x)->pipa[0]);
 	}
@@ -30,18 +30,13 @@ void	ft_wait_unocmd(t_x **x, t_Command_Table3 *table)
 	free(g_globale.pid);
 }
 
-void close1(t_x *x, t_Command_Table3 *table)
-{
-	if(table->heredoc[0] != NULL)
-		close(x->pipa[0]);
-}
 int	builtin_check(t_Command_Table3 *table, t_envp **envp1, t_x *x, DIR *dir)
 {
 	int	i;
 
 	i = 1;
 	if (x->b != 0 || table->args[0] == NULL)
-		return (close1(x,table),free(g_globale.pid), 1);
+		return (close1(x, table), free(g_globale.pid), 1);
 	if (ft_strncmp(table->args[0], ".", 2) == 0)
 		return (the_point_case_yay(), 1);
 	dir = opendir(table->args[0]);

@@ -6,11 +6,11 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 11:26:19 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 06:00:21 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 23:30:02 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "./minishell.h"
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {

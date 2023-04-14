@@ -16,8 +16,8 @@ SRC = main.c\
 	  	unset.c\
 	 	 echo.c\
 	  	env.c\
-		 execut_fun/utils1.c\
-		 execut_fun/excute.c\
+		 utils1.c\
+		 excute.c\
 		 heredoc.c\
 		 pwd.c\
 		 syntax_handler.c\

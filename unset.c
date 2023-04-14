@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 22:10:37 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 15:41:16 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/14 23:24:38 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	delete_node(t_envp **head, char *str)
 	}
 	if (current->next == NULL)
 		return ;
-	if (current->next->prinlast == 1)
+	if (current->next->free == 1)
 		free(current->next->str);
 	temp = current->next;
 	current->next = current->next->next;
@@ -89,4 +89,10 @@ int	unset(t_envp **env1, char *str)
 	}
 	delete_node(env1, str);
 	return (0);
+}
+
+void	close1(t_x *x, t_Command_Table3 *table)
+{
+	if (table->heredoc[0] != NULL)
+		close(x->pipa[0]);
 }

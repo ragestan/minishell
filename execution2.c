@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 05:39:52 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 21:23:37 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 23:23:23 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	ft_here_null_with_pipe(char *str, t_x **x, char **heredoc, int *b)
 
 	g_globale.idheredok = 0;
 	g_globale.idheredok = fork();
-
 	if (g_globale.idheredok == 0)
 	{
 		close((*x)->pipa[0]);

@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/14 22:04:21 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 23:24:36 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -417,4 +417,5 @@ t_w							*ft_init_w(void);
 t_w							*ft_all_norm_last(t_w *w);
 t_Command_Table3			*ft_all(t_envp *env);
 void						norm_main(char **env, int argc, t_envp **env1);
+void						close1(t_x *x, t_Command_Table3 *table);
 #endif
