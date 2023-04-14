@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   linkd_list_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 02:09:38 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 07:05:13 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:39:59 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-envp	*ft_lstnew(char *content, int option)
+t_envp	*ft_lstnew(char *content, int option)
 {
-	envp	*new;
+	t_envp	*new;
 
-	new = (envp *)malloc(sizeof(envp));
+	new = (t_envp *)malloc(sizeof(t_envp));
 	if (new == NULL)
 		return (NULL);
 	new->str = ft_strdup_z(content);
@@ -27,16 +27,16 @@ envp	*ft_lstnew(char *content, int option)
 	return (new);
 }
 
-envp	*ft_lstlast_z(envp *lst)
+t_envp	*ft_lstlast_z(t_envp *lst)
 {
 	while (lst && lst->next != NULL)
 		lst = lst->next;
 	return (lst);
 }
 
-void	ft_lstadd_back(envp **lst, envp *new)
+void	ft_lstadd_back(t_envp **lst, t_envp *new)
 {
-	envp	*last;
+	t_envp	*last;
 
 	if (*lst == NULL)
 		*lst = new;
@@ -47,11 +47,11 @@ void	ft_lstadd_back(envp **lst, envp *new)
 	}
 }
 
-void	make_node(envp **st, char *str)
+void	make_node(t_envp **st, char *str)
 {
-	envp	*head;
+	t_envp	*head;
 
-	head = malloc(sizeof(envp));
+	head = malloc(sizeof(t_envp));
 	if (!head)
 		return ;
 	head->str = str;
@@ -61,9 +61,9 @@ void	make_node(envp **st, char *str)
 	*st = head;
 }
 
-int	updateenv(envp *env, char *str, int b)
+int	updateenv(t_envp *env, char *str, int b)
 {
-	envp	*st;
+	t_envp	*st;
 	char	*ptr;
 
 	st = env;

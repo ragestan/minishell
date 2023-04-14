@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   export_help.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 02:04:31 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 07:03:17 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:39:05 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	printnodeenv(envp *str)
+void	printnodeenv(t_envp *str)
 {
-	envp	*st;
+	t_envp	*st;
 
 	st = str;
 	while (st)
@@ -94,9 +94,9 @@ char	*ft_strdupedit(const char *s1)
 	return (p);
 }
 
-void	printnodealpha(envp *str)
+void	printnodealpha(t_envp *str)
 {
-	envp	*st;
+	t_envp	*st;
 	int		i;
 
 	st = str;

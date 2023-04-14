@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 05:39:52 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 06:54:06 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:33:12 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	the_dir_case(DIR *dir, char *arg)
 	free(g_globale.pid);
 }
 
-void	ft_unset_norm(char **args, envp **envp1, int i, int j)
+void	ft_unset_norm(char **args, t_envp **envp1, int i, int j)
 {
 	while (args[i])
 	{

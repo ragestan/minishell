@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 11:12:37 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 07:12:11 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:33:02 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ t_z	*norm_close_pipes(t_z *z, t_Command_Table3 *table)
 	return (z);
 }
 
-void	norm_last_realy(t_z *z, t_Command_Table3 *tmp, envp **envp1,
-		t_pipex *pipex)
+t_Command_Table3	*norm_last_realy(t_z *z, t_Command_Table3 *tmp,
+		t_envp **envp1, t_pipex *pipex)
 {
 	t_Command_Table3	*table;
 
@@ -50,14 +50,14 @@ void	norm_last_realy(t_z *z, t_Command_Table3 *tmp, envp **envp1,
 			norm_wrok_exec2(table, pipex, z->env));
 	else
 	{
-       //table stay the same and not go to the next command
 		z = norm_close_pipes(z, table);
 		table = table->next;
 	}
+	return (table);
 }
 
 void	shell_with_pipes(t_Command_Table3 *table, char **env, t_pipex *pipex,
-		envp **envp1)
+		t_envp **envp1)
 {
 	t_z	*z;
 
@@ -73,7 +73,7 @@ void	shell_with_pipes(t_Command_Table3 *table, char **env, t_pipex *pipex,
 			(open_pipe_nounocmd(z, z->aka, z->pixa), ft_idk(table, z->aka,
 					z->pixa, &z->b));
 		while (!z->b && z->i < z->k)
-			norm_last_realy(z, table, envp1, pipex);
+			table = norm_last_realy(z, table, envp1, pipex);
 		norm_last2(z);
 	}
 	free_z(z);

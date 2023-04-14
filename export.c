@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 01:22:41 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 05:55:49 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:34:28 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ int	ft_strserarch(char *str, char c)
 	return (0);
 }
 
-envp	*sort_list(envp *lst, int (*cmp)(char *, char *))
+t_envp	*sort_list(t_envp *lst, int (*cmp)(char *, char *))
 {
 	char	*swap;
 	int		swapint;
-	envp	*tmp;
+	t_envp	*tmp;
 
 	tmp = lst;
 	while (lst->next != NULL)
@@ -78,7 +78,7 @@ envp	*sort_list(envp *lst, int (*cmp)(char *, char *))
 	return (lst);
 }
 
-void	export(envp **env1, char *str)
+void	export(t_envp **env1, char *str)
 {
 	static int	x;
 	char		*stredit;

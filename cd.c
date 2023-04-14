@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 11:27:59 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 05:59:46 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:40:04 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_getenv(envp *env, char *str)
+char	*ft_getenv(t_envp *env, char *str)
 {
 	char	*ptr;
 
@@ -32,7 +32,7 @@ char	*ft_getenv(envp *env, char *str)
 	return (NULL);
 }
 
-void	ft_cd_help1(envp **env, t_cdd *cdd)
+void	ft_cd_help1(t_envp **env, t_cdd *cdd)
 {
 	cdd->ptr1 = ft_getenv(*env, "HOME");
 	cdd->value = chdir(cdd->ptr1);
@@ -55,7 +55,7 @@ void	ft_cd_help1(envp **env, t_cdd *cdd)
 	}
 }
 
-void	ft_cd_help2(envp **env, t_cdd *cdd)
+void	ft_cd_help2(t_envp **env, t_cdd *cdd)
 {
 	cdd->ptr = ft_getenv(*env, "OLDPWD");
 	if (cdd->ptr == NULL)
@@ -84,7 +84,7 @@ void	ft_cd_help2(envp **env, t_cdd *cdd)
 	}
 }
 
-void	ft_cd_help3(envp **env, t_cdd *cdd, char *str)
+void	ft_cd_help3(t_envp **env, t_cdd *cdd, char *str)
 {
 	cdd->ptr = ft_strdup_z(str);
 	cdd->value = chdir(cdd->ptr);
@@ -107,7 +107,7 @@ void	ft_cd_help3(envp **env, t_cdd *cdd, char *str)
 	}
 }
 
-void	ft_cd(envp **env, char *str)
+void	ft_cd(t_envp **env, char *str)
 {
 	t_cdd	cdd;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 22:10:37 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 06:02:11 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:41:16 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ int	ft_strncmp1(const char *s1, const char *s2)
 		return (1);
 }
 
-void	delete_node(envp **head, char *str)
+void	delete_node(t_envp **head, char *str)
 {
-	envp	*temp;
-	envp	*current;
+	t_envp	*temp;
+	t_envp	*current;
 
 	if (*head == NULL)
 		return ;
@@ -80,7 +80,7 @@ int	validarg(char *str)
 	return (0);
 }
 
-int	unset(envp **env1, char *str)
+int	unset(t_envp **env1, char *str)
 {
 	if (validarg(str) == 1)
 	{

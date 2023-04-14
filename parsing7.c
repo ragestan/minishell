@@ -6,13 +6,13 @@
 /*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 12:32:43 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/14 00:03:11 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:42:33 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_env_norm2(envp *tmp, char *arg, char *new, t_int *w)
+void	ft_env_norm2(t_envp *tmp, char *arg, char *new, t_int *w)
 {
 	w->k = 0;
 	w->z = 0;

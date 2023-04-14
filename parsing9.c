@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing9.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 12:42:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/14 06:06:30 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:42:45 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_en_cote(char *arg, char *new, t_int *w)
 	return (new);
 }
 
-char	*ft_en_norm4(char *arg, char *new, envp *tmp, t_int *w)
+char	*ft_en_norm4(char *arg, char *new, t_envp *tmp, t_int *w)
 {
 	new = ft_en_norm2(tmp, arg, new, w);
 	if (arg[w->i] == '$' && arg[w->i + 1] == '?')
@@ -50,7 +50,7 @@ char	*ft_en_norm4(char *arg, char *new, envp *tmp, t_int *w)
 	return (new);
 }
 
-char	*ft_en_norm2(envp *tmp, char *arg, char *new, t_int *w)
+char	*ft_en_norm2(t_envp *tmp, char *arg, char *new, t_int *w)
 {
 	while (tmp)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_help2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 02:17:22 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 07:03:06 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:39:13 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ void	ft_putstredit(char *s)
 	write(1, "\"", 1);
 }
 
-void	printnode_export(envp *stp)
+void	printnode_export(t_envp *stp)
 {
-	envp	*st;
+	t_envp	*st;
 
 	st = stp;
 	while (st)
@@ -76,7 +76,7 @@ void	ft_writeme1(char *str)
 	g_globale.exit_child = 1;
 }
 
-void	ft_writeme2(envp **env1)
+void	ft_writeme2(t_envp **env1)
 {
 	printnodealpha(*env1);
 	g_globale.exit_child = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution10.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 05:43:23 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 07:10:31 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:33:55 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ t_z	*ft_init_zz(t_Command_Table3 *table, char **env)
 
 void	norm_work_exec(t_z *z, t_Command_Table3 *table)
 {
-    printf("---->%s\n", table->args[0]);
 	signal(SIGINT, SIG_DFL);
 	if (z->i == 0)
 		ft_close_pipe(z->num_pipes, z->pipes, z->i);
@@ -63,7 +62,7 @@ void	norm_work_exec(t_z *z, t_Command_Table3 *table)
 		not_reading_from_heredoc(z->aka, z->pixa, &z->mm);
 }
 
-void	norm_builtin(envp **envp1, t_Command_Table3 *table)
+void	norm_builtin(t_envp **envp1, t_Command_Table3 *table)
 {
 	if (ft_strncmp(table->args[0], "cd", 3) == 0)
 		(ft_cd(envp1, table->args[1]), exit(0));
@@ -93,7 +92,7 @@ void	norm_wrok_exec2(t_Command_Table3 *table, t_pipex *pipex, char **env)
 		cmd_not_found(table);
 }
 
-int	norm_last(t_z *z, t_Command_Table3 *table, t_pipex *pipex, envp **envp1)
+int	norm_last(t_z *z, t_Command_Table3 *table, t_pipex *pipex, t_envp **envp1)
 {
 	pathfinder(pipex, *envp1);
 	g_globale.pid = malloc(sizeof(int) * count(table));

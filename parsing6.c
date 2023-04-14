@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   parsing6.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 12:26:59 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/14 06:03:37 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:42:25 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_env_count(char *arg, envp *env, int g)
+int	ft_env_count(char *arg, t_envp *env, int g)
 {
 	t_int	w;
 	char	*new;
-	envp	*tmp;
+	t_envp	*tmp;
 
 	new = NULL;
 	w = ft_initint();
@@ -77,7 +77,7 @@ void	ft_plusi(int *i, int *j)
 	*j = *j + 1;
 }
 
-void	ft_env_norm5(char *arg, char *new, envp *tmp, t_int *w)
+void	ft_env_norm5(char *arg, char *new, t_envp *tmp, t_int *w)
 {
 	ft_env_norm2(tmp, arg, new, w);
 	if (arg[w->i] == '$' & arg[w->i + 1] == '?')

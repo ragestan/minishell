@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution4.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 05:42:43 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 06:58:00 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:33:27 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_wait_unocmd(int i, t_Command_Table3 *table)
 	free(g_globale.pid);
 }
 
-int	builtin_check(t_Command_Table3 *table, envp **envp1, int *b, DIR *dir)
+int	builtin_check(t_Command_Table3 *table, t_envp **envp1, int *b, DIR *dir)
 {
 	int	i;
 

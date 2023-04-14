@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   export_help3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 05:21:31 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 07:03:42 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:34:17 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_updateenv_helper(char *str, envp *st)
+int	ft_updateenv_helper(char *str, t_envp *st)
 {
 	if (ft_strserarch(str, '=') == 1)
 	{
@@ -28,7 +28,7 @@ int	ft_updateenv_helper(char *str, envp *st)
 		return (3);
 }
 
-int	ft_updateenv_helper1(char *str, envp *st)
+int	ft_updateenv_helper1(char *str, t_envp *st)
 {
 	char	*ptr;
 
@@ -63,7 +63,7 @@ int	ft_strcmpedit(char *s1, char *s2)
 	return (0);
 }
 
-void	ft_export_help(char *str, envp **env1, int x, char *stredit)
+void	ft_export_help(char *str, t_envp **env1, int x, char *stredit)
 {
 	if ((ft_strserarch(str, '=') == 1) && (ft_strnstredit(str) == 0) && x == 0)
 	{

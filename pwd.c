@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 21:23:53 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 06:02:32 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:41:40 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	ft_pwd(void)
 	free(ptr);
 }
 
-void	updatepwd(envp **env, char *str)
+void	updatepwd(t_envp **env, char *str)
 {
-	envp	*st;
+	t_envp	*st;
 
 	st = *env;
 	while (st)
@@ -42,9 +42,9 @@ void	updatepwd(envp **env, char *str)
 	}
 }
 
-void	updateoldpwd(envp **env, char *str)
+void	updateoldpwd(t_envp **env, char *str)
 {
-	envp	*st;
+	t_envp	*st;
 
 	st = *env;
 	while (st)
@@ -62,9 +62,9 @@ void	updateoldpwd(envp **env, char *str)
 	}
 }
 
-void	pathfinder(t_pipex *pipex, envp *envp1)
+void	pathfinder(t_pipex *pipex, t_envp *envp1)
 {
-	envp	*tmp;
+	t_envp	*tmp;
 
 	tmp = envp1;
 	while (tmp)

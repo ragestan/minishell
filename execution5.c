@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execution5.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 05:42:50 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 07:05:54 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:33:36 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_onecmd(t_Command_Table3 *table, t_pipex *pipex, envp **envp1,
+void	ft_onecmd(t_Command_Table3 *table, t_pipex *pipex, t_envp **envp1,
 		char **env)
 {
 	t_x	*x;

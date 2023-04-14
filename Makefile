@@ -57,7 +57,7 @@ OBJ=$(SRC:.c=.o)
 all:	$(NAME)
 
 $(NAME) : $(OBJ)
-	$(CC)   ${CFLAGS} ${OBJ}   -o $(NAME) -lreadline -L /Users/zbentale/goinfre/homebrew/opt/readline/lib -I /Users/zbentale/goinfre/homebrew/opt/readline/include
+	$(CC)   ${CFLAGS} ${OBJ}   -o $(NAME) -lreadline -L /Users/zbentalh/goinfre/homebrew/opt/readline/lib -I /Users/zbentalh/goinfre/homebrew/opt/readline/include
 clean:	
 	$(RM) $(OBJ)
 fclean: clean

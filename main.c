@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/14 07:05:00 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:35:11 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_w	*ft_all_norm_last(t_w *w)
 	return (w);
 }
 
-t_Command_Table3	*ft_all(envp *env)
+t_Command_Table3	*ft_all(t_envp *env)
 {
 	t_w	*w;
 
@@ -55,7 +55,7 @@ t_Command_Table3	*ft_all(envp *env)
 		w->last_table);
 }
 
-void	ft_none_env(char **env, envp **env1)
+void	ft_none_env(char **env, t_envp **env1)
 {
 	char	*ptr;
 
@@ -69,7 +69,7 @@ void	ft_none_env(char **env, envp **env1)
 	}
 }
 
-void	norm_main(char **env, int argc, envp **env1)
+void	norm_main(char **env, int argc, t_envp **env1)
 {
 	while (env[argc] != NULL)
 		argc++;
@@ -84,7 +84,7 @@ void	norm_main(char **env, int argc, envp **env1)
 int	main(int argc, char **argv, char **env)
 {
 	t_Command_Table3	*last_table;
-	envp				*env1;
+	t_envp				*env1;
 	t_pipex				pipex;
 
 	g_globale.exit_child = 0;

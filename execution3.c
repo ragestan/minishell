@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execution3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 05:40:19 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 06:55:17 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:33:19 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_export_norm(char **args, envp **envp1, int i)
+void	ft_export_norm(char **args, t_envp **envp1, int i)
 {
 	g_globale.exit_child = 0;
 	if (args[1] == NULL)

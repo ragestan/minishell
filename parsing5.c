@@ -6,7 +6,7 @@
 /*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 12:22:57 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/14 00:03:05 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:41:51 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ft_lstadd_back1(t_Command_Table **lst, t_Command_Table *new)
 	}
 }
 
-t_Command_Table	*ft_var(t_Command_Table *table, envp *env)
+t_Command_Table	*ft_var(t_Command_Table *table, t_envp *env)
 {
 	t_Command_Table	*tmp;
 
@@ -58,10 +58,10 @@ t_Command_Table	*ft_var(t_Command_Table *table, envp *env)
 	return (table);
 }
 
-char	*ft_en(char *arg, envp *env, int g)
+char	*ft_en(char *arg, t_envp *env, int g)
 {
 	t_int	w;
-	envp	*tmp;
+	t_envp	*tmp;
 	char	*new;
 
 	new = malloc(sizeof(char) * ft_env_count(arg, env, g) + 1);

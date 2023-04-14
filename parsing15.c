@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parsing15.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:04:14 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/14 06:08:49 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:42:52 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_Command_Table	*ft_all_nor(t_Command_Table *table, envp *env)
+t_Command_Table	*ft_all_nor(t_Command_Table *table, t_envp *env)
 {
 	table = ft_var(table, env);
 	table = ft_cote(table);
@@ -34,12 +34,18 @@ char	**ft_all_nor2_nor2(char **split, char *new)
 	return (split);
 }
 
+char	**split_norm(char **split, char *new)
+{
+	ft_all_nor2_nor();
+	split = ft_all_nor2_nor2(split, new);
+	return (split);
+}
+
 void	ft_all_nor2(char **split, char *new, int g_fork, int i)
 {
 	char	*new2;
 
-	ft_all_nor2_nor();
-	split = ft_all_nor2_nor2(split, new);
+	split = split_norm(split, new);
 	while (split[i++])
 	{
 		if (split[i - 1][0] == '<' && split[i - 1][1] == '<' && split[i

@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 11:33:17 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 06:19:26 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:32:38 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	envv(envp *str)
+void	envv(t_envp *str)
 {
-	envp	*st;
+	t_envp	*st;
 
 	st = str;
 	while (st)
