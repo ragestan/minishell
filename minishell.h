@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/14 20:43:15 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 22:04:21 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ typedef struct X
 	int						b;
 	int						num_pipes;
 	char					*str;
-	int						pipa[2];
+	int						*pipa;
 	int						**pipes;
 }							t_x;
 
@@ -215,7 +215,7 @@ t_envp						*sort_list(t_envp *lst, int (*cmp)(char *, char *));
 void						ft_export_help(char *str, t_envp **env1, int x,
 								char *stredit);
 int							ft_creat_pipe(int num_pipes, int **pipes);
-void						ft_here_null_with_pipe(char *str, int *pipa,
+void						ft_here_null_with_pipe(char *str, t_x **x,
 								char **heredoc, int *b);
 void						the_point_case_yay(void);
 void						the_dir_case(DIR *dir, char *arg);
@@ -227,9 +227,9 @@ void						ft_exiit(char **args);
 int							ft_execut_now(t_pipex *pipex,
 								t_Command_Table3 *table, char **env);
 void						ft_norm(char *arg);
-void						ft_wait_unocmd(t_x *x, t_Command_Table3 *table);
+void						ft_wait_unocmd(t_x **x, t_Command_Table3 *table);
 int							builtin_check(t_Command_Table3 *table,
-								t_envp **envp1, int *b, DIR *dir);
+								t_envp **envp1, t_x *x, DIR *dir);
 void						child_unocmd(t_Command_Table3 *table, char **env,
 								t_pipex *pipex, int *pipa);
 void						ft_free_xx(t_x *x);

@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:16:47 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/14 20:06:23 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 21:41:32 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_w	*ft_all_norm_last(t_w *w)
 t_Command_Table3	*ft_all(t_envp *env)
 {
 	t_w	*w;
+	t_Command_Table3	*tmp;
 
 	w = ft_init_w();
 	w = ft_all_norm_last(w);
@@ -51,8 +52,9 @@ t_Command_Table3	*ft_all(t_envp *env)
 		w->last_table->args = arg(w->last_table->args, 0, 2);
 		w->tmp = w->tmp->next;
 	}
+	tmp = w->last_table;
 	return (free(w->new), ft_free(w->split), freestack(&w->table), free(w),
-		w->last_table);
+		tmp);
 }
 
 void	ft_none_env(char **env, t_envp **env1)

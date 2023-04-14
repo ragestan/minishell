@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 05:42:50 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 20:42:24 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 21:58:58 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	ft_onecmd(t_Command_Table3 *table, t_pipex *pipex, t_envp **envp1,
 		if (pipe(x->pipa) < 0)
 			return (perror("pipe error"), (g_globale.exit_child = 255),
 				ft_free_xx(x));
-		ft_here_null_with_pipe(x->str, x->pipa, table->heredoc, &x->b);
+		ft_here_null_with_pipe(x->str, &x, table->heredoc, &x->b);
 	}
-	if (builtin_check(table, envp1, &x->b, x->dir) == 1)
+	if (builtin_check(table, envp1, x, x->dir) == 1)
 		return (ft_free_xx(x));
 	g_globale.pid[x->i] = fork();
 	if (g_globale.pid[x->i] < 0)
@@ -33,7 +33,7 @@ void	ft_onecmd(t_Command_Table3 *table, t_pipex *pipex, t_envp **envp1,
 	else if (g_globale.pid[x->i] == 0)
 		child_unocmd(table, env, pipex, x->pipa);
 	else
-		ft_wait_unocmd(x, table);
+		ft_wait_unocmd(&x, table);
 	ft_free_xx(x);
 }
 

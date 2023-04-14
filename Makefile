@@ -50,7 +50,7 @@ SRC = main.c\
 
 CC = gcc 
 
-CFLAGS = -Wall -Wextra -Werror  
+CFLAGS = -Wall -Wextra -Werror 
 
 OBJ=$(SRC:.c=.o)
 

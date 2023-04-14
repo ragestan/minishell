@@ -6,7 +6,7 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 05:39:52 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 20:50:03 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 21:23:37 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,26 +36,27 @@ int	ft_creat_pipe(int num_pipes, int **pipes)
 	return (0);
 }
 
-void	ft_here_null_with_pipe(char *str, int *pipa, char **heredoc, int *b)
+void	ft_here_null_with_pipe(char *str, t_x **x, char **heredoc, int *b)
 {
 	int	status;
 
 	g_globale.idheredok = 0;
 	g_globale.idheredok = fork();
+
 	if (g_globale.idheredok == 0)
 	{
-		close(pipa[0]);
+		close((*x)->pipa[0]);
 		signal(SIGINT, SIG_DFL);
 		str = heredocwhile(heredoc);
 		if (str)
-			write(pipa[1], str, ft_strlen3(str));
-		close(pipa[1]);
+			write((*x)->pipa[1], str, ft_strlen3(str));
+		close((*x)->pipa[1]);
 		free(str);
 		exit(0);
 	}
 	else
 	{
-		close(pipa[1]);
+		close((*x)->pipa[1]);
 		waitpid(g_globale.idheredok, &status, 0);
 		if (WIFSIGNALED(status))
 		{

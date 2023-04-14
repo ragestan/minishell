@@ -6,20 +6,23 @@
 /*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 05:42:43 by zbentale          #+#    #+#             */
-/*   Updated: 2023/04/14 20:53:43 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 22:06:25 by zbentale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_wait_unocmd(t_x *x, t_Command_Table3 *table)
+void	ft_wait_unocmd(t_x **x, t_Command_Table3 *table)
 {
 	int	status;
 
-	waitpid(g_globale.pid[x->i], &status, 0);
+	waitpid(g_globale.pid[(*x)->i], &status, 0);
 	close(table->outfile);
 	close(table->infile);
-	close(x->pipa[0]);
+	if(table->heredoc[0] != NULL)
+	{
+		close((*x)->pipa[0]);
+	}
 	if (WIFSIGNALED(status))
 		g_globale.exit_child = 128 + WTERMSIG(status);
 	if (WIFEXITED(status))
@@ -27,13 +30,18 @@ void	ft_wait_unocmd(t_x *x, t_Command_Table3 *table)
 	free(g_globale.pid);
 }
 
-int	builtin_check(t_Command_Table3 *table, t_envp **envp1, int *b, DIR *dir)
+void close1(t_x *x, t_Command_Table3 *table)
+{
+	if(table->heredoc[0] != NULL)
+		close(x->pipa[0]);
+}
+int	builtin_check(t_Command_Table3 *table, t_envp **envp1, t_x *x, DIR *dir)
 {
 	int	i;
 
 	i = 1;
-	if (*b != 0 || table->args[0] == NULL)
-		return (free(g_globale.pid), 1);
+	if (x->b != 0 || table->args[0] == NULL)
+		return (close1(x,table),free(g_globale.pid), 1);
 	if (ft_strncmp(table->args[0], ".", 2) == 0)
 		return (the_point_case_yay(), 1);
 	dir = opendir(table->args[0]);
@@ -96,6 +104,7 @@ void	ft_free_xx(t_x *x)
 		free(x->pipes[i]);
 		i++;
 	}
+	free(x->pipa);
 	free(x->pipes);
 	free(x);
 }
@@ -108,10 +117,11 @@ t_x	*ft_init_xx(t_Command_Table3 *table)
 	x = malloc(sizeof(t_x));
 	i = 0;
 	x->dir = NULL;
-	x->i = 1;
+	x->i = 0;
 	x->b = 0;
 	x->num_pipes = count(table) - 1;
 	x->str = NULL;
+	x->pipa = malloc(sizeof(int) * 2);
 	x->pipes = malloc(sizeof(int *) * x->num_pipes);
 	while (i < x->num_pipes)
 	{
