@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing15.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zbentale <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:04:14 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/12 20:21:29 by zbentale         ###   ########.fr       */
+/*   Updated: 2023/04/14 00:55:12 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,15 @@ void	ft_all_nor2(char **split, char *new, int g_fork, int i)
 {
 	char *new2;
 
-    ft_all_nor2_nor();
+	ft_all_nor2_nor();
 	split = ft_all_nor2_nor2(split, new);
-	while (split[i])
+	while (split[i++])
 	{
-		if (split[i][0] == '<' && split[i][1] == '<' && split[i][2] == '\0')
+		if (split[i - 1][0] == '<' && split[i - 1][1] == '<' && split[i - 1][2] == '\0')
 		{
-			if (split[i + 1])
+			if (split[i])
 			{
-				new = ft_strdup3(split[i + 1]);
+				new = ft_strdup3(split[i]);
 				g_fork = fork();
 				if (g_fork == 0)
 				{
@@ -60,7 +60,6 @@ void	ft_all_nor2(char **split, char *new, int g_fork, int i)
 				free(new);
 			}
 		}
-		i++;
 	}
 	ft_free(split);
 }

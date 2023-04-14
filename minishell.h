@@ -6,7 +6,7 @@
 /*   By: zbentalh <zbentalh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:46:03 by zbentalh          #+#    #+#             */
-/*   Updated: 2023/04/13 16:29:03 by zbentalh         ###   ########.fr       */
+/*   Updated: 2023/04/14 01:04:04 by zbentalh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <string.h>
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
-# include <string.h>
+
+
 
 typedef struct a_Cammand_Table3
 {
@@ -61,6 +63,20 @@ typedef struct a_int
 	int						z;
 	char					*new2;
 }							t_int;
+
+typedef struct w
+{
+	char	*new;
+	char **split;
+	int i;
+	int k;
+	t_Command_Table *table;
+	t_Command_Table2 z;
+	t_Command_Table3 *last_table;
+	t_Command_Table3 *tmp;
+	struct termios		term;
+	struct termios		oldterm;
+}							t_w;
 //---------------------------------------zbentale--------------------------------
 typedef struct NODE
 {
@@ -76,7 +92,7 @@ typedef struct pipex
 	char					**paths;
 	int						i;
 	char					*save;
-	int 					dkhlni;
+	int						dkhlni;
 }							t_pipex;
 typedef struct cdd
 {
@@ -95,7 +111,7 @@ typedef struct X
 	char *str;
 	int pipa[2];
 	int **pipes;
-}			t_x;
+}							t_x;
 
 typedef struct Y
 {
@@ -103,7 +119,22 @@ typedef struct Y
 	int mm;
 	int lb;
 	int lj;
-}		t_y;
+}							t_y;
+
+typedef struct Z
+{
+	DIR *dir;
+	int num_pipes;
+	int i;
+	int r;
+	int k;
+	int b;
+	int aka;
+	int mm;
+	int **pipes;
+	int **pixa;
+	char **env;
+}							t_z;
 
 typedef struct a_globale
 {
@@ -169,6 +200,9 @@ void						ft_error1(char *str, char *st);
 int							valideinput(char *str);
 void						sigquit_handler(int sig);
 void						herquite(int sig);
+void	ft_lstadd_back(envp **lst, envp *new);
+envp	*ft_lstlastZ(envp *lst);
+envp	*ft_lstnew(char *content, int option);
 //------------------------------------zbentalh---------------------------------------
 void	ft_lstadd_back1(t_Command_Table **lst,
 						t_Command_Table *new);
@@ -296,4 +330,5 @@ void						ft_all_nor2_nor(void);
 char						**ft_all_nor2_nor2(char **split, char *new);
 void						ft_all_nor2(char **split, char *new, int g_fork,
 								int i);
+void						free_z(t_z *z);
 #endif
